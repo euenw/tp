@@ -52,3 +52,13 @@ Nationality: Chinese
 [[portfolio](team/blerargh.md)]
 
 * Role: Developer
+
+### Gabriel Tan
+
+<img src="images/underscoregt.png" width="200px">
+
+[[linkedin](https://www.linkedin.com/in/gabriel-tan-aaa390201/)]
+[[github](https://github.com/underscoregt)]
+[[portfolio](team/underscoregt.md)]
+
+* Role: Developer
