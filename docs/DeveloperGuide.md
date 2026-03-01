@@ -292,16 +292,33 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
-
-_{More to be added}_
+| Priority | As a ...                                   | I want to ...                                      | So that I can ...                                                          |
+| -------- | ------------------------------------------ | -------------------------------------------------- | -------------------------------------------------------------------------- |
+| `* * *`  | new user                                   | see usage instructions                             | refer to instructions when I forget how to use the App                     |
+| `* * *`  | user                                       | add a new person                                   |                                                                            |
+| `* * *`  | user                                       | delete a person                                    | remove entries that I no longer need                                       |
+| `* * *`  | user                                       | find a person by name                              | locate details of persons without having to go through the entire list     |
+| `* * *`  | user                                       | find contacts by a specific field                  |                                                                            |
+| `* * *`  | user                                       | add contacts                                       | easily retrieve them                                                       |
+| `* * *`  | user                                       | see all the assignments/contacts/classes           | keep track of what has been created                                        |
+| `* * *`  | busy user                                  | add deadlines/events                               | keep track of my things easily                                             |
+| `* * *`  | teacher managing many students             | organise my students into separate groups by class | easily identify which students belong to which class                       |
+| `* * *`  | teacher                                    | see all assignment status for each student         | keep track of every individual's performance                               |
+| `* * *`  | teacher changing classes every year        | easily delete/archive multiple old contacts        | keep only the contacts I need accessible                                   |
+| `* * *`  | CLI user                                   | quickly exit the program                           | don't have to waste time clicking the close button                         |
+| `* *`    | user                                       | hide private contact details                       | minimize chance of someone else seeing them by accident                    |
+| `* *`    | user pursuing efficiency                   | sort contacts by date accessed                     | easily find the most recently contacted contacts                           |
+| `* *`    | forgetful teacher                          | find students even when I mistype their names      | easily find them even if I don't remember the exact spelling of their name |
+| `* *`    | user with multiple devices                 | export and import selected contacts                | easily switch between devices                                              |
+| `* *`    | meticulous teacher                         | add private notes (e.g., allergies)                | recall critical student welfare details                                    |
+| `* *`    | user                                       | retrieve my input history                          | don't have to retype the entire command when I make a small typo           |
+| `* *`    | careless user                              | undo my actions                                    | correct mistakes without losing my work                                    |
+| `* *`    | form teacher                               | retrieve emails of a specific group                | blast announcements via email without manual entry                         |
+| `* *`    | teacher managing committees                | assign custom tags (e.g., "Prefect")               | filter students by extra-curricular roles                                  |
+| `*`      | user with many persons in the address book | sort persons by name                               | locate a person easily                                                     |
+| `*`      | normal user                                | edit contact details                               | keep my contact information up to date                                     |
+| `*`      | forgetful user                             | have reminders for my deadlines                    | do not forget my tasks                                                     |
+| `*`      | busy user                                  | view all events/deadlines in a calendar view       | see my schedule at a glance                                                |
 
 ### Use cases
 
