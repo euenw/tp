@@ -3,6 +3,7 @@ package cpp.testutil;
 import java.time.format.DateTimeFormatter;
 
 import cpp.logic.commands.assignment.AddAssignmentCommand;
+import cpp.logic.parser.CliSyntax;
 import cpp.model.assignment.Assignment;
 
 /**
@@ -22,10 +23,10 @@ public class AssignmentUtil {
      */
     public static String getAssignmentDetails(Assignment assignment) {
         StringBuilder sb = new StringBuilder();
-        sb.append("n/").append(assignment.getName().fullName).append(" ");
-        sb.append("d/")
-                .append(assignment.getDeadline().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString())
-                .append(" ");
+        sb.append(" ").append(CliSyntax.PREFIX_NAME).append(assignment.getName().fullName).append(" ");
+        sb.append(" ").append(CliSyntax.PREFIX_DEADLINE)
+            .append(assignment.getDeadline().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString())
+            .append(" ");
         return sb.toString();
     }
 }
