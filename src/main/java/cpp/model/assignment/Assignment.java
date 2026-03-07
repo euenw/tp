@@ -1,16 +1,19 @@
 package cpp.model.assignment;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
+
+import cpp.commons.util.ToStringBuilder;
 
 public class Assignment {
 
     // Identity fields
     private final String id;
-    private final String name;
+    private final Name name;
     private final LocalDateTime deadline;
 
-    public Assignment(String name, LocalDateTime deadline) {
+    public Assignment(Name name, LocalDateTime deadline) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.deadline = deadline;
@@ -20,7 +23,7 @@ public class Assignment {
         return this.id;
     }
 
-    public String getName() {
+    public Name getName() {
         return this.name;
     }
 
@@ -49,5 +52,18 @@ public class Assignment {
         return this.id.equals(otherAssignment.id)
                 && this.name.equals(otherAssignment.name)
                 && this.deadline.equals(otherAssignment.deadline);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.name, this.deadline);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("name", this.name)
+                .add("deadline", this.deadline)
+                .toString();
     }
 }
