@@ -13,7 +13,7 @@ import cpp.logic.parser.Parser;
 import cpp.logic.parser.ParserUtil;
 import cpp.logic.parser.Prefix;
 import cpp.logic.parser.exceptions.ParseException;
-import cpp.model.assignment.Name;
+import cpp.model.assignment.AssignmentName;
 
 /**
  * Parses input arguments and creates a new AllocateAssignmentCommand object.
@@ -38,7 +38,8 @@ public class AllocateAssignmentCommandParser implements Parser<AllocateAssignmen
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_CLASS,
                 CliSyntax.PREFIX_CONTACT);
 
-        Name assignmentName = ParserUtil.parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());
+        AssignmentName assignmentName = ParserUtil
+                .parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());
 
         String contactValue = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
 

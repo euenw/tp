@@ -66,7 +66,7 @@ public class Assignment {
      * @return the assignment with the given name, or null if no such assignment is
      *         found
      */
-    public static Assignment findAssignment(List<Assignment> assignments, Name name) {
+    public static Assignment findAssignment(List<Assignment> assignments, AssignmentName name) {
         for (Assignment assignment : assignments) {
             if (assignment.getName().equals(name)) {
                 return assignment;

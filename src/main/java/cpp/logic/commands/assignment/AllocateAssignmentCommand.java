@@ -13,7 +13,7 @@ import cpp.logic.commands.exceptions.CommandException;
 import cpp.logic.parser.CliSyntax;
 import cpp.model.Model;
 import cpp.model.assignment.Assignment;
-import cpp.model.assignment.Name;
+import cpp.model.assignment.AssignmentName;
 import cpp.model.contact.Contact;
 
 /**
@@ -40,14 +40,14 @@ public class AllocateAssignmentCommand extends Command {
     public static final String MESSAGE_INVALID_ASSIGNMENT_NAME = "The assignment name provided is invalid";
     public static final String MESSAGE_ALLOCATION_FAILED = "No contacts were allocated the assignment.";
 
-    private final Name assignmentName;
+    private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
 
     /**
      * Creates an AllocateAssignmentCommand with the specified assignment and
      * contact indices.
      */
-    public AllocateAssignmentCommand(Name assignmentName, List<Index> contactIndices) {
+    public AllocateAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices) {
         Objects.requireNonNull(assignmentName);
         Objects.requireNonNull(contactIndices);
         this.assignmentName = assignmentName;
