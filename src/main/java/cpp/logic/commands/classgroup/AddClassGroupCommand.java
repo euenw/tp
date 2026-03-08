@@ -20,8 +20,7 @@ public class AddClassGroupCommand extends Command {
 
     public static final String MESSAGE_USAGE = AddClassGroupCommand.COMMAND_WORD + ": Defines a new class grouping. "
             + "Parameters: "
-            + CliSyntax.PREFIX_NAME + "NAME "
-            + "[" + CliSyntax.PREFIX_TAG + "TAG]...\n"
+            + CliSyntax.PREFIX_NAME + "NAME\n"
             + "Example: " + AddClassGroupCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_NAME + "CS2103T10 ";
 
