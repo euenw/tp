@@ -53,7 +53,7 @@ public class AddAssignmentCommandTest {
     }
 
     @Test
-    public void equals() {
+    public void equals_sameValues_returnsTrue() {
         Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
         AddAssignmentCommand addCommand = new AddAssignmentCommand(assignment);
         AddAssignmentCommand addCommandCopy = new AddAssignmentCommand(assignment);
@@ -63,6 +63,12 @@ public class AddAssignmentCommandTest {
 
         // same values -> true
         Assertions.assertTrue(addCommand.equals(addCommandCopy));
+    }
+
+    @Test
+    public void equals_differentValues_returnsFalse() {
+        Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
+        AddAssignmentCommand addCommand = new AddAssignmentCommand(assignment);
 
         // different types -> false
         Assertions.assertFalse(addCommand.equals(1));
@@ -78,7 +84,7 @@ public class AddAssignmentCommandTest {
     }
 
     @Test
-    public void toStringMethod() {
+    public void toString_typicalValue_correctOutput() {
         AddAssignmentCommand addCommand = new AddAssignmentCommand(TypicalAssignments.ASSIGNMENT_ONE);
         String expected = AddAssignmentCommand.class.getCanonicalName() + "{toAddAssignment="
                 + TypicalAssignments.ASSIGNMENT_ONE + "}";

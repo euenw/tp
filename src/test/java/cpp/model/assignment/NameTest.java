@@ -19,17 +19,7 @@ public class NameTest {
     }
 
     @Test
-    public void isValidName() {
-        // null name
-        Assert.assertThrows(NullPointerException.class, () -> Name.isValidName(null));
-
-        // invalid name
-        Assertions.assertFalse(Name.isValidName("")); // empty string
-        Assertions.assertFalse(Name.isValidName(" ")); // spaces only
-        Assertions.assertFalse(Name.isValidName("^")); // only non-alphanumeric characters
-        Assertions.assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
-
-        // valid name
+    public void isValidName_validName_returnsTrue() {
         Assertions.assertTrue(Name.isValidName("peter jack")); // alphabets only
         Assertions.assertTrue(Name.isValidName("12345")); // numbers only
         Assertions.assertTrue(Name.isValidName("peter the 2nd")); // alphanumeric characters
@@ -38,7 +28,20 @@ public class NameTest {
     }
 
     @Test
-    public void equals() {
+    public void isValidName_invalidName_returnsFalse() {
+        Assertions.assertFalse(Name.isValidName("")); // empty string
+        Assertions.assertFalse(Name.isValidName(" ")); // spaces only
+        Assertions.assertFalse(Name.isValidName("^")); // only non-alphanumeric characters
+        Assertions.assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
+    }
+
+    @Test
+    public void isValidName_null_returnsFalse() {
+        Assert.assertThrows(NullPointerException.class, () -> Name.isValidName(null));
+    }
+
+    @Test
+    public void equals_sameValues_returnsTrue() {
         Name name = new Name("Valid Name");
 
         // same values -> returns true
@@ -46,15 +49,20 @@ public class NameTest {
 
         // same object -> returns true
         Assertions.assertTrue(name.equals(name));
+    }
+
+    @Test
+    public void equals_differentValues_returnsFalse() {
+        Name name = new Name("Valid Name");
+
+        // different types -> returns false
+        Assertions.assertFalse(name.equals(5));
 
         // null -> returns false
         Assertions.assertFalse(name.equals(null));
 
-        // different types -> returns false
-        Assertions.assertFalse(name.equals(5.0f));
-
-        // different values -> returns false
-        Assertions.assertFalse(name.equals(new Name("Other Valid Name")));
+        // different name -> returns false
+        Assertions.assertFalse(name.equals(new Name("Different Name")));
     }
 
 }

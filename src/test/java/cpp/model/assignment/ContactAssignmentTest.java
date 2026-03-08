@@ -65,28 +65,49 @@ public class ContactAssignmentTest {
     }
 
     @Test
-    public void stateTransitions_and_equality() {
+    public void markSubmitted() {
         ContactAssignment ca = new ContactAssignment("a1", "c1");
         Assertions.assertFalse(ca.isSubmitted());
-        Assertions.assertFalse(ca.isGraded());
-        Assertions.assertEquals(0, ca.getScore());
-
         ca.markSubmitted();
+        Assertions.assertTrue(ca.isSubmitted());
+    }
+
+    @Test
+    public void markUnsubmitted() {
+        ContactAssignment ca = new ContactAssignment("a1", "c1", true, false, 0);
         Assertions.assertTrue(ca.isSubmitted());
         ca.markUnsubmitted();
         Assertions.assertFalse(ca.isSubmitted());
+    }
 
-        ca.grade(95);
+    @Test
+    public void grade_and_ungrade() {
+        ContactAssignment ca = new ContactAssignment("a1", "c1");
+        Assertions.assertFalse(ca.isGraded());
+        Assertions.assertEquals(0, ca.getScore());
+        ca.grade(85);
         Assertions.assertTrue(ca.isGraded());
-        Assertions.assertEquals(95, ca.getScore());
+        Assertions.assertEquals(85, ca.getScore());
+    }
+
+    @Test
+    public void ungrade() {
+        ContactAssignment ca = new ContactAssignment("a1", "c1", true, true, 85);
+        Assertions.assertTrue(ca.isGraded());
+        Assertions.assertEquals(85, ca.getScore());
         ca.ungrade();
         Assertions.assertFalse(ca.isGraded());
         Assertions.assertEquals(0, ca.getScore());
+    }
 
-        ContactAssignment other = new ContactAssignment("a1", "c1");
-        Assertions.assertEquals(ca.getAssignmentId(), other.getAssignmentId());
-        Assertions.assertEquals(ca.getContactId(), other.getContactId());
-        Assertions.assertEquals(other, new ContactAssignment("a1", "c1"));
+    @Test
+    public void getters() {
+        ContactAssignment ca = new ContactAssignment("a1", "c1", true, true, 75);
+        Assertions.assertEquals("a1", ca.getAssignmentId());
+        Assertions.assertEquals("c1", ca.getContactId());
+        Assertions.assertTrue(ca.isSubmitted());
+        Assertions.assertTrue(ca.isGraded());
+        Assertions.assertEquals(75, ca.getScore());
     }
 
 }
