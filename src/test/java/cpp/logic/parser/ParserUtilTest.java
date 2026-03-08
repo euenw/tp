@@ -1,5 +1,7 @@
 package cpp.logic.parser;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,6 +25,8 @@ public class ParserUtilTest {
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_DEADLINE = "12-13-2020 10:00";
+    private static final String INVALID_ASSIGNMENT_NAME = " ";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
@@ -30,6 +34,8 @@ public class ParserUtilTest {
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_DEADLINE = "13-12-2020 10:00";
+    private static final String VALID_ASSIGNMENT_NAME = "Assignment 1";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -130,7 +136,8 @@ public class ParserUtilTest {
 
     @Test
     public void parseEmail_invalidValue_throwsParseException() {
-        Assert.assertThrows(ParseException.class, () -> ParserUtil.parseEmail(ParserUtilTest.INVALID_EMAIL));
+        Assert.assertThrows(ParseException.class,
+                () -> ParserUtil.parseEmail(ParserUtilTest.INVALID_EMAIL));
     }
 
     @Test
@@ -193,5 +200,59 @@ public class ParserUtilTest {
                 Arrays.asList(new Tag(ParserUtilTest.VALID_TAG_1), new Tag(ParserUtilTest.VALID_TAG_2)));
 
         Assertions.assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseDeadline_null_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseDeadline((String) null));
+    }
+
+    @Test
+    public void parseDeadline_invalidValue_throwsParseException() {
+        Assert.assertThrows(ParseException.class,
+                () -> ParserUtil.parseDeadline(ParserUtilTest.INVALID_DEADLINE));
+    }
+
+    @Test
+    public void parseDeadline_validValueWithoutWhitespace_returnsLocalDateTime() throws Exception {
+        LocalDateTime expected = LocalDateTime.parse(ParserUtilTest.VALID_DEADLINE,
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        ;
+        Assertions.assertEquals(expected, ParserUtil.parseDeadline(ParserUtilTest.VALID_DEADLINE));
+    }
+
+    @Test
+    public void parseDeadline_validValueWithWhitespace_returnsTrimmedLocalDateTime() throws Exception {
+        String datetimeWithWhitespace = ParserUtilTest.WHITESPACE + ParserUtilTest.VALID_DEADLINE
+                + ParserUtilTest.WHITESPACE;
+        LocalDateTime expected = LocalDateTime.parse(ParserUtilTest.VALID_DEADLINE,
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        Assertions.assertEquals(expected, ParserUtil.parseDeadline(datetimeWithWhitespace));
+    }
+
+    @Test
+    public void parseAssignmentName_null_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class,
+                () -> ParserUtil.parseAssignmentName((String) null));
+    }
+
+    @Test
+    public void parseAssignmentName_invalidValue_throwsParseException() {
+        Assert.assertThrows(ParseException.class,
+                () -> ParserUtil.parseAssignmentName(ParserUtilTest.INVALID_ASSIGNMENT_NAME));
+    }
+
+    @Test
+    public void parseAssignmentName_validValueWithoutWhitespace_returnsName() throws Exception {
+        cpp.model.assignment.Name expectedName = new cpp.model.assignment.Name(ParserUtilTest.VALID_ASSIGNMENT_NAME);
+        Assertions.assertEquals(expectedName, ParserUtil.parseAssignmentName(ParserUtilTest.VALID_ASSIGNMENT_NAME));
+    }
+
+    @Test
+    public void parseAssignmentName_validValueWithWhitespace_returnsTrimmedName() throws Exception {
+        String nameWithWhitespace = ParserUtilTest.WHITESPACE + ParserUtilTest.VALID_ASSIGNMENT_NAME
+                + ParserUtilTest.WHITESPACE;
+        cpp.model.assignment.Name expectedName = new cpp.model.assignment.Name(ParserUtilTest.VALID_ASSIGNMENT_NAME);
+        Assertions.assertEquals(expectedName, ParserUtil.parseAssignmentName(nameWithWhitespace));
     }
 }

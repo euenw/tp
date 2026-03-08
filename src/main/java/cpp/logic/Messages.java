@@ -4,7 +4,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import cpp.logic.parser.ParserUtil;
 import cpp.logic.parser.Prefix;
+import cpp.model.assignment.Assignment;
 import cpp.model.person.Person;
 
 /**
@@ -44,6 +46,17 @@ public class Messages {
                 .append(person.getAddress())
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
+        return builder.toString();
+    }
+
+    /**
+     * Formats the {@code assignment} for display to the user.
+     */
+    public static String format(Assignment assignment) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(assignment.getName())
+                .append("; Deadline: ")
+                .append(assignment.getDeadline().format(ParserUtil.DEADLINE_FORMATTER));
         return builder.toString();
     }
 

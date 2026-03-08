@@ -12,6 +12,7 @@ import cpp.commons.exceptions.DataLoadingException;
 import cpp.model.AddressBook;
 import cpp.model.ReadOnlyAddressBook;
 import cpp.testutil.Assert;
+import cpp.testutil.TypicalAssignments;
 import cpp.testutil.TypicalPersons;
 
 public class JsonAddressBookStorageTest {
@@ -48,7 +49,24 @@ public class JsonAddressBookStorageTest {
 
     @Test
     public void readAddressBook_invalidPersonAddressBook_throwDataLoadingException() {
-        Assert.assertThrows(DataLoadingException.class, () -> this.readAddressBook("invalidPersonAddressBook.json"));
+        Assert.assertThrows(DataLoadingException.class,
+                () -> this.readAddressBook("invalidPersonAddressBookName.json"));
+        Assert.assertThrows(DataLoadingException.class,
+                () -> this.readAddressBook("invalidPersonAddressBookPhone.json"));
+        Assert.assertThrows(DataLoadingException.class,
+                () -> this.readAddressBook("invalidPersonAddressBookEmail.json"));
+        Assert.assertThrows(DataLoadingException.class,
+                () -> this.readAddressBook("invalidPersonAddressBookAddress.json"));
+    }
+
+    @Test
+    public void readAddressBook_invalidAssignmentAddressBook_throwDataLoadingException() {
+        Assert.assertThrows(DataLoadingException.class,
+                () -> this.readAddressBook("invalidAssignmentAddressBookDeadline.json"));
+        Assert.assertThrows(DataLoadingException.class,
+                () -> this.readAddressBook("invalidAssignmentAddressBookId.json"));
+        Assert.assertThrows(DataLoadingException.class,
+                () -> this.readAddressBook("invalidAssignmentAddressBookName.json"));
     }
 
     @Test
@@ -77,6 +95,18 @@ public class JsonAddressBookStorageTest {
 
         // Save and read without specifying file path
         original.addPerson(TypicalPersons.IDA);
+        jsonAddressBookStorage.saveAddressBook(original); // file path not specified
+        readBack = jsonAddressBookStorage.readAddressBook().get(); // file path not specified
+        Assertions.assertEquals(original, new AddressBook(readBack));
+
+        // Modify assignments, overwrite existing file, and read back
+        original.addAssignment(TypicalAssignments.ASSIGNMENT_TWO);
+        jsonAddressBookStorage.saveAddressBook(original, filePath);
+        readBack = jsonAddressBookStorage.readAddressBook(filePath).get();
+        Assertions.assertEquals(original, new AddressBook(readBack));
+
+        // Save and read without specifying file path
+        original.addAssignment(TypicalAssignments.ASSIGNMENT_THREE);
         jsonAddressBookStorage.saveAddressBook(original); // file path not specified
         readBack = jsonAddressBookStorage.readAddressBook().get(); // file path not specified
         Assertions.assertEquals(original, new AddressBook(readBack));

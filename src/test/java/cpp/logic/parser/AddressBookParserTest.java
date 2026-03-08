@@ -17,13 +17,18 @@ import cpp.logic.commands.ExitCommand;
 import cpp.logic.commands.FindCommand;
 import cpp.logic.commands.HelpCommand;
 import cpp.logic.commands.ListCommand;
+import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.parser.exceptions.ParseException;
+import cpp.model.assignment.Assignment;
 import cpp.model.person.NameContainsKeywordsPredicate;
 import cpp.model.person.Person;
 import cpp.testutil.Assert;
+import cpp.testutil.AssignmentBuilder;
+import cpp.testutil.AssignmentUtil;
 import cpp.testutil.EditPersonDescriptorBuilder;
 import cpp.testutil.PersonBuilder;
 import cpp.testutil.PersonUtil;
+import cpp.testutil.TypicalAssignments;
 import cpp.testutil.TypicalIndexes;
 
 public class AddressBookParserTest {
@@ -84,6 +89,14 @@ public class AddressBookParserTest {
     public void parseCommand_list() throws Exception {
         Assertions.assertTrue(this.parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
         Assertions.assertTrue(this.parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_addAssignment() throws Exception {
+        Assignment assignment = new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_ONE).build();
+        AddAssignmentCommand command = (AddAssignmentCommand) this.parser
+                .parseCommand(AssignmentUtil.getAddAssignmentCommand(assignment));
+        Assertions.assertEquals(new AddAssignmentCommand(assignment), command);
     }
 
     @Test

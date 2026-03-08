@@ -1,6 +1,7 @@
 package cpp.testutil;
 
 import cpp.model.AddressBook;
+import cpp.model.assignment.Assignment;
 import cpp.model.person.Person;
 
 /**
@@ -25,6 +26,15 @@ public class AddressBookBuilder {
      */
     public AddressBookBuilder withPerson(Person person) {
         this.addressBook.addPerson(person);
+        return this;
+    }
+
+    /**
+     * Adds a new {@code Assignment} to the {@code AddressBook} that we are
+     * building.
+     */
+    public AddressBookBuilder withAssignment(Assignment assignment) {
+        this.addressBook.addAssignment(assignment);
         return this;
     }
 

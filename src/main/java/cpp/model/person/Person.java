@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import cpp.commons.util.CollectionUtil;
 import cpp.commons.util.ToStringBuilder;
@@ -17,6 +18,7 @@ import cpp.model.tag.Tag;
 public class Person {
 
     // Identity fields
+    private final String id;
     private final Name name;
     private final Phone phone;
     private final Email email;
@@ -30,11 +32,34 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         CollectionUtil.requireAllNonNull(name, phone, email, address, tags);
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
+    }
+
+    /**
+     * Constructor with id for loading from storage. Every field must be present and
+     * not null, except id (backward compatibility).
+     */
+    public Person(String id, Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        CollectionUtil.requireAllNonNull(name, phone, email, address, tags);
+        if (id == null) {
+            this.id = UUID.randomUUID().toString();
+        } else {
+            this.id = id;
+        }
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.tags.addAll(tags);
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public Name getName() {

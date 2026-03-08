@@ -1,5 +1,6 @@
 package cpp.model;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.commands.CommandTestUtil;
+import cpp.model.assignment.Assignment;
+import cpp.model.assignment.Name;
 import cpp.model.person.Person;
 import cpp.model.person.exceptions.DuplicatePersonException;
 import cpp.testutil.Assert;
@@ -77,13 +80,91 @@ public class AddressBookTest {
 
     @Test
     public void getPersonList_modifyList_throwsUnsupportedOperationException() {
-        Assert.assertThrows(UnsupportedOperationException.class, () -> this.addressBook.getPersonList().remove(0));
+        Assert.assertThrows(UnsupportedOperationException.class,
+                () -> this.addressBook.getPersonList().remove(0));
     }
 
     @Test
     public void toStringMethod() {
-        String expected = AddressBook.class.getCanonicalName() + "{persons=" + this.addressBook.getPersonList() + "}";
+        String expected = AddressBook.class.getCanonicalName() + "{persons=" + this.addressBook.getPersonList()
+                + ", assignments=" + this.addressBook.getAssignmentList() + "}";
         Assertions.assertEquals(expected, this.addressBook.toString());
+    }
+
+    @Test
+    public void hasAssignment_nullAssignment_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class,
+                () -> this.addressBook.hasAssignment(null));
+    }
+
+    @Test
+    public void hasAssignment_assignmentNotInAddressBook_returnsFalse() {
+        Assignment assignment = new Assignment(new Name("Assignment 1"),
+                LocalDateTime.of(2020, 1, 1, 10, 0));
+        Assertions.assertFalse(this.addressBook.hasAssignment(assignment));
+    }
+
+    @Test
+    public void hasAssignment_assignmentInAddressBook_returnsTrue() {
+        Assignment assignment = new Assignment(new Name("Assignment 1"),
+                LocalDateTime.of(2020, 1, 1, 10, 0));
+        this.addressBook.addAssignment(assignment);
+        Assertions.assertTrue(this.addressBook.hasAssignment(assignment));
+    }
+
+    @Test
+    public void hasAssignment_assignmentWithSameIdentityFieldsInAddressBook_returnsTrue() {
+        Assignment assignment = new Assignment(new Name("Assignment 1"),
+                LocalDateTime.of(2020, 1, 1, 10, 0));
+        this.addressBook.addAssignment(assignment);
+        // Same name (identity), different deadline
+        Assignment editedAssignment = new Assignment(new Name("Assignment 1"),
+                LocalDateTime.of(2021, 1, 1, 10, 0));
+        Assertions.assertTrue(this.addressBook.hasAssignment(editedAssignment));
+    }
+
+    @Test
+    public void addAssignment_nullAssignment_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class,
+                () -> this.addressBook.addAssignment(null));
+    }
+
+    @Test
+    public void addAssignment_validAssignment_addSuccessful() {
+        Assignment assignment = new Assignment(new Name("Assignment 1"),
+                LocalDateTime.of(2020, 1, 1, 10, 0));
+        this.addressBook.addAssignment(assignment);
+        Assertions.assertTrue(this.addressBook.hasAssignment(assignment));
+    }
+
+    @Test
+    public void equals_sameAddressBooks_returnsTrue() {
+        AddressBook addressBook1 = new AddressBook();
+        Assertions.assertEquals(addressBook1, addressBook1);
+        addressBook1.addPerson(TypicalPersons.ALICE);
+        Assertions.assertEquals(addressBook1, addressBook1);
+    }
+
+    @Test
+    public void hashCode_sameAddressBooks_equal() {
+        AddressBook addressBook1 = new AddressBook();
+        AddressBook addressBook2 = new AddressBook();
+        Assertions.assertEquals(addressBook1.hashCode(), addressBook2.hashCode());
+        addressBook1.addPerson(TypicalPersons.ALICE);
+        addressBook2.addPerson(TypicalPersons.ALICE);
+        Assertions.assertEquals(addressBook1.hashCode(), addressBook2.hashCode());
+    }
+
+    @Test
+    public void hashCode_differentAddressBooks_notEqual() {
+        AddressBook addressBook1 = new AddressBook();
+        AddressBook addressBook2 = new AddressBook();
+
+        addressBook1.addPerson(TypicalPersons.ALICE);
+        Assertions.assertNotEquals(addressBook1.hashCode(), addressBook2.hashCode());
+
+        addressBook2.addPerson(TypicalPersons.BOB);
+        Assertions.assertNotEquals(addressBook1.hashCode(), addressBook2.hashCode());
     }
 
     /**
@@ -100,6 +181,11 @@ public class AddressBookTest {
         @Override
         public ObservableList<Person> getPersonList() {
             return this.persons;
+        }
+
+        @Override
+        public ObservableList<Assignment> getAssignmentList() {
+            throw new UnsupportedOperationException("Method 'getAssignmentList' should not be called.");
         }
     }
 

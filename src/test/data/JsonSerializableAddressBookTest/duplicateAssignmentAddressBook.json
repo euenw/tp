@@ -1,0 +1,16 @@
+{
+    "_comment": "AddressBook save file which contains duplicate Assignment entries (by name)",
+    "persons": [],
+    "assignments": [
+        {
+            "id": "793f92b5-9e96-47bb-94cd-e8ede5523d7a",
+            "name": "Assignment 1",
+            "deadline": "13-12-2020 10:00"
+        },
+        {
+            "id": "793f92b5-9e96-47bb-94cd-e8ede5523d7b",
+            "name": "Assignment 1",
+            "deadline": "14-12-2020 11:00"
+        }
+    ]
+}
