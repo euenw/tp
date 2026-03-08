@@ -24,12 +24,21 @@ public class AssignmentTest {
     }
 
     @Test
-    public void hashCode_sameNameDeadline_equal() {
+    public void hashCode_sameIdNameDeadline_equal() {
         Assignment a1 = new AssignmentBuilder().withId("id1").withName("Same").withDeadline("13-12-2020 10:00")
                 .build();
-        Assignment a2 = new AssignmentBuilder().withId("id2").withName("Same").withDeadline("13-12-2020 10:00")
+        Assignment a2 = new AssignmentBuilder().withId("id1").withName("Same").withDeadline("13-12-2020 10:00")
                 .build();
         Assertions.assertEquals(a1.hashCode(), a2.hashCode());
+    }
+
+    @Test
+    public void hashCode_differentName_notEqual() {
+        Assignment a1 = new AssignmentBuilder().withId("id1").withName("Same").withDeadline("13-12-2020 10:00")
+                .build();
+        Assignment a2 = new AssignmentBuilder().withId("id1").withName("Sam3").withDeadline("13-12-2020 10:00")
+                .build();
+        Assertions.assertNotEquals(a1.hashCode(), a2.hashCode());
     }
 
     @Test
