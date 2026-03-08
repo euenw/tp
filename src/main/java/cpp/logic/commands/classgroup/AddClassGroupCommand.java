@@ -3,8 +3,10 @@ package cpp.logic.commands.classgroup;
 import java.util.Objects;
 
 import cpp.commons.util.ToStringBuilder;
+import cpp.logic.Messages;
 import cpp.logic.commands.Command;
 import cpp.logic.commands.CommandResult;
+import cpp.logic.commands.exceptions.CommandException;
 import cpp.logic.parser.CliSyntax;
 import cpp.model.Model;
 import cpp.model.classgroup.ClassGroup;
@@ -37,11 +39,15 @@ public class AddClassGroupCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         Objects.requireNonNull(model);
 
-        // TODO: Integrate with Model addClassGroup method
-        return new CommandResult("Implementation in progress!");
+        if (model.hasClassGroup(this.toAdd)) {
+            throw new CommandException(AddClassGroupCommand.MESSAGE_DUPLICATE_CLASS_GROUP);
+        }
+
+        model.addClassGroup(this.toAdd);
+        return new CommandResult(String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(this.toAdd)));
     }
 
     @Override
