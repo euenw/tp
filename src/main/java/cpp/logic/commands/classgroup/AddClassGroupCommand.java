@@ -59,8 +59,8 @@ public class AddClassGroupCommand extends Command {
             return false;
         }
 
-        AddClassGroupCommand otherCommand = (AddClassGroupCommand) other;
-        return otherCommand.toAdd.equals(this.toAdd);
+        AddClassGroupCommand o = (AddClassGroupCommand) other;
+        return this.toAdd.getName().equals(o.toAdd.getName());
     }
 
     @Override

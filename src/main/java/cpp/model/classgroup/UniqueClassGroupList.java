@@ -32,6 +32,7 @@ public class UniqueClassGroupList implements Iterable<ClassGroup> {
      * argument (by name).
      */
     public boolean contains(ClassGroup toCheck) {
+        Objects.requireNonNull(toCheck);
         return this.internalList.stream().anyMatch(cg -> cg.getName().equals(toCheck.getName()));
     }
 
