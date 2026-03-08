@@ -19,14 +19,26 @@ public class JsonSerializableAddressBookTest {
             "JsonSerializableAddressBookTest");
     private static final Path TYPICAL_PERSONS_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
             .resolve("typicalPersonsAddressBook.json");
-    private static final Path INVALID_PERSON_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
-            .resolve("invalidPersonAddressBook.json");
+    private static final Path INVALID_PERSON_FILE_ID = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidPersonAddressBookId.json");
+    private static final Path INVALID_PERSON_FILE_NAME = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidPersonAddressBookName.json");
+    private static final Path INVALID_PERSON_FILE_PHONE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidPersonAddressBookPhone.json");
+    private static final Path INVALID_PERSON_FILE_EMAIL = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidPersonAddressBookEmail.json");
+    private static final Path INVALID_PERSON_FILE_ADDRESS = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidPersonAddressBookAddress.json");
     private static final Path DUPLICATE_PERSON_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
             .resolve("duplicatePersonAddressBook.json");
     private static final Path TYPICAL_ASSIGNMENTS_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
             .resolve("typicalAssignmentsAddressBook.json");
-    private static final Path INVALID_ASSIGNMENT_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
-            .resolve("invalidAssignmentAddressBook.json");
+    private static final Path INVALID_ASSIGNMENT_FILE_ID = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidAssignmentAddressBookId.json");
+    private static final Path INVALID_ASSIGNMENT_FILE_DEADLINE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidAssignmentAddressBookDeadline.json");
+    private static final Path INVALID_ASSIGNMENT_FILE_NAME = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidAssignmentAddressBookName.json");
     private static final Path DUPLICATE_ASSIGNMENT_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
             .resolve("duplicateAssignmentAddressBook.json");
 
@@ -44,20 +56,28 @@ public class JsonSerializableAddressBookTest {
     @Test
     public void toModelType_invalidPersonFile_throwsIllegalValueException() throws Exception {
         JsonSerializableAddressBook dataFromFile = JsonUtil
-                .readJsonFile(JsonSerializableAddressBookTest.INVALID_PERSON_FILE,
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_PERSON_FILE_NAME,
                         JsonSerializableAddressBook.class)
                 .get();
         Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);
-    }
 
-    @Test
-    public void toModelType_duplicatePersons_throwsIllegalValueException() throws Exception {
-        JsonSerializableAddressBook dataFromFile = JsonUtil
-                .readJsonFile(JsonSerializableAddressBookTest.DUPLICATE_PERSON_FILE,
+        dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_PERSON_FILE_PHONE,
                         JsonSerializableAddressBook.class)
                 .get();
-        Assert.assertThrows(IllegalValueException.class, JsonSerializableAddressBook.MESSAGE_DUPLICATE_PERSON,
-                dataFromFile::toModelType);
+        Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);
+
+        dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_PERSON_FILE_EMAIL,
+                        JsonSerializableAddressBook.class)
+                .get();
+        Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);
+
+        dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_PERSON_FILE_ADDRESS,
+                        JsonSerializableAddressBook.class)
+                .get();
+        Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);
     }
 
     @Test
@@ -75,7 +95,19 @@ public class JsonSerializableAddressBookTest {
     @Test
     public void toModelType_invalidAssignmentFile_throwsIllegalValueException() throws Exception {
         JsonSerializableAddressBook dataFromFile = JsonUtil
-                .readJsonFile(JsonSerializableAddressBookTest.INVALID_ASSIGNMENT_FILE,
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_ASSIGNMENT_FILE_ID,
+                        JsonSerializableAddressBook.class)
+                .get();
+        Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);
+
+        dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_ASSIGNMENT_FILE_DEADLINE,
+                        JsonSerializableAddressBook.class)
+                .get();
+        Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);
+
+        dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_ASSIGNMENT_FILE_NAME,
                         JsonSerializableAddressBook.class)
                 .get();
         Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);

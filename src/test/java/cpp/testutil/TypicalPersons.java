@@ -6,6 +6,7 @@ import java.util.List;
 
 import cpp.logic.commands.CommandTestUtil;
 import cpp.model.AddressBook;
+import cpp.model.assignment.Assignment;
 import cpp.model.person.Person;
 
 /**
@@ -73,6 +74,9 @@ public class TypicalPersons {
         AddressBook ab = new AddressBook();
         for (Person person : TypicalPersons.getTypicalPersons()) {
             ab.addPerson(person);
+        }
+        for (Assignment assignment : TypicalAssignments.getTypicalAssignments()) {
+            ab.addAssignment(assignment);
         }
         return ab;
     }

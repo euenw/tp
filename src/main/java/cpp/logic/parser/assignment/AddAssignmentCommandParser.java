@@ -40,7 +40,8 @@ public class AddAssignmentCommandParser implements Parser<AddAssignmentCommand> 
                     AddAssignmentCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_DEADLINE);
+        argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_DEADLINE,
+                CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_CONTACT);
         Name name = ParserUtil.parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());
         LocalDateTime deadline = ParserUtil.parseDeadline(argMultimap.getValue(CliSyntax.PREFIX_DEADLINE).get());
         // TODO: handle optional class name and contact indices

@@ -1,0 +1,11 @@
+{
+    "_comment": "AddressBook save file which contains an invalid Assignment (invalid deadline)",
+    "persons": [],
+    "assignments": [
+        {
+            "id": "normal-id",
+            "name": "Valid name",
+            "deadline": "12-13-2020 10:00"
+        }
+    ]
+}

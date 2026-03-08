@@ -134,7 +134,7 @@ public class ParserUtil {
      */
     public static LocalDateTime parseDeadline(String datetime) throws ParseException {
         Objects.requireNonNull(datetime);
-        String trimmedDatetime = datetime.trim();
+        String trimmedDatetime = datetime.trim().replaceAll("\\s+", " ").trim();
         LocalDateTime parsedDateTime;
         try {
             parsedDateTime = LocalDateTime.parse(trimmedDatetime, ParserUtil.DEADLINE_FORMATTER);
@@ -149,7 +149,7 @@ public class ParserUtil {
      */
     public static cpp.model.assignment.Name parseAssignmentName(String string) throws ParseException {
         Objects.requireNonNull(string);
-        String trimmedName = string.trim();
+        String trimmedName = string.trim().replaceAll("\\s+", " ");
         if (!cpp.model.assignment.Name.isValidName(trimmedName)) {
             throw new ParseException(cpp.model.assignment.Name.MESSAGE_CONSTRAINTS);
         }
