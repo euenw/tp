@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 import cpp.commons.util.CollectionUtil;
+import cpp.model.classgroup.exceptions.ClassGroupNotFoundException;
+import cpp.model.classgroup.exceptions.DuplicateClassGroupException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -40,8 +42,7 @@ public class UniqueClassGroupList implements Iterable<ClassGroup> {
     public void add(ClassGroup toAdd) {
         Objects.requireNonNull(toAdd);
         if (this.contains(toAdd)) {
-            // TODO: Update to use specialised exceptions for class groups
-            throw new IllegalArgumentException("Class group already exists.");
+            throw new DuplicateClassGroupException();
         }
         this.internalList.add(toAdd);
     }
@@ -58,13 +59,11 @@ public class UniqueClassGroupList implements Iterable<ClassGroup> {
 
         int index = this.internalList.indexOf(target);
         if (index == -1) {
-            // TODO: Update to use specialised exceptions for class groups
-            throw new IllegalArgumentException("Class group not found.");
+            throw new ClassGroupNotFoundException();
         }
 
         if (!target.getName().equals(editedClassGroup.getName()) && this.contains(editedClassGroup)) {
-            // TODO: Update to use specialised exceptions for class groups
-            throw new IllegalArgumentException("Edited class group already exists.");
+            throw new DuplicateClassGroupException();
         }
 
         this.internalList.set(index, editedClassGroup);
@@ -77,8 +76,7 @@ public class UniqueClassGroupList implements Iterable<ClassGroup> {
     public void setClassGroups(List<ClassGroup> classGroups) {
         CollectionUtil.requireAllNonNull(classGroups);
         if (!this.classGroupsAreUnique(classGroups)) {
-            // TODO: Update to use specialised exceptions for class groups
-            throw new IllegalArgumentException("Class groups list contains duplicate class groups.");
+            throw new DuplicateClassGroupException();
         }
     }
 
@@ -94,8 +92,7 @@ public class UniqueClassGroupList implements Iterable<ClassGroup> {
     public void remove(ClassGroup toRemove) {
         Objects.requireNonNull(toRemove);
         if (!this.internalList.remove(toRemove)) {
-            // TODO: Update to use specialised exceptions for class groups
-            throw new IllegalArgumentException("Class group not found.");
+            throw new ClassGroupNotFoundException();
         }
     }
 
