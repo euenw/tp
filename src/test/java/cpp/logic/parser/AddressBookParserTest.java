@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import cpp.logic.Messages;
 import cpp.logic.commands.AddCommand;
 import cpp.logic.commands.ClearCommand;
+import cpp.logic.commands.DeleteCommand;
 import cpp.logic.commands.DeleteContactCommand;
 import cpp.logic.commands.EditCommand;
 import cpp.logic.commands.EditCommand.EditContactDescriptor;
@@ -55,7 +56,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteContactCommand command = (DeleteContactCommand) this.parser.parseCommand(
-                DeleteContactCommand.COMMAND_WORD + " ct/" + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased());
+                DeleteCommand.COMMAND_WORD + " ct/" + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased());
         Assertions.assertEquals(new DeleteContactCommand(TypicalIndexes.INDEX_FIRST_CONTACT), command);
     }
 

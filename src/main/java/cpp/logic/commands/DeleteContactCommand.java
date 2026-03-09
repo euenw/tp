@@ -14,14 +14,7 @@ import cpp.model.contact.Contact;
  * Deletes a contact identified using it's displayed index from the address
  * book.
  */
-public class DeleteContactCommand extends Command {
-
-    public static final String COMMAND_WORD = "delete";
-
-    public static final String MESSAGE_USAGE = DeleteContactCommand.COMMAND_WORD
-            + ": Deletes the contact identified by the index number used in the displayed contact list.\n"
-            + "Parameters: ct/INDEX (must be a positive integer)\n"
-            + "Example: " + DeleteContactCommand.COMMAND_WORD + " ct/1";
+public class DeleteContactCommand extends DeleteCommand {
 
     public static final String MESSAGE_DELETE_CONTACT_SUCCESS = "Deleted Contact: %1$s";
 
