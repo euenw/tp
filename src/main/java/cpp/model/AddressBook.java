@@ -146,6 +146,26 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Replaces the given assignment {@code target} in the list with
+     * {@code editedAssignment}.
+     * {@code target} must exist in the address book.
+     * The assignment identity of {@code editedAssignment} must not be the same as
+     * another existing assignment in the address book.
+     */
+    public void setAssignment(Assignment target, Assignment editedAssignment) {
+        Objects.requireNonNull(editedAssignment);
+        this.assignments.setAssignment(target, editedAssignment);
+    }
+
+    /**
+     * Removes {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeAssignment(Assignment key) {
+        this.assignments.remove(key);
+    }
+
+    /**
      * Returns true if the contact assignment exists in the address book.
      */
     public boolean hasContactAssignment(ContactAssignment contactAssignment) {
