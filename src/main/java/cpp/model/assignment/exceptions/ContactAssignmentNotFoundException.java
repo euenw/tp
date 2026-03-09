@@ -5,7 +5,7 @@ package cpp.model.assignment.exceptions;
  * contact-assignment.
  */
 public class ContactAssignmentNotFoundException extends RuntimeException {
-    public ContactAssignmentNotFoundException(String message) {
-        super(message);
+    public ContactAssignmentNotFoundException() {
+        super("This assignment is not allocated to the contact");
     }
 }

@@ -176,12 +176,12 @@ public class AddAssignmentCommandTest {
         }
 
         @Override
-        public boolean allocateAssignmentToContact(Assignment assignment, cpp.model.contact.Contact contact) {
+        public void allocateAssignmentToContact(Assignment assignment, cpp.model.contact.Contact contact) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public boolean unallocateAssignmentFromContact(Assignment assignment, cpp.model.contact.Contact contact) {
+        public void unallocateAssignmentFromContact(Assignment assignment, cpp.model.contact.Contact contact) {
             throw new AssertionError("This method should not be called.");
         }
     }

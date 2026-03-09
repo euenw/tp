@@ -9,9 +9,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import cpp.commons.util.CollectionUtil;
-import cpp.model.assignment.exceptions.AssignmentNotFoundException;
 import cpp.model.assignment.exceptions.AssignmentNotSubmittedException;
-import cpp.model.assignment.exceptions.ContactNotAssignedAssignmentException;
+import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 
 /**
  * Manages allocations of assignments to contacts and their per-contact state.
@@ -37,13 +36,7 @@ public class AssignmentManager {
         this.byAssignment = new HashMap<>();
         this.byContact = new HashMap<>();
         for (ContactAssignment ca : initialAssignments) {
-            this.allocate(ca.getAssignmentId(), ca.getContactId());
-            if (ca.isSubmitted()) {
-                this.submit(ca.getAssignmentId(), ca.getContactId());
-            }
-            if (ca.isGraded()) {
-                this.grade(ca.getAssignmentId(), ca.getContactId(), ca.getScore());
-            }
+            this.allocate(ca);
         }
     }
 
@@ -51,17 +44,15 @@ public class AssignmentManager {
      * Allocate an assignment to a contact that is not already allocated the
      * assignment.
      *
-     * @param assignmentId the id of the assignment to allocate
-     * @param contactId    the id of the contact to allocate to
+     * @param ca the contact assignment to allocate
      */
-    public boolean allocate(String assignmentId, String contactId) {
-        CollectionUtil.requireAllNonNull(assignmentId, contactId);
-        Set<ContactAssignment> assSet = this.byAssignment.computeIfAbsent(assignmentId, k -> new HashSet<>());
-        ContactAssignment ca = new ContactAssignment(assignmentId, contactId);
+    public boolean allocate(ContactAssignment ca) {
+        CollectionUtil.requireAllNonNull(ca);
+        Set<ContactAssignment> assSet = this.byAssignment.computeIfAbsent(ca.getAssignmentId(), k -> new HashSet<>());
         if (!assSet.contains(ca)) {
             assSet.add(ca);
         }
-        Set<ContactAssignment> contactSet = this.byContact.computeIfAbsent(contactId, k -> new HashSet<>());
+        Set<ContactAssignment> contactSet = this.byContact.computeIfAbsent(ca.getContactId(), k -> new HashSet<>());
         if (!contactSet.contains(ca)) {
             contactSet.add(ca);
         }
@@ -77,7 +68,7 @@ public class AssignmentManager {
     public boolean unallocate(String assignmentId, String contactId) {
         Set<ContactAssignment> assSet = this.byAssignment.get(assignmentId);
         if (assSet == null) {
-            throw new AssignmentNotFoundException("This assignment does not have any contacts assigned.");
+            throw new ContactAssignmentNotFoundException();
         }
         ContactAssignment toRemove = null;
         for (ContactAssignment ca : assSet) {
@@ -87,7 +78,7 @@ public class AssignmentManager {
             }
         }
         if (toRemove == null) {
-            return false;
+            throw new ContactAssignmentNotFoundException();
         }
         assSet.remove(toRemove);
 
@@ -107,14 +98,14 @@ public class AssignmentManager {
     private ContactAssignment find(String assignmentId, String contactId) {
         Set<ContactAssignment> assSet = this.byAssignment.get(assignmentId);
         if (assSet == null) {
-            throw new AssignmentNotFoundException("This assignment does not have any contacts assigned.");
+            throw new ContactAssignmentNotFoundException();
         }
         for (ContactAssignment ca : assSet) {
             if (ca.getContactId().equals(contactId)) {
                 return ca;
             }
         }
-        throw new ContactNotAssignedAssignmentException("Contact not assigned to assignment.");
+        throw new ContactAssignmentNotFoundException();
     }
 
     /**
@@ -142,7 +133,7 @@ public class AssignmentManager {
         if (ca.isSubmitted()) {
             ca.grade(score);
         } else {
-            throw new AssignmentNotSubmittedException("Contact has not submitted assignment.");
+            throw new AssignmentNotSubmittedException();
         }
     }
 

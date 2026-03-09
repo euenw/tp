@@ -104,10 +104,10 @@ public interface Model {
     /**
      * Assigns the given assignment to the given contact.
      */
-    boolean allocateAssignmentToContact(Assignment assignment, Contact contact);
+    void allocateAssignmentToContact(Assignment assignment, Contact contact);
 
     /**
      * Unassigns the given assignment from the given contact.
      */
-    boolean unallocateAssignmentFromContact(Assignment assignment, Contact contact);
+    void unallocateAssignmentFromContact(Assignment assignment, Contact contact);
 }

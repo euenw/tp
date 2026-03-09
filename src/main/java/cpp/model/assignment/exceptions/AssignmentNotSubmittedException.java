@@ -5,7 +5,7 @@ package cpp.model.assignment.exceptions;
  * attempted on an assignment that has not been submitted.
  */
 public class AssignmentNotSubmittedException extends RuntimeException {
-    public AssignmentNotSubmittedException(String message) {
-        super(message);
+    public AssignmentNotSubmittedException() {
+        super("Contact has not submitted assignment");
     }
 }

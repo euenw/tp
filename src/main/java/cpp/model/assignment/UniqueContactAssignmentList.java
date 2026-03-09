@@ -48,7 +48,7 @@ public class UniqueContactAssignmentList implements Iterable<ContactAssignment> 
     public void remove(ContactAssignment toRemove) {
         Objects.requireNonNull(toRemove);
         if (!this.internalList.remove(toRemove)) {
-            throw new ContactAssignmentNotFoundException("Contact assignment not found");
+            throw new ContactAssignmentNotFoundException();
         }
     }
 
