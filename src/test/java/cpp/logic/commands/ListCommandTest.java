@@ -39,4 +39,36 @@ public class ListCommandTest {
         ListContactCommand command = new ListContactCommand();
         Assertions.assertNotEquals(command, null);
     }
+
+    @Test
+    public void polymorphism_contactAndAssignment_notEqual() {
+        ListContactCommand contact = new ListContactCommand();
+        ListAssignmentCommand assignment = new ListAssignmentCommand();
+        Assertions.assertNotEquals(contact, assignment);
+    }
+
+    @Test
+    public void polymorphism_contactAndClass_notEqual() {
+        ListContactCommand contact = new ListContactCommand();
+        ListClassCommand classCmd = new ListClassCommand();
+        Assertions.assertNotEquals(contact, classCmd);
+    }
+
+    @Test
+    public void polymorphism_assignmentAndClass_notEqual() {
+        ListAssignmentCommand assignment = new ListAssignmentCommand();
+        ListClassCommand classCmd = new ListClassCommand();
+        Assertions.assertNotEquals(assignment, classCmd);
+    }
+
+    @Test
+    public void polymorphism_allDifferent_returnsFalse() {
+        ListContactCommand contact = new ListContactCommand();
+        ListAssignmentCommand assignment = new ListAssignmentCommand();
+        ListClassCommand classCmd = new ListClassCommand();
+
+        Assertions.assertNotEquals(contact, assignment);
+        Assertions.assertNotEquals(assignment, classCmd);
+        Assertions.assertNotEquals(contact, classCmd);
+    }
 }
