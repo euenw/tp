@@ -16,7 +16,7 @@ public class ListAssignmentCommand extends ListCommand {
     @Override
     public CommandResult execute(Model model) {
         Objects.requireNonNull(model);
-        model.updateFilteredContactList(Model.PREDICATE_SHOW_ALL_CONTACTS);
+        model.updateFilteredAssignmentList(Model.PREDICATE_SHOW_ALL_ASSIGNMENTS);
         return new CommandResult(ListCommand.MESSAGE_ASSIGNMENTS, CommandResult.ListView.ASSIGNMENTS);
     }
 

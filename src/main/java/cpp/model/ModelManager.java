@@ -45,6 +45,11 @@ public class ModelManager implements Model {
         this.filteredContacts = new FilteredList<>(this.addressBook.getContactList());
         this.filteredAssignments = new FilteredList<>(this.addressBook.getAssignmentList());
         this.filteredClassGroups = new FilteredList<>(this.addressBook.getClassGroupList());
+
+        // Initialize with predicates that show all items
+        this.filteredContacts.setPredicate(Model.PREDICATE_SHOW_ALL_CONTACTS);
+        this.filteredAssignments.setPredicate(Model.PREDICATE_SHOW_ALL_ASSIGNMENTS);
+        this.filteredClassGroups.setPredicate(Model.PREDICATE_SHOW_ALL_CLASSGROUPS);
     }
 
     public ModelManager() {
