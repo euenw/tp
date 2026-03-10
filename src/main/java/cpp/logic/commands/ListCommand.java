@@ -29,6 +29,10 @@ public class ListCommand extends Command {
         this.listType = listType;
     }
 
+    public ListCommand() {
+        this.listType = "contacts";
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
