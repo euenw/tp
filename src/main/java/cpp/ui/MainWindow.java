@@ -188,21 +188,13 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     private void handleListCommand(CommandResult commandResult) {
-        String targetTab = commandResult.getTab();
-        if (targetTab != null) {
-            switch (targetTab) {
-            case "contacts":
-                this.mainTabPane.getSelectionModel().select(this.contactsTab);
-                break;
-            case "classes":
-                this.mainTabPane.getSelectionModel().select(this.classesTab);
-                break;
-            case "assignments":
-                this.mainTabPane.getSelectionModel().select(this.assignmentsTab);
-                break;
-            default:
-                break;
-            }
+        String feedback = commandResult.getFeedbackToUser();
+        if (feedback.equals("Listed all contacts")) {
+            this.mainTabPane.getSelectionModel().select(this.contactsTab);
+        } else if (feedback.equals("Listed all classes")) {
+            this.mainTabPane.getSelectionModel().select(this.classesTab);
+        } else if (feedback.equals("Listed all assignments")) {
+            this.mainTabPane.getSelectionModel().select(this.assignmentsTab);
         }
     }
 
