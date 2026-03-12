@@ -9,6 +9,10 @@ import cpp.commons.core.GuiSettings;
 import cpp.commons.core.LogsCenter;
 import cpp.commons.util.CollectionUtil;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.AssignmentManager;
+import cpp.model.assignment.ContactAssignment;
+import cpp.model.assignment.exceptions.ContactAlreadyAllocatedAssignmentException;
+import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 import javafx.collections.ObservableList;
@@ -21,6 +25,7 @@ public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final AddressBook addressBook;
+    private final AssignmentManager assignmentManager;
     private final UserPrefs userPrefs;
     private final FilteredList<Contact> filteredContacts;
 
@@ -33,6 +38,7 @@ public class ModelManager implements Model {
         ModelManager.logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
+        this.assignmentManager = new AssignmentManager(addressBook.getContactAssignmentList());
         this.userPrefs = new UserPrefs(userPrefs);
         this.filteredContacts = new FilteredList<>(this.addressBook.getContactList());
     }
@@ -90,6 +96,8 @@ public class ModelManager implements Model {
         return this.addressBook;
     }
 
+    // =========== Contact-level operations
+    // ===============================================================================
     @Override
     public boolean hasContact(Contact contact) {
         Objects.requireNonNull(contact);
@@ -113,6 +121,8 @@ public class ModelManager implements Model {
         this.addressBook.setContact(target, editedContact);
     }
 
+    // =========== Assignment-level operations
+    // ===============================================================================
     @Override
     public boolean hasAssignment(Assignment assignment) {
         Objects.requireNonNull(assignment);
@@ -123,6 +133,28 @@ public class ModelManager implements Model {
     public void addAssignment(Assignment assignment) {
         Objects.requireNonNull(assignment);
         this.addressBook.addAssignment(assignment);
+    }
+
+    @Override
+    public void addContactAssignment(ContactAssignment ca) {
+        Objects.requireNonNull(ca);
+        if (this.addressBook.hasContactAssignment(ca)) {
+            throw new ContactAlreadyAllocatedAssignmentException();
+        }
+
+        this.assignmentManager.registerContactAssignment(ca);
+        this.addressBook.addContactAssignment(ca);
+    }
+
+    @Override
+    public void removeContactAssignment(ContactAssignment ca) {
+        Objects.requireNonNull(ca);
+        if (!this.addressBook.hasContactAssignment(ca)) {
+            throw new ContactAssignmentNotFoundException();
+        }
+
+        this.assignmentManager.deregisterContactAssignment(ca);
+        this.addressBook.removeContactAssignment(ca);
     }
 
     @Override

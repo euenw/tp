@@ -17,6 +17,7 @@ import cpp.model.Model;
 import cpp.model.ReadOnlyAddressBook;
 import cpp.model.ReadOnlyUserPrefs;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.ContactAssignment;
 import cpp.model.classgroup.ClassGroup;
 import cpp.testutil.Assert;
 import cpp.testutil.ClassGroupBuilder;
@@ -178,6 +179,16 @@ public class AddClassGroupCommandTest {
 
         @Override
         public void deleteAssignment(Assignment target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addContactAssignment(ContactAssignment ca) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void removeContactAssignment(ContactAssignment ca) {
             throw new AssertionError("This method should not be called.");
         }
 

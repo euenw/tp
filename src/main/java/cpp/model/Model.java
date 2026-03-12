@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cpp.commons.core.GuiSettings;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.ContactAssignment;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 import javafx.collections.ObservableList;
@@ -101,6 +102,16 @@ public interface Model {
      * Adds the given assignment.
      */
     void addAssignment(Assignment assignment);
+
+    /**
+     * Registers and persists the {@code ContactAssignment} allocation.
+     */
+    void addContactAssignment(ContactAssignment ca);
+
+    /**
+     * Deregisters and persists the {@code ContactAssignment} unallocation.
+     */
+    void removeContactAssignment(ContactAssignment ca);
 
     /**
      * Returns true if a class group with the same identity as {@code classGroup}

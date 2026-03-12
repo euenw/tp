@@ -60,7 +60,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
 
         int index = this.internalList.indexOf(target);
         if (index == -1) {
-            throw new AssignmentNotFoundException("Assignment not found");
+            throw new AssignmentNotFoundException();
         }
 
         if (!target.getName().equals(editedAssignment.getName()) && this.contains(editedAssignment)) {
@@ -77,7 +77,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
     public void remove(Assignment toRemove) {
         Objects.requireNonNull(toRemove);
         if (!this.internalList.remove(toRemove)) {
-            throw new AssignmentNotFoundException("Assignment not found");
+            throw new AssignmentNotFoundException();
         }
     }
 

@@ -1,0 +1,55 @@
+package cpp.logic.parser.assignment;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+import cpp.commons.core.index.Index;
+import cpp.logic.Messages;
+import cpp.logic.commands.assignment.AllocateAssignmentCommand;
+import cpp.logic.parser.ArgumentMultimap;
+import cpp.logic.parser.ArgumentTokenizer;
+import cpp.logic.parser.CliSyntax;
+import cpp.logic.parser.Parser;
+import cpp.logic.parser.ParserUtil;
+import cpp.logic.parser.Prefix;
+import cpp.logic.parser.exceptions.ParseException;
+import cpp.model.assignment.AssignmentName;
+
+/**
+ * Parses input arguments and creates a new AllocateAssignmentCommand object.
+ * Expected parameters: name and contact indices (ct/).
+ */
+public class AllocateAssignmentCommandParser implements Parser<AllocateAssignmentCommand> {
+
+    @Override
+    public AllocateAssignmentCommand parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
+                CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_CONTACT);
+
+        if ((!AllocateAssignmentCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
+                CliSyntax.PREFIX_CONTACT)
+                && !AllocateAssignmentCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
+                        CliSyntax.PREFIX_CLASS))
+                || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    AllocateAssignmentCommand.MESSAGE_USAGE));
+        }
+
+        argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS,
+                CliSyntax.PREFIX_CONTACT);
+
+        AssignmentName assignmentName = ParserUtil
+                .parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
+
+        String contactValue = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
+
+        List<Index> contactIndices = ParserUtil.parseContactIndices(contactValue);
+
+        return new AllocateAssignmentCommand(assignmentName, contactIndices);
+    }
+
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+}

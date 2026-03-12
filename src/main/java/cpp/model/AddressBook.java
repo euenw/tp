@@ -5,7 +5,9 @@ import java.util.Objects;
 
 import cpp.commons.util.ToStringBuilder;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.ContactAssignment;
 import cpp.model.assignment.UniqueAssignmentList;
+import cpp.model.assignment.UniqueContactAssignmentList;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.UniqueClassGroupList;
 import cpp.model.contact.Contact;
@@ -20,6 +22,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniqueContactList contacts;
     private final UniqueAssignmentList assignments;
+    private final UniqueContactAssignmentList contactAssignments;
     private final UniqueClassGroupList classGroups;
 
     /*
@@ -34,6 +37,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     {
         this.contacts = new UniqueContactList();
         this.assignments = new UniqueAssignmentList();
+        this.contactAssignments = new UniqueContactAssignmentList();
         this.classGroups = new UniqueClassGroupList();
     }
 
@@ -67,6 +71,15 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Replaces the contents of the contact assignment list with
+     * {@code contactAssignments}.
+     * {@code contactAssignments} must not contain duplicate contact assignments.
+     */
+    public void setContactAssignments(List<ContactAssignment> contactAssignments) {
+        this.contactAssignments.setContactAssignments(contactAssignments);
+    }
+
+    /**
      * Replaces the contents of the class group list with {@code classGroups}
      * {@code classGroups} must not contain duplicate class groups
      */
@@ -82,6 +95,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         this.setContacts(newData.getContactList());
         this.setAssignments(newData.getAssignmentList());
+        this.setContactAssignments(newData.getContactAssignmentList());
         this.setClassGroups(newData.getClassGroupList());
     }
 
@@ -144,6 +158,50 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Replaces the given assignment {@code target} in the list with
+     * {@code editedAssignment}.
+     * {@code target} must exist in the address book.
+     * The assignment identity of {@code editedAssignment} must not be the same as
+     * another existing assignment in the address book.
+     */
+    public void setAssignment(Assignment target, Assignment editedAssignment) {
+        Objects.requireNonNull(editedAssignment);
+        this.assignments.setAssignment(target, editedAssignment);
+    }
+
+    /**
+     * Removes {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeAssignment(Assignment key) {
+        this.assignments.remove(key);
+    }
+
+    /**
+     * Returns true if the contact assignment exists in the address book.
+     */
+    public boolean hasContactAssignment(ContactAssignment contactAssignment) {
+        Objects.requireNonNull(contactAssignment);
+        return this.contactAssignments.contains(contactAssignment);
+    }
+
+    /**
+     * Adds a contact assignment to the address book.
+     */
+    public void addContactAssignment(ContactAssignment contactAssignment) {
+        Objects.requireNonNull(contactAssignment);
+        this.contactAssignments.add(contactAssignment);
+    }
+
+    /**
+     * Removes a contact assignment from the address book.
+     */
+    public void removeContactAssignment(ContactAssignment contactAssignment) {
+        Objects.requireNonNull(contactAssignment);
+        this.contactAssignments.remove(contactAssignment);
+    }
+
+    /**
      * Returns true if a class group with the same identity as {@code classGroup}
      * exists in the address book.
      */
@@ -182,14 +240,6 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.classGroups.remove(key);
     }
 
-    /**
-     * Removes {@code key} from this {@code AddressBook}.
-     * {@code key} must exist in the address book.
-     */
-    public void removeAssignment(Assignment key) {
-        this.assignments.remove(key);
-    }
-
     //// util methods
 
     @Override
@@ -212,6 +262,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
+    public ObservableList<ContactAssignment> getContactAssignmentList() {
+        return this.contactAssignments.asUnmodifiableObservableList();
+    }
+
+    @Override
     public ObservableList<ClassGroup> getClassGroupList() {
         return this.classGroups.asUnmodifiableObservableList();
     }
@@ -228,12 +283,14 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         AddressBook otherAddressBook = (AddressBook) other;
-        return this.contacts.equals(otherAddressBook.contacts) && this.assignments.equals(otherAddressBook.assignments)
+        return this.contacts.equals(otherAddressBook.contacts)
+                && this.assignments.equals(otherAddressBook.assignments)
+                && this.contactAssignments.equals(otherAddressBook.contactAssignments)
                 && this.classGroups.equals(otherAddressBook.classGroups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.contacts, this.assignments, this.classGroups);
+        return Objects.hash(this.contacts, this.assignments, this.contactAssignments, this.classGroups);
     }
 }
