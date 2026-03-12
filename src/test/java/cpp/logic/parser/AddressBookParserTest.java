@@ -57,7 +57,7 @@ public class AddressBookParserTest {
     public void parseCommand_delete() throws Exception {
         DeleteContactCommand command = (DeleteContactCommand) this.parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " ct/" + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased());
-        Assertions.assertEquals(new DeleteContactCommand(TypicalIndexes.INDEX_FIRST_CONTACT), command);
+        Assertions.assertEquals(new DeleteContactCommand(List.of(TypicalIndexes.INDEX_FIRST_CONTACT)), command);
     }
 
     @Test

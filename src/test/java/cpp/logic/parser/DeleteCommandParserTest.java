@@ -1,5 +1,7 @@
 package cpp.logic.parser;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.Messages;
@@ -16,7 +18,14 @@ public class DeleteCommandParserTest {
     @Test
     public void parse_validContactArgs_returnsDeleteCommand() {
         CommandParserTestUtil.assertParseSuccess(this.parser, " ct/1",
-                new DeleteContactCommand(TypicalIndexes.INDEX_FIRST_CONTACT));
+                new DeleteContactCommand(List.of(TypicalIndexes.INDEX_FIRST_CONTACT)));
+    }
+
+    @Test
+    public void parse_validMultipleContactArgs_returnsDeleteCommand() {
+        CommandParserTestUtil.assertParseSuccess(this.parser, " ct/1 2",
+                new DeleteContactCommand(List.of(TypicalIndexes.INDEX_FIRST_CONTACT,
+                        TypicalIndexes.INDEX_SECOND_CONTACT)));
     }
 
     @Test

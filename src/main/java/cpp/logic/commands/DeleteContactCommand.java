@@ -1,5 +1,6 @@
 package cpp.logic.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,17 +12,16 @@ import cpp.model.Model;
 import cpp.model.contact.Contact;
 
 /**
- * Deletes a contact identified using it's displayed index from the address
- * book.
+ * Deletes one or more contacts identified using their displayed indices from the address book.
  */
 public class DeleteContactCommand extends DeleteCommand {
 
     public static final String MESSAGE_DELETE_CONTACT_SUCCESS = "Deleted Contact: %1$s";
 
-    private final Index targetIndex;
+    private final List<Index> targetIndices;
 
-    public DeleteContactCommand(Index targetIndex) {
-        this.targetIndex = targetIndex;
+    public DeleteContactCommand(List<Index> targetIndices) {
+        this.targetIndices = targetIndices;
     }
 
     @Override
@@ -29,14 +29,25 @@ public class DeleteContactCommand extends DeleteCommand {
         Objects.requireNonNull(model);
         List<Contact> lastShownList = model.getFilteredContactList();
 
-        if (this.targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+        for (Index index : this.targetIndices) {
+            if (index.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+            }
         }
 
-        Contact contactToDelete = lastShownList.get(this.targetIndex.getZeroBased());
-        model.deleteContact(contactToDelete);
-        return new CommandResult(
-                String.format(DeleteContactCommand.MESSAGE_DELETE_CONTACT_SUCCESS, Messages.format(contactToDelete)));
+        List<Contact> contactsToDelete = new ArrayList<>();
+        for (Index index : this.targetIndices) {
+            contactsToDelete.add(lastShownList.get(index.getZeroBased()));
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (Contact contact : contactsToDelete) {
+            model.deleteContact(contact);
+            result.append(String.format(DeleteContactCommand.MESSAGE_DELETE_CONTACT_SUCCESS,
+                    Messages.format(contact))).append("\n");
+        }
+
+        return new CommandResult(result.toString().trim());
     }
 
     @Override
@@ -51,13 +62,13 @@ public class DeleteContactCommand extends DeleteCommand {
         }
 
         DeleteContactCommand otherDeleteContactCommand = (DeleteContactCommand) other;
-        return this.targetIndex.equals(otherDeleteContactCommand.targetIndex);
+        return this.targetIndices.equals(otherDeleteContactCommand.targetIndices);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("targetIndex", this.targetIndex)
+                .add("targetIndices", this.targetIndices)
                 .toString();
     }
 }

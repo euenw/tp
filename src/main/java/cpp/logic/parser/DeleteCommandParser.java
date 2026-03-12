@@ -1,5 +1,7 @@
 package cpp.logic.parser;
 
+import java.util.List;
+
 import cpp.commons.core.index.Index;
 import cpp.logic.Messages;
 import cpp.logic.commands.Command;
@@ -32,11 +34,12 @@ public class DeleteCommandParser implements Parser<Command> {
         }
     }
 
-    // parse delete contact by index
+    // parse delete contact by one or more space-separated indices
     private DeleteContactCommand parseDeleteContact(ArgumentMultimap argMultimap) throws ParseException {
         try {
-            Index index = ParserUtil.parseIndex(argMultimap.getValue(CliSyntax.PREFIX_CONTACT).get());
-            return new DeleteContactCommand(index);
+            List<Index> indices = ParserUtil.parseContactIndices(
+                    argMultimap.getValue(CliSyntax.PREFIX_CONTACT).get());
+            return new DeleteContactCommand(indices);
         } catch (ParseException pe) {
             throw new ParseException(
                     String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
