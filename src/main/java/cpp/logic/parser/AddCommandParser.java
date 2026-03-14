@@ -1,7 +1,6 @@
 package cpp.logic.parser;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
 import cpp.logic.Messages;
 import cpp.logic.commands.AddCommand;
@@ -32,7 +31,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 CliSyntax.PREFIX_EMAIL,
                 CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_TAG);
 
-        if (!AddCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_ADDRESS,
+        if (!ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_ADDRESS,
                 CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
@@ -56,14 +55,6 @@ public class AddCommandParser implements Parser<AddCommand> {
         Contact contact = new Contact(name, phone, email, address, tagList);
 
         return new AddCommand(contact, assignmentName);
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values
-     * in the given {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }

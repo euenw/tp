@@ -1,7 +1,6 @@
 package cpp.logic.parser.assignment;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import cpp.commons.core.index.Index;
 import cpp.logic.Messages;
@@ -11,7 +10,6 @@ import cpp.logic.parser.ArgumentTokenizer;
 import cpp.logic.parser.CliSyntax;
 import cpp.logic.parser.Parser;
 import cpp.logic.parser.ParserUtil;
-import cpp.logic.parser.Prefix;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
 
@@ -26,9 +24,9 @@ public class AllocateAssignmentCommandParser implements Parser<AllocateAssignmen
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_CONTACT);
 
-        if ((!AllocateAssignmentCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
+        if ((!ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
                 CliSyntax.PREFIX_CONTACT)
-                && !AllocateAssignmentCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
+                && !ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
                         CliSyntax.PREFIX_CLASS))
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
@@ -46,10 +44,6 @@ public class AllocateAssignmentCommandParser implements Parser<AllocateAssignmen
         List<Index> contactIndices = ParserUtil.parseContactIndices(contactValue);
 
         return new AllocateAssignmentCommand(assignmentName, contactIndices);
-    }
-
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }

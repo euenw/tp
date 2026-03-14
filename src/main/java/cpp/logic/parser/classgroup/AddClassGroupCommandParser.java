@@ -1,7 +1,6 @@
 package cpp.logic.parser.classgroup;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import cpp.commons.core.index.Index;
 import cpp.logic.Messages;
@@ -11,7 +10,6 @@ import cpp.logic.parser.ArgumentTokenizer;
 import cpp.logic.parser.CliSyntax;
 import cpp.logic.parser.Parser;
 import cpp.logic.parser.ParserUtil;
-import cpp.logic.parser.Prefix;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.ClassGroupName;
@@ -33,7 +31,7 @@ public class AddClassGroupCommandParser implements Parser<AddClassGroupCommand> 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_CLASS,
                 CliSyntax.PREFIX_CONTACT);
 
-        if (!AddClassGroupCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_CLASS)
+        if (!ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_CLASS)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(
                     String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddClassGroupCommand.MESSAGE_USAGE));
@@ -49,9 +47,5 @@ public class AddClassGroupCommandParser implements Parser<AddClassGroupCommand> 
         ClassGroup classGroup = new ClassGroup(name);
 
         return new AddClassGroupCommand(classGroup, contactIndices);
-    }
-
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
