@@ -36,14 +36,8 @@ public class DeleteCommandParser implements Parser<Command> {
 
     // parse delete contact by one or more space-separated indices
     private DeleteContactCommand parseDeleteContact(ArgumentMultimap argMultimap) throws ParseException {
-        List<Index> indices;
-        try {
-            indices = ParserUtil.parseContactIndices(
-                    argMultimap.getValue(CliSyntax.PREFIX_CONTACT).get());
-        } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
-        }
+        List<Index> indices = ParserUtil.parseContactIndices(
+                argMultimap.getValue(CliSyntax.PREFIX_CONTACT).get());
         if (indices.isEmpty()) {
             throw new ParseException(ParserUtil.MESSAGE_EMPTY_INDICES);
         }
