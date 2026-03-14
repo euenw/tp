@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -189,7 +190,7 @@ public class ParserUtil {
      */
     public static List<Index> parseContactIndices(String contactValue) throws ParseException {
         String[] parts = contactValue.trim().split("\\s+");
-        Set<Index> contactIndices = new HashSet<>();
+        Set<Index> contactIndices = new LinkedHashSet<>();
         for (String part : parts) {
             if (part.isBlank()) {
                 continue;
