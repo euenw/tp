@@ -1,5 +1,8 @@
 package cpp.testutil;
 
+import java.util.HashSet;
+import java.util.stream.Stream;
+
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.ClassGroupName;
 
@@ -10,9 +13,11 @@ public class ClassGroupBuilder {
 
     public static final String DEFAULT_ID = "aaaaaaaa-1111-2222-3333-bbbbbbbbbbbb";
     public static final String DEFAULT_NAME = "CS2103T10";
+    public static final String DEFAULT_CONTACT_ID = "aaaaaaaa-1111-2222-3333-cccccccccccc";
 
     private String id;
     private ClassGroupName name;
+    private HashSet<String> contactIdSet;
 
     /**
      * Creates a {@code ClassGroupBuilder} with the default details.
@@ -20,6 +25,7 @@ public class ClassGroupBuilder {
     public ClassGroupBuilder() {
         this.id = ClassGroupBuilder.DEFAULT_ID;
         this.name = new ClassGroupName(ClassGroupBuilder.DEFAULT_NAME);
+        this.contactIdSet = new HashSet<>();
     }
 
     /**
@@ -28,6 +34,7 @@ public class ClassGroupBuilder {
     public ClassGroupBuilder(ClassGroup classGroupToCopy) {
         this.id = classGroupToCopy.getId();
         this.name = classGroupToCopy.getName();
+        this.contactIdSet = new HashSet<>(classGroupToCopy.getContactIdSet());
     }
 
     /**
@@ -46,7 +53,21 @@ public class ClassGroupBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code contactIds} of the {@code ClassGroup} that we are building.
+     */
+    public ClassGroupBuilder withContactIds(String... contactIds) {
+        this.contactIdSet = new HashSet<>(); // Reset the contactIdSet before adding new contactIds
+        Stream.of(contactIds).forEach(this.contactIdSet::add);
+        return this;
+    }
+
+    /**
+     * Builds a {@code ClassGroup} with the loaded details.
+     */
     public ClassGroup build() {
-        return new ClassGroup(this.id, this.name);
+        ClassGroup classGroup = new ClassGroup(this.id, this.name);
+        this.contactIdSet.forEach(classGroup::allocateContact);
+        return classGroup;
     }
 }

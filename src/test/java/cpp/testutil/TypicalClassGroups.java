@@ -15,16 +15,19 @@ public class TypicalClassGroups {
     public static final ClassGroup CLASS_GROUP_ONE = new ClassGroupBuilder()
             .withId("aaaaaaaa-1111-2222-3333-bbbbbbbbbbbb")
             .withName("CS2103T10")
+            .withContactIds("aaaaaaaa-1111-2222-3333-cccccccccccc")
             .build();
 
     public static final ClassGroup CLASS_GROUP_TWO = new ClassGroupBuilder()
             .withId("aaaaaaaa-1111-2222-3333-bbbbbbbbbbbc")
             .withName("CS2101T10")
+            .withContactIds("aaaaaaaa-1111-2222-3333-cccccccccccc")
             .build();
 
     public static final ClassGroup CLASS_GROUP_THREE = new ClassGroupBuilder()
             .withId("aaaaaaaa-1111-2222-3333-bbbbbbbbbbb3")
             .withName("CS3230T3")
+            .withContactIds()
             .build();
 
     public static List<ClassGroup> getTypicalClassGroups() {

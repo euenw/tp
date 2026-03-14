@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cpp.commons.exceptions.IllegalValueException;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.ClassGroupName;
+import cpp.model.classgroup.exceptions.ContactAlreadyAllocatedClassGroupException;
 
 /**
  * Jackson-friendly version of {@link ClassGroup}.
@@ -16,15 +17,18 @@ class JsonAdaptedClassGroup {
 
     private final String id;
     private final String name;
+    private final String[] contactIds;
 
     /**
      * Constructs a {@code JsonAdaptedClassGroup} with the given class group
      * details.
      */
     @JsonCreator
-    public JsonAdaptedClassGroup(@JsonProperty("id") String id, @JsonProperty("name") String name) {
+    public JsonAdaptedClassGroup(@JsonProperty("id") String id, @JsonProperty("name") String name,
+            @JsonProperty("contactIds") String[] contactIds) {
         this.id = id;
         this.name = name;
+        this.contactIds = contactIds;
     }
 
     /**
@@ -33,6 +37,7 @@ class JsonAdaptedClassGroup {
     public JsonAdaptedClassGroup(ClassGroup source) {
         this.id = source.getId();
         this.name = source.getName().fullName;
+        this.contactIds = source.getContactIdSet().toArray(new String[0]);
     }
 
     /**
@@ -53,9 +58,22 @@ class JsonAdaptedClassGroup {
         if (!ClassGroupName.isValidName(this.name)) {
             throw new IllegalValueException(ClassGroupName.MESSAGE_CONSTRAINTS);
         }
+
+        if (this.contactIds == null) {
+            throw new IllegalValueException("A class group's contactIds field is missing.");
+        }
+
         final ClassGroupName modelName = new ClassGroupName(this.name);
 
-        return new ClassGroup(this.id, modelName);
+        ClassGroup classGroup = new ClassGroup(this.id, modelName);
+        for (String contactId : this.contactIds) {
+            try {
+                classGroup.allocateContact(contactId);
+            } catch (ContactAlreadyAllocatedClassGroupException e) {
+                throw new IllegalValueException("Duplicate contact found in class group.");
+            }
+        }
+        return classGroup;
     }
 
 }
