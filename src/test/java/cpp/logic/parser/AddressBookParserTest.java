@@ -106,7 +106,7 @@ public class AddressBookParserTest {
         Assignment assignment = new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_ONE).build();
         AddAssignmentCommand command = (AddAssignmentCommand) this.parser
                 .parseCommand(AssignmentUtil.getAddAssignmentCommand(assignment));
-        Assertions.assertEquals(new AddAssignmentCommand(assignment), command);
+        Assertions.assertEquals(new AddAssignmentCommand(assignment, List.of()), command);
     }
 
     @Test

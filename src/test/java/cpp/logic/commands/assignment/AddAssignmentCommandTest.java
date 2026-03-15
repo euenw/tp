@@ -2,6 +2,7 @@ package cpp.logic.commands.assignment;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -30,7 +31,7 @@ public class AddAssignmentCommandTest {
 
     @Test
     public void constructor_nullAssignment_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> new AddAssignmentCommand(null));
+        Assert.assertThrows(NullPointerException.class, () -> new AddAssignmentCommand(null, List.of()));
     }
 
     @Test
@@ -38,7 +39,7 @@ public class AddAssignmentCommandTest {
         ModelStubAcceptingAssignmentAdded modelStub = new ModelStubAcceptingAssignmentAdded();
         Assignment validAssignment = TypicalAssignments.ASSIGNMENT_ONE;
 
-        CommandResult commandResult = new AddAssignmentCommand(validAssignment).execute(modelStub);
+        CommandResult commandResult = new AddAssignmentCommand(validAssignment, List.of()).execute(modelStub);
 
         Assertions.assertEquals(String.format(AddAssignmentCommand.MESSAGE_SUCCESS, Messages.format(validAssignment)),
                 commandResult.getFeedbackToUser());
@@ -49,7 +50,7 @@ public class AddAssignmentCommandTest {
     @Test
     public void execute_duplicateAssignment_throwsCommandException() {
         Assignment validAssignment = TypicalAssignments.ASSIGNMENT_ONE;
-        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(validAssignment);
+        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(validAssignment, List.of());
         ModelStub modelStub = new ModelStubWithAssignment(validAssignment);
 
         Assert.assertThrows(CommandException.class, AddAssignmentCommand.MESSAGE_DUPLICATE_ASSIGNMENT,
@@ -59,8 +60,8 @@ public class AddAssignmentCommandTest {
     @Test
     public void equals_sameValues_returnsTrue() {
         Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
-        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(assignment);
-        AddAssignmentCommand addContactCommandCopy = new AddAssignmentCommand(assignment);
+        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(assignment, List.of());
+        AddAssignmentCommand addContactCommandCopy = new AddAssignmentCommand(assignment, List.of());
 
         // same object -> true
         Assertions.assertTrue(addContactCommand.equals(addContactCommand));
@@ -72,7 +73,7 @@ public class AddAssignmentCommandTest {
     @Test
     public void equals_differentValues_returnsFalse() {
         Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
-        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(assignment);
+        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(assignment, List.of());
 
         // different types -> false
         Assertions.assertFalse(addContactCommand.equals(1));
@@ -83,15 +84,18 @@ public class AddAssignmentCommandTest {
         // different assignment -> false
         Assignment different = new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_ONE)
                 .withName("Different").build();
-        AddAssignmentCommand differentCommand = new AddAssignmentCommand(different);
+        AddAssignmentCommand differentCommand = new AddAssignmentCommand(different, List.of());
         Assertions.assertFalse(addContactCommand.equals(differentCommand));
     }
 
     @Test
     public void toString_typicalValue_correctOutput() {
-        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(TypicalAssignments.ASSIGNMENT_ONE);
+        AddAssignmentCommand addContactCommand = new AddAssignmentCommand(TypicalAssignments.ASSIGNMENT_ONE, List.of());
         String expected = AddAssignmentCommand.class.getCanonicalName() + "{toAddAssignment="
-                + TypicalAssignments.ASSIGNMENT_ONE + "}";
+                + TypicalAssignments.ASSIGNMENT_ONE
+                + ", contactIndices=[]"
+                + ", classGroupName=null"
+                + "}";
         Assertions.assertEquals(expected, addContactCommand.toString());
     }
 
@@ -216,7 +220,7 @@ public class AddAssignmentCommandTest {
 
         @Override
         public ObservableList<Assignment> getFilteredAssignmentList() {
-            return FXCollections.observableArrayList();
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -226,7 +230,7 @@ public class AddAssignmentCommandTest {
 
         @Override
         public ObservableList<ClassGroup> getFilteredClassGroupList() {
-            return FXCollections.observableArrayList();
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -269,6 +273,11 @@ public class AddAssignmentCommandTest {
         public void addAssignment(Assignment assignment) {
             Objects.requireNonNull(assignment);
             this.assignmentsAdded.add(assignment);
+        }
+
+        @Override
+        public ObservableList<Contact> getFilteredContactList() {
+            return FXCollections.observableArrayList();
         }
 
         @Override

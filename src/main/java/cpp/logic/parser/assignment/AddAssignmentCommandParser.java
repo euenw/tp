@@ -1,7 +1,9 @@
 package cpp.logic.parser.assignment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import cpp.commons.core.index.Index;
 import cpp.logic.Messages;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.parser.ArgumentMultimap;
@@ -12,6 +14,7 @@ import cpp.logic.parser.ParserUtil;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.AssignmentName;
+import cpp.model.classgroup.ClassGroupName;
 
 /**
  * Parses input arguments and creates a new AddAssignmentCommand object
@@ -40,17 +43,25 @@ public class AddAssignmentCommandParser implements Parser<AddAssignmentCommand> 
 
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_DEADLINE,
                 CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_CONTACT);
-        AssignmentName name = ParserUtil.parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
+        AssignmentName assignmentName = ParserUtil
+                .parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
         LocalDateTime deadline = ParserUtil.parseDeadline(argMultimap.getValue(CliSyntax.PREFIX_DEADLINE).get());
-        // TODO: handle optional class name and contact indices
-        // Name className =
-        // ParserUtil.parseClassName(argMultimap.getValue(CliSyntax.PREFIX_CLASS).orElse(null));
-        // String contactId = ParserUtil
-        // .parseContactIndices(argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse(null));
 
-        Assignment assignment = new Assignment(name, deadline);
+        Assignment assignment = new Assignment(assignmentName, deadline);
 
-        return new AddAssignmentCommand(assignment);
+        List<Index> contactIndices = List.of();
+        if (ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_CONTACT)) {
+            String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
+            contactIndices = ParserUtil.parseContactIndices(contactString);
+        }
+
+        if (ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_CLASS)) {
+            String classGroupString = argMultimap.getValue(CliSyntax.PREFIX_CLASS).orElse("");
+            ClassGroupName classGroupName = ParserUtil.parseClassGroupName(classGroupString);
+            return new AddAssignmentCommand(assignment, contactIndices, classGroupName);
+        }
+
+        return new AddAssignmentCommand(assignment, contactIndices);
     }
 
 }
