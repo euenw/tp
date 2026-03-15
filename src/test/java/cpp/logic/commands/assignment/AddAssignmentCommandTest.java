@@ -165,7 +165,7 @@ public class AddAssignmentCommandTest {
 
         @Override
         public ObservableList<Contact> getFilteredContactList() {
-            return FXCollections.observableArrayList();
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -220,7 +220,7 @@ public class AddAssignmentCommandTest {
 
         @Override
         public ObservableList<Assignment> getFilteredAssignmentList() {
-            return FXCollections.observableArrayList();
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -230,7 +230,7 @@ public class AddAssignmentCommandTest {
 
         @Override
         public ObservableList<ClassGroup> getFilteredClassGroupList() {
-            return FXCollections.observableArrayList();
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -273,6 +273,11 @@ public class AddAssignmentCommandTest {
         public void addAssignment(Assignment assignment) {
             Objects.requireNonNull(assignment);
             this.assignmentsAdded.add(assignment);
+        }
+
+        @Override
+        public ObservableList<Contact> getFilteredContactList() {
+            return FXCollections.observableArrayList();
         }
 
         @Override
