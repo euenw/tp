@@ -131,7 +131,7 @@ public class AllocateAssignmentCommand extends Command {
         }
         AllocateAssignmentCommand o = (AllocateAssignmentCommand) other;
         return this.assignmentName.equals(o.assignmentName) && this.contactIndices.equals(o.contactIndices)
-                && this.classGroupName.equals(o.classGroupName);
+                && Objects.equals(this.classGroupName, o.classGroupName);
     }
 
     @Override
