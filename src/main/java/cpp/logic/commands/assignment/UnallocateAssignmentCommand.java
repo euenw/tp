@@ -130,7 +130,7 @@ public class UnallocateAssignmentCommand extends Command {
         }
         UnallocateAssignmentCommand o = (UnallocateAssignmentCommand) other;
         return this.assignmentName.equals(o.assignmentName) && this.contactIndices.equals(o.contactIndices)
-                && Objects.equals(this.classGroupName, o.classGroupName);
+                && this.classGroupName.equals(o.classGroupName);
     }
 
     @Override
