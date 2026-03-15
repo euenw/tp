@@ -55,4 +55,16 @@ public class JsonAdaptedClassGroupTest {
         String expectedMessage = "A class group's contactIds field is missing.";
         Assert.assertThrows(IllegalValueException.class, expectedMessage, json::toModelType);
     }
+
+    @Test
+    public void toModelType_duplicateContactIds_throwsIllegalValueException() {
+        String[] duplicateContactIds = new String[] {
+                JsonAdaptedClassGroupTest.VALID_ID,
+                JsonAdaptedClassGroupTest.VALID_ID
+        };
+        JsonAdaptedClassGroup json = new JsonAdaptedClassGroup(JsonAdaptedClassGroupTest.VALID_ID,
+                JsonAdaptedClassGroupTest.VALID_NAME, duplicateContactIds);
+        String expectedMessage = "Duplicate contactId found during allocation.";
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, json::toModelType);
+    }
 }
