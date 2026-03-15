@@ -1,5 +1,7 @@
 package cpp.logic.parser.assignment;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.Messages;
@@ -22,7 +24,7 @@ public class AddAssignmentCommandParserTest {
         // whitespace only preamble
         CommandParserTestUtil.assertParseSuccess(this.parser,
                 CommandTestUtil.PREAMBLE_WHITESPACE + AssignmentUtil.getAssignmentDetails(expectedAssignment),
-                new AddAssignmentCommand(expectedAssignment));
+                new AddAssignmentCommand(expectedAssignment, List.of()));
     }
 
     @Test
