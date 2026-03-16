@@ -62,10 +62,9 @@ public class ClassGroup {
      * to this class group, a ContactAlreadyAllocatedClassGroupException is thrown.
      */
     public void allocateContact(String contactId) throws ContactAlreadyAllocatedClassGroupException {
-        if (this.contactIdSet.contains(contactId)) {
+        if (!this.contactIdSet.add(contactId)) {
             throw new ContactAlreadyAllocatedClassGroupException();
         }
-        this.contactIdSet.add(contactId);
     }
 
     /**
@@ -73,10 +72,9 @@ public class ClassGroup {
      * to this class group, a ContactNotAllocatedClassGroupException is thrown.
      */
     public void unallocateContact(String contactId) throws ContactNotAllocatedClassGroupException {
-        if (!this.contactIdSet.contains(contactId)) {
+        if (!this.contactIdSet.remove(contactId)) {
             throw new ContactNotAllocatedClassGroupException();
         }
-        this.contactIdSet.remove(contactId);
     }
 
     @Override
