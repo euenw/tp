@@ -8,26 +8,31 @@ import cpp.logic.commands.Command;
 import cpp.logic.commands.DeleteCommand;
 import cpp.logic.commands.DeleteContactCommand;
 import cpp.logic.commands.assignment.DeleteAssignmentCommand;
+import cpp.logic.commands.classgroup.DeleteClassGroupCommand;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
+import cpp.model.classgroup.ClassGroupName;
 
 /**
- * Parses input arguments and creates a new DeleteContactCommand or DeleteAssignmentCommand object.
+ * Parses input arguments and creates a new delete command object.
  */
 public class DeleteCommandParser implements Parser<Command> {
 
     @Override
     public Command parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
-                CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_ASSIGNMENT);
+                CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS);
 
         boolean hasContact = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).isPresent();
         boolean hasAssignment = argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).isPresent();
+        boolean hasClass = argMultimap.getValue(CliSyntax.PREFIX_CLASS).isPresent();
 
-        if (hasContact && !hasAssignment) {
+        if (hasContact && !hasAssignment && !hasClass) {
             return parseDeleteContact(argMultimap);
-        } else if (hasAssignment && !hasContact) {
+        } else if (hasAssignment && !hasContact && !hasClass) {
             return parseDeleteAssignment(argMultimap);
+        } else if (hasClass && !hasContact && !hasAssignment) {
+            return parseDeleteClassGroup(argMultimap);
         } else {
             throw new ParseException(
                     String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
@@ -49,6 +54,16 @@ public class DeleteCommandParser implements Parser<Command> {
         AssignmentName name = ParserUtil.parseAssignmentName(
                 argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
         return new DeleteAssignmentCommand(name);
+    }
+
+    // parse delete class group by name
+    private DeleteClassGroupCommand parseDeleteClassGroup(ArgumentMultimap argMultimap) throws ParseException {
+        String value = argMultimap.getValue(CliSyntax.PREFIX_CLASS).get();
+        if (value.isBlank()) {
+            throw new ParseException(ParserUtil.MESSAGE_EMPTY_CLASS_GROUP_NAME);
+        }
+        ClassGroupName name = ParserUtil.parseClassGroupName(value);
+        return new DeleteClassGroupCommand(name);
     }
 
 }

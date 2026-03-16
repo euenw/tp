@@ -8,8 +8,9 @@ public abstract class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes a contact or assignment. Exactly one prefix must be specified.\n"
-            + "Parameters: ct/INDEX [MORE_INDICES]... or ass/ASSIGNMENT_NAME\n"
-            + "Examples: " + COMMAND_WORD + " ct/1 2 3, " + COMMAND_WORD + " ass/Assignment 1";
+            + ": Deletes a contact, assignment, or class group. Exactly one prefix must be specified.\n"
+            + "Parameters: ct/INDEX [MORE_INDICES]... or ass/ASSIGNMENT_NAME or c/CLASS_GROUP_NAME\n"
+            + "Examples: " + COMMAND_WORD + " ct/1 2 3, " + COMMAND_WORD + " ass/Assignment 1, "
+            + COMMAND_WORD + " c/CS2103T10";
 
 }
