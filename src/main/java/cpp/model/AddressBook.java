@@ -3,6 +3,7 @@ package cpp.model;
 import java.util.List;
 import java.util.Objects;
 
+import cpp.commons.util.CollectionUtil;
 import cpp.commons.util.ToStringBuilder;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.ContactAssignment;
@@ -143,8 +144,12 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removeContact(Contact key) {
+    public void removeContact(Contact key, List<ContactAssignment> caList) {
+        CollectionUtil.requireAllNonNull(key, caList);
         this.contacts.remove(key);
+        for (ContactAssignment ca : caList) {
+            this.contactAssignments.remove(ca);
+        }
     }
 
     //// assignment level operations
@@ -192,8 +197,12 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removeAssignment(Assignment key) {
+    public void removeAssignment(Assignment key, List<ContactAssignment> caList) {
+        CollectionUtil.requireAllNonNull(key, caList);
         this.assignments.remove(key);
+        for (ContactAssignment ca : caList) {
+            this.contactAssignments.remove(ca);
+        }
     }
 
     /**
