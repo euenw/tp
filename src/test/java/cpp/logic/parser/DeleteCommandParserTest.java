@@ -49,7 +49,7 @@ public class DeleteCommandParserTest {
     }
 
     @Test
-    public void parse_multiplePrefixes_throwsParseException() {
+    public void parse_contactAndAssignmentPrefixes_throwsParseException() {
         CommandParserTestUtil.assertParseFailure(this.parser, " ct/1 ass/Assignment 1",
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
