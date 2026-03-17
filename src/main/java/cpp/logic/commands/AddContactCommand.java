@@ -41,7 +41,6 @@ public class AddContactCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New contact added: %1$s";
     public static final String MESSAGE_DUPLICATE_CONTACT = "This contact already exists in the address book";
-    public static final String MESSAGE_INVALID_ASSIGNMENT_NAME = "The assignment name provided is invalid";
 
     private final Contact toAdd;
     // private final ClassGroupName classGroupName;
@@ -77,7 +76,7 @@ public class AddContactCommand extends Command {
             assignmentToAllocate = AssignmentUtil.findAssignment(assignmentList, this.assignmentName);
 
             if (assignmentToAllocate == null) {
-                throw new CommandException(AddContactCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);
+                throw new CommandException(Messages.MESSAGE_ASSIGNMENT_NOT_FOUND);
             }
         }
 
