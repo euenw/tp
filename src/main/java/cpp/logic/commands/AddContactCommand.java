@@ -15,8 +15,6 @@ import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.ContactAssignment;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.ClassGroupName;
-// import cpp.model.classgroup.ClassGroup;
-// import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Contact;
 import cpp.model.util.AssignmentUtil;
 import cpp.model.util.ClassGroupUtil;
