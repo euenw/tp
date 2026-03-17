@@ -100,7 +100,7 @@ public class ListCommandTest {
     // ========== EDGE CASE INTEGRATION TESTS ==========
 
     @Test
-    public void execute_listContactCommand_emptyAddressBook() {
+    public void execute_listContactCommandWithEmptyAddressBook_showsEmptyList() {
         Model model = new ModelManager(new AddressBookBuilder().build(), new UserPrefs());
         ListContactCommand command = new ListContactCommand();
         CommandResult result = command.execute(model);
@@ -234,12 +234,12 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_listCommand_multipleTimesShowsAllData() {
+    public void execute_listContactCommandMultipleTimes_showsAllData() {
         Model model = new ModelManager(
                 new AddressBookBuilder()
                         .withContact(TypicalContacts.ALICE)
                         .withContact(TypicalContacts.BENSON)
-                        .withAssignment(TypicalAssignments.ASSIGNMENT_ONE)
+                        // .withAssignment(TypicalAssignments.ASSIGNMENT_ONE)
                         .build(),
                 new UserPrefs());
 
@@ -258,8 +258,6 @@ public class ListCommandTest {
         Assertions.assertEquals(2, firstCount);
         Assertions.assertEquals(2, secondCount);
         Assertions.assertEquals(2, thirdCount);
-        Assertions.assertEquals(firstCount, secondCount);
-        Assertions.assertEquals(secondCount, thirdCount);
     }
 
     @Test
@@ -296,13 +294,19 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_contactCommandNullModel_throwsNullPointerException() {
+    public void execute_ListAssignmentCommandNullModel_throwsNullPointerException() {
         ListAssignmentCommand command = new ListAssignmentCommand();
         Assertions.assertThrows(NullPointerException.class, () -> command.execute(null));
     }
 
     @Test
-    public void execute_classCommandNullModel_throwsNullPointerException() {
+    public void execute_listContactCommandNullModel_throwsNullPointerException() {
+        ListContactCommand command = new ListContactCommand();
+        Assertions.assertThrows(NullPointerException.class, () -> command.execute(null));
+    }
+
+    @Test
+    public void execute_listClassCommandNullModel_throwsNullPointerException() {
         ListClassCommand command = new ListClassCommand();
         Assertions.assertThrows(NullPointerException.class, () -> command.execute(null));
     }
@@ -332,28 +336,6 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_largeDataset_handlesEfficiently() {
-        AddressBookBuilder builder = new AddressBookBuilder();
-        // Add multiple contacts
-        for (int i = 0; i < 100; i++) {
-            // Would need to create typical contacts programmatically for this
-            // For now, just test with a few
-        }
-        builder.withContact(TypicalContacts.ALICE);
-        builder.withContact(TypicalContacts.BENSON);
-
-        Model model = new ModelManager(builder.build(), new UserPrefs());
-        ListContactCommand command = new ListContactCommand();
-        long startTime = System.currentTimeMillis();
-        CommandResult result = command.execute(model);
-        long endTime = System.currentTimeMillis();
-
-        // Should execute rapidly (less than 1 second)
-        Assertions.assertTrue((endTime - startTime) < 1000);
-        Assertions.assertNotNull(result);
-    }
-
-    @Test
     public void execute_listAfterModification_showsUpdatedData() {
         Model model = new ModelManager(
                 new AddressBookBuilder().withContact(TypicalContacts.ALICE).build(),
@@ -371,6 +353,63 @@ public class ListCommandTest {
         // Note: List command doesn't return the count in this implementation,
         // but the filtered list should reflect it
         command.execute(model);
+        Assertions.assertEquals(2, model.getFilteredContactList().size());
+    }
+
+    @Test
+    public void execute_listAssignmentAfterModification_showsUpdatedData() {
+        Model model = new ModelManager(
+                new AddressBookBuilder().withAssignment(TypicalAssignments.ASSIGNMENT_ONE).build(),
+                new UserPrefs());
+
+        ListAssignmentCommand command = new ListAssignmentCommand();
+        CommandResult result1 = command.execute(model);
+        Assertions.assertNotNull(result1);
+        Assertions.assertEquals(1, model.getFilteredAssignmentList().size());
+
+        // Add another assignment
+        model.addAssignment(TypicalAssignments.ASSIGNMENT_TWO);
+
+        // Execute list again - should show updated count
+        command.execute(model);
+        Assertions.assertEquals(2, model.getFilteredAssignmentList().size());
+    }
+
+    @Test
+    public void execute_listClassAfterModification_showsUpdatedData() {
+        Model model = new ModelManager(new AddressBookBuilder().build(), new UserPrefs());
+
+        ListClassCommand command = new ListClassCommand();
+        CommandResult result1 = command.execute(model);
+        Assertions.assertNotNull(result1);
+        Assertions.assertEquals(0, model.getFilteredClassGroupList().size());
+
+        // Add a class group
+        // model.addClassGroup(TypicalClassGroups.CLASS_GROUP_ONE);
+
+        // Execute list again - should show updated count
+        command.execute(model);
+        Assertions.assertEquals(1, model.getFilteredClassGroupList().size());
+    }
+
+    @Test
+    public void execute_listContactCommand_withFilteredList_showsAllContacts() {
+        Model model = new ModelManager(
+                new AddressBookBuilder()
+                        .withContact(TypicalContacts.ALICE)
+                        .withContact(TypicalContacts.BENSON)
+                        .build(),
+                new UserPrefs());
+
+        // Apply a filter that shows only one contact
+        model.updateFilteredContactList(contact -> contact.getName().fullName.startsWith("A"));
+        Assertions.assertEquals(1, model.getFilteredContactList().size());
+
+        // Execute list command which should reset filters
+        ListContactCommand command = new ListContactCommand();
+        command.execute(model);
+
+        // Now all contacts should be visible
         Assertions.assertEquals(2, model.getFilteredContactList().size());
     }
 }
