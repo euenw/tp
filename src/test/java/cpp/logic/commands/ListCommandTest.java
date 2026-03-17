@@ -361,6 +361,7 @@ public class ListCommandTest {
 
         ListContactCommand command = new ListContactCommand();
         CommandResult result1 = command.execute(model);
+        Assertions.assertNotNull(result1);
         Assertions.assertEquals(1, model.getFilteredContactList().size());
 
         // Add another contact
