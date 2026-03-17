@@ -52,6 +52,13 @@ public class UniqueContactAssignmentList implements Iterable<ContactAssignment> 
         }
     }
 
+    public void removeMultiple(List<ContactAssignment> toRemoveList) {
+        CollectionUtil.requireAllNonNull(toRemoveList);
+        for (ContactAssignment ca : toRemoveList) {
+            this.remove(ca);
+        }
+    }
+
     public void setContactAssignments(UniqueContactAssignmentList replacement) {
         Objects.requireNonNull(replacement);
         this.internalList.setAll(replacement.internalList);

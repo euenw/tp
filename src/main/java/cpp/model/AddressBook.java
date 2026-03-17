@@ -147,9 +147,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void removeContact(Contact key, List<ContactAssignment> caList) {
         CollectionUtil.requireAllNonNull(key, caList);
         this.contacts.remove(key);
-        for (ContactAssignment ca : caList) {
-            this.contactAssignments.remove(ca);
-        }
+        this.classGroups.unallocateContactFromAllClassGroups(key);
+        this.contactAssignments.removeMultiple(caList);
     }
 
     //// assignment level operations
@@ -200,9 +199,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void removeAssignment(Assignment key, List<ContactAssignment> caList) {
         CollectionUtil.requireAllNonNull(key, caList);
         this.assignments.remove(key);
-        for (ContactAssignment ca : caList) {
-            this.contactAssignments.remove(ca);
-        }
+        this.contactAssignments.removeMultiple(caList);
     }
 
     /**

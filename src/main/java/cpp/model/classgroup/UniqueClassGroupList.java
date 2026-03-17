@@ -6,7 +6,9 @@ import java.util.Objects;
 
 import cpp.commons.util.CollectionUtil;
 import cpp.model.classgroup.exceptions.ClassGroupNotFoundException;
+import cpp.model.classgroup.exceptions.ContactNotAllocatedClassGroupException;
 import cpp.model.classgroup.exceptions.DuplicateClassGroupException;
+import cpp.model.contact.Contact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -95,6 +97,16 @@ public class UniqueClassGroupList implements Iterable<ClassGroup> {
         Objects.requireNonNull(toRemove);
         if (!this.internalList.remove(toRemove)) {
             throw new ClassGroupNotFoundException();
+        }
+    }
+
+    public void unallocateContactFromAllClassGroups(Contact contact) {
+        String contactId = contact.getId();
+        for (ClassGroup cg : this.internalList) {
+            try {
+                cg.unallocateContact(contactId);
+            } catch (ContactNotAllocatedClassGroupException e) {
+            }
         }
     }
 
