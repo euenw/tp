@@ -31,11 +31,11 @@ public class DeleteCommandParser implements Parser<Command> {
         boolean hasClass = argMultimap.getValue(CliSyntax.PREFIX_CLASS).isPresent();
 
         if (hasContact && !hasAssignment && !hasClass) {
-            return parseDeleteContact(argMultimap);
+            return this.parseDeleteContact(argMultimap);
         } else if (hasAssignment && !hasContact && !hasClass) {
-            return parseDeleteAssignment(argMultimap);
+            return this.parseDeleteAssignment(argMultimap);
         } else if (hasClass && !hasContact && !hasAssignment) {
-            return parseDeleteClassGroup(argMultimap);
+            return this.parseDeleteClassGroup(argMultimap);
         } else {
             throw new ParseException(
                     String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
@@ -52,7 +52,8 @@ public class DeleteCommandParser implements Parser<Command> {
     }
 
     /**
-     * Parses delete assignment arguments and returns a {@code DeleteAssignmentCommand}.
+     * Parses delete assignment arguments and returns a
+     * {@code DeleteAssignmentCommand}.
      */
     private DeleteAssignmentCommand parseDeleteAssignment(ArgumentMultimap argMultimap) throws ParseException {
         AssignmentName name = ParserUtil.parseAssignmentName(
@@ -61,7 +62,8 @@ public class DeleteCommandParser implements Parser<Command> {
     }
 
     /**
-     * Parses delete class group arguments and returns a {@code DeleteClassGroupCommand}.
+     * Parses delete class group arguments and returns a
+     * {@code DeleteClassGroupCommand}.
      */
     private DeleteClassGroupCommand parseDeleteClassGroup(ArgumentMultimap argMultimap) throws ParseException {
         ClassGroupName name = ParserUtil.parseClassGroupName(
