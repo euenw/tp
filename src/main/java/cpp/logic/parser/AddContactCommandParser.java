@@ -7,7 +7,6 @@ import cpp.logic.commands.AddContactCommand;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
 import cpp.model.classgroup.ClassGroupName;
-// import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Address;
 import cpp.model.contact.Contact;
 import cpp.model.contact.ContactName;

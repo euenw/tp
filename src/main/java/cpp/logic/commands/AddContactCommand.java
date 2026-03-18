@@ -73,7 +73,7 @@ public class AddContactCommand extends Command {
         }
 
         // Have to allow assignmentName and classGroupName to be null
-        // Even though they are ptional parameters, we can't pass in invalid values (to
+        // Even though they are Optional parameters, we can't pass in invalid values (to
         // use for future comparison) since they will throw errors in the parser
 
         ClassGroup classGroupToAllocate = null;
