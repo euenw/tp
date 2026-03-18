@@ -6,7 +6,7 @@ import cpp.logic.Messages;
 import cpp.logic.commands.AddContactCommand;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
-// import cpp.model.classgroup.ClassGroupName;
+import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Address;
 import cpp.model.contact.Contact;
 import cpp.model.contact.ContactName;
@@ -46,17 +46,21 @@ public class AddContactCommandParser implements Parser<AddContactCommand> {
         Email email = ParserUtil.parseEmail(argMultimap.getValue(CliSyntax.PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(CliSyntax.PREFIX_ADDRESS).get());
 
-        // TODO: add classGroup implementation
+        String classGroupNameValue = argMultimap.getValue(CliSyntax.PREFIX_CLASS).orElse(null);
+        ClassGroupName classGroupName = classGroupNameValue != null
+                ? ParserUtil.parseClassGroupName(classGroupNameValue)
+                : null;
 
-        String assignmentNameValue = argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).orElse("");
-        AssignmentName assignmentName = assignmentNameValue != "" ? ParserUtil.parseAssignmentName(assignmentNameValue)
+        String assignmentNameValue = argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).orElse(null);
+        AssignmentName assignmentName = assignmentNameValue != null
+                ? ParserUtil.parseAssignmentName(assignmentNameValue)
                 : null;
 
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(CliSyntax.PREFIX_TAG));
 
         Contact contact = new Contact(name, phone, email, address, tagList);
 
-        return new AddContactCommand(contact, assignmentName);
+        return new AddContactCommand(contact, classGroupName, assignmentName);
     }
 
 }
