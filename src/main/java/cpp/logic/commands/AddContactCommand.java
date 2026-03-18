@@ -11,10 +11,11 @@ import cpp.model.Model;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.ContactAssignment;
-// import cpp.model.classgroup.ClassGroup;
-// import cpp.model.classgroup.ClassGroupName;
+import cpp.model.classgroup.ClassGroup;
+import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Contact;
 import cpp.model.util.AssignmentUtil;
+import cpp.model.util.ClassGroupUtil;
 
 /**
  * Adds a contact to the address book.
@@ -31,32 +32,35 @@ public class AddContactCommand extends Command {
             + CliSyntax.PREFIX_ADDRESS + "ADDRESS "
             + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
             + "[" + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME]\n"
+            + "[" + CliSyntax.PREFIX_TAG + "TAG]...\n"
             + "Example: " + AddContactCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_NAME + "John Doe "
             + CliSyntax.PREFIX_PHONE + "98765432 "
             + CliSyntax.PREFIX_EMAIL + "johnd@example.com "
             + CliSyntax.PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
+            + CliSyntax.PREFIX_CLASS + "CS2103T10 "
+            + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
             + CliSyntax.PREFIX_TAG + "friends "
             + CliSyntax.PREFIX_TAG + "owesMoney";
 
     public static final String MESSAGE_SUCCESS = "New contact added: %1$s";
     public static final String MESSAGE_DUPLICATE_CONTACT = "This contact already exists in the address book";
-    public static final String MESSAGE_INVALID_ASSIGNMENT_NAME = "The assignment name provided is invalid";
 
     private final Contact toAdd;
-    // private final ClassGroupName classGroupName;
+    private final ClassGroupName classGroupName;
     private final AssignmentName assignmentName;
 
     public AddContactCommand(Contact contact) {
-        this(contact, null);
+        this(contact, null, null);
     }
 
     /**
      * Creates an AddContactCommand to add the specified {@code Contact}
      */
-    public AddContactCommand(Contact contact, AssignmentName assignmentName) {
+    public AddContactCommand(Contact contact, ClassGroupName classGroupName, AssignmentName assignmentName) {
         Objects.requireNonNull(contact);
         this.toAdd = contact;
+        this.classGroupName = classGroupName;
         this.assignmentName = assignmentName;
     }
 
@@ -68,7 +72,20 @@ public class AddContactCommand extends Command {
             throw new CommandException(AddContactCommand.MESSAGE_DUPLICATE_CONTACT);
         }
 
-        // TODO: add classGroup allocation
+        // Have to allow assignmentName and classGroupName to be null
+        // Even though they are Optional parameters, we can't pass in invalid values (to
+        // use for future comparison) since they will throw errors in the parser
+
+        ClassGroup classGroupToAllocate = null;
+
+        if (this.classGroupName != null) {
+            List<ClassGroup> classGroupList = model.getAddressBook().getClassGroupList();
+            classGroupToAllocate = ClassGroupUtil.findClassGroup(classGroupList, this.classGroupName);
+
+            if (classGroupToAllocate == null) {
+                throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
+            }
+        }
 
         Assignment assignmentToAllocate = null;
 
@@ -77,17 +94,19 @@ public class AddContactCommand extends Command {
             assignmentToAllocate = AssignmentUtil.findAssignment(assignmentList, this.assignmentName);
 
             if (assignmentToAllocate == null) {
-                throw new CommandException(AddContactCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);
+                throw new CommandException(Messages.MESSAGE_ASSIGNMENT_NOT_FOUND);
             }
         }
 
-        // TODO: add classGroup validity check
-
-        // Code under here only if everything is valid
+        // Passed validity checks, so can proceed with allocation and addition
 
         if (assignmentToAllocate != null) {
             ContactAssignment ca = new ContactAssignment(assignmentToAllocate.getId(), this.toAdd.getId());
             model.addContactAssignment(ca);
+        }
+
+        if (classGroupToAllocate != null) {
+            classGroupToAllocate.allocateContact(this.toAdd.getId());
         }
 
         model.addContact(this.toAdd);
@@ -107,7 +126,9 @@ public class AddContactCommand extends Command {
         }
 
         AddContactCommand otherAddContactCommand = (AddContactCommand) other;
-        return this.toAdd.equals(otherAddContactCommand.toAdd);
+        return this.toAdd.equals(otherAddContactCommand.toAdd)
+                && Objects.equals(this.classGroupName, otherAddContactCommand.classGroupName)
+                && Objects.equals(this.assignmentName, otherAddContactCommand.assignmentName);
     }
 
     @Override
