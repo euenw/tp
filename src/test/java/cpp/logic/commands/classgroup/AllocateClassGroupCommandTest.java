@@ -107,7 +107,8 @@ public class AllocateClassGroupCommandTest {
         AllocateClassGroupCommand allocateClassGroupCommand = new AllocateClassGroupCommand(validClassGroupName,
                 validContactIndices);
 
-        Assert.assertThrows(CommandException.class, AllocateClassGroupCommand.MESSAGE_ALLOCATION_FAILED,
+        Assert.assertThrows(CommandException.class, String.format(AllocateClassGroupCommand.MESSAGE_ALLOCATION_FAILED,
+                TypicalContacts.ALICE.getName().fullName),
                 () -> allocateClassGroupCommand.execute(modelStub));
     }
 

@@ -55,7 +55,10 @@ public class SubmitAssignmentCommand extends Command {
             Contacts marked submitted: %4$s
             Contacts not marked submitted (already submitted): %5$s
             Contacts not marked submitted (not allocated the assignment): %6$s""";
-    public static final String MESSAGE_SUBMISSION_FAILED = "No contacts were marked as submitted for the assignment";
+    public static final String MESSAGE_SUBMISSION_FAILED = """
+            No contacts were marked as submitted for the assignment.
+            Contacts not marked submitted (already submitted): %1$s
+            Contacts not marked submitted (not allocated the assignment): %2$s""";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
@@ -126,13 +129,13 @@ public class SubmitAssignmentCommand extends Command {
             throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
         }
 
+        if (classGroupToUnallocate != null && classGroupToUnallocate.getContactIdSet().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NO_CONTACTS);
+        }
+
         this.markSubmittedByContactIndices(model, assignmentToUnallocate, lastShownContactList);
         if (classGroupToUnallocate != null) {
             this.markSubmittedByClassGroup(model, assignmentToUnallocate, classGroupToUnallocate);
-        }
-
-        if (this.markedCount == 0) {
-            throw new CommandException(SubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED);
         }
 
         if (this.alreadyMarkedCount == 0) {
@@ -141,6 +144,11 @@ public class SubmitAssignmentCommand extends Command {
 
         if (this.notAllocatedCount == 0) {
             this.notAllocatedContacts.append("None");
+        }
+
+        if (this.markedCount == 0) {
+            throw new CommandException(String.format(SubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+                    this.alreadyMarkedContacts.toString(), this.notAllocatedContacts.toString()));
         }
 
         return new CommandResult(String.format(SubmitAssignmentCommand.MESSAGE_SUCCESS,

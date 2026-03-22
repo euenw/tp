@@ -135,7 +135,8 @@ public class SubmitAssignmentCommandTest {
                 ParserUtil.parseContactIndices("1"),
                 LocalDateTime.now());
 
-        Assert.assertThrows(CommandException.class, SubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+        Assert.assertThrows(CommandException.class, String.format(SubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+                "None", TypicalContacts.ALICE.getName().fullName),
                 () -> cmd.execute(modelStub));
     }
 

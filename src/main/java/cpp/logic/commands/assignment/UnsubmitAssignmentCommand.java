@@ -51,7 +51,10 @@ public class UnsubmitAssignmentCommand extends Command {
             Contacts marked unsubmitted: %3$s
             Contacts not marked unsubmitted (not submitted): %4$s
             Contacts not marked unsubmitted (not allocated the assignment): %5$s""";
-    public static final String MESSAGE_SUBMISSION_FAILED = "No contacts were marked as unsubmitted for the assignment";
+    public static final String MESSAGE_SUBMISSION_FAILED = """
+            No contacts were marked as unsubmitted for the assignment.
+            Contacts not marked unsubmitted (not submitted): %1$s
+            Contacts not marked unsubmitted (not allocated the assignment): %2$s""";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
@@ -117,13 +120,13 @@ public class UnsubmitAssignmentCommand extends Command {
             throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
         }
 
+        if (classGroupToUnallocate != null && classGroupToUnallocate.getContactIdSet().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NO_CONTACTS);
+        }
+
         this.markUnsubmittedByContactIndices(model, assignmentToUnallocate, lastShownContactList);
         if (classGroupToUnallocate != null) {
             this.markUnsubmittedByClassGroup(model, assignmentToUnallocate, classGroupToUnallocate);
-        }
-
-        if (this.unmarkedCount == 0) {
-            throw new CommandException(UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED);
         }
 
         if (this.alreadyUnmarkedCount == 0) {
@@ -132,6 +135,11 @@ public class UnsubmitAssignmentCommand extends Command {
 
         if (this.notAllocatedCount == 0) {
             this.notAllocatedContacts.append("None");
+        }
+
+        if (this.unmarkedCount == 0) {
+            throw new CommandException(String.format(UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+                    this.alreadyUnmarkedContacts.toString(), this.notAllocatedContacts.toString()));
         }
 
         return new CommandResult(String.format(UnsubmitAssignmentCommand.MESSAGE_SUCCESS,

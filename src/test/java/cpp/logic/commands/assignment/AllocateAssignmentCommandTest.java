@@ -227,7 +227,9 @@ public class AllocateAssignmentCommandTest {
 
         AllocateAssignmentCommand cmd = new AllocateAssignmentCommand(validAssignment.getName(), validContactIndices);
 
-        Assert.assertThrows(CommandException.class, AllocateAssignmentCommand.MESSAGE_ALLOCATION_FAILED,
+        Assert.assertThrows(CommandException.class,
+                String.format(AllocateAssignmentCommand.MESSAGE_ALLOCATION_FAILED,
+                        validContact1.getName().fullName + "; " + validContact2.getName().fullName),
                 () -> cmd.execute(modelStub));
     }
 

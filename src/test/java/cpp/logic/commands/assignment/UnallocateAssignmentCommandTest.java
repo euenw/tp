@@ -219,7 +219,9 @@ public class UnallocateAssignmentCommandTest {
         UnallocateAssignmentCommand cmd = new UnallocateAssignmentCommand(validAssignment.getName(),
                 validContactIndices);
 
-        Assert.assertThrows(CommandException.class, UnallocateAssignmentCommand.MESSAGE_UNALLOCATION_FAILED,
+        Assert.assertThrows(CommandException.class,
+                String.format(UnallocateAssignmentCommand.MESSAGE_UNALLOCATION_FAILED,
+                        TypicalContacts.ALICE.getName().fullName),
                 () -> cmd.execute(modelStub));
     }
 

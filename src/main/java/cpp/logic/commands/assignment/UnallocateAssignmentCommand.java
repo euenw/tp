@@ -49,7 +49,9 @@ public class UnallocateAssignmentCommand extends Command {
             Unallocated assignment: %1$s from %2$s contact(s).
             Contacts unallocated: %3$s
             Contacts not unallocated (not allocated assignment initially): %4$s""";
-    public static final String MESSAGE_UNALLOCATION_FAILED = "No contacts were unallocated the assignment";
+    public static final String MESSAGE_UNALLOCATION_FAILED = """
+            No contacts were unallocated the assignment.
+            Contacts not unallocated (not allocated assignment initially): %1$s""";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
@@ -118,17 +120,22 @@ public class UnallocateAssignmentCommand extends Command {
             throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
         }
 
+        if (classGroupToUnallocate != null && classGroupToUnallocate.getContactIdSet().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NO_CONTACTS);
+        }
+
         this.unallocateFromContactsByContactIndices(model, assignmentToUnallocate, lastShownContactList);
         if (classGroupToUnallocate != null) {
             this.unallocateFromContactsByClassGroup(model, assignmentToUnallocate, classGroupToUnallocate);
         }
 
-        if (this.unallocatedCount == 0) {
-            throw new CommandException(UnallocateAssignmentCommand.MESSAGE_UNALLOCATION_FAILED);
-        }
-
         if (this.unsuccessfulUnallocationCount == 0) {
             this.unsuccessfulContactUnallocations.append("None");
+        }
+
+        if (this.unallocatedCount == 0) {
+            throw new CommandException(String.format(UnallocateAssignmentCommand.MESSAGE_UNALLOCATION_FAILED,
+                    this.unsuccessfulContactUnallocations.toString()));
         }
 
         return new CommandResult(String.format(UnallocateAssignmentCommand.MESSAGE_SUCCESS,

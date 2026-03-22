@@ -121,9 +121,13 @@ public class UnsubmitAssignmentCommandTest {
     public void execute_noContactsMarked_throwsCommandException() {
         ModelStubAllNotSubmitted modelStub = new ModelStubAllNotSubmitted();
         Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
-        UnsubmitAssignmentCommand cmd = new UnsubmitAssignmentCommand(assignment.getName(), List.of());
+        UnsubmitAssignmentCommand cmd = new UnsubmitAssignmentCommand(assignment.getName(),
+                List.of(TypicalIndexes.INDEX_FIRST_CONTACT, TypicalIndexes.INDEX_SECOND_CONTACT));
 
-        Assert.assertThrows(CommandException.class, UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+        Assert.assertThrows(CommandException.class,
+                String.format(UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+                        TypicalContacts.ALICE.getName().fullName + "; " + TypicalContacts.BENSON.getName().fullName,
+                        "None"),
                 () -> cmd.execute(modelStub));
     }
 
@@ -137,7 +141,9 @@ public class UnsubmitAssignmentCommandTest {
             cmd.execute(modelStub);
             Assertions.fail("Expected CommandException due to no contacts unmarked");
         } catch (CommandException e) {
-            Assertions.assertEquals(UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED, e.getMessage());
+            Assertions.assertEquals(String.format(UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+                    TypicalContacts.ALICE.getName().fullName + "; " + TypicalContacts.BENSON.getName().fullName,
+                    "None"), e.getMessage());
         }
     }
 
@@ -151,7 +157,10 @@ public class UnsubmitAssignmentCommandTest {
             cmd.execute(modelStub);
             Assertions.fail("Expected CommandException due to no contacts unmarked");
         } catch (CommandException e) {
-            Assertions.assertEquals(UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED, e.getMessage());
+            Assertions.assertEquals(String.format(UnsubmitAssignmentCommand.MESSAGE_SUBMISSION_FAILED,
+                    "None",
+                    TypicalContacts.ALICE.getName().fullName + "; " + TypicalContacts.BENSON.getName().fullName),
+                    e.getMessage());
         }
     }
 

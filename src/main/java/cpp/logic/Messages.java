@@ -20,6 +20,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX = "The contact index provided is invalid";
     public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "The assignment provided is not found";
     public static final String MESSAGE_CLASS_GROUP_NOT_FOUND = "The class group provided is not found";
+    public static final String MESSAGE_CLASS_GROUP_NO_CONTACTS = "The class group provided has no contacts";
     public static final String MESSAGE_CONTACTS_LISTED_OVERVIEW = "%1$d contacts listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS = """
             Multiple values specified for the following single-valued field(s): """;
