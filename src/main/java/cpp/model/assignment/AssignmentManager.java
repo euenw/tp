@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import cpp.commons.util.CollectionUtil;
-import cpp.model.assignment.exceptions.AssignmentNotSubmittedException;
-import cpp.model.assignment.exceptions.ContactAssignmentAlreadyGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 import cpp.model.contact.Contact;
 
@@ -136,14 +134,6 @@ public class AssignmentManager {
      */
     public void grade(String assignmentId, String contactId, float score, LocalDateTime gradingDate) {
         ContactAssignment ca = this.find(assignmentId, contactId);
-        if (!ca.isSubmitted()) {
-            throw new AssignmentNotSubmittedException();
-        }
-
-        if (ca.isGraded()) {
-            throw new ContactAssignmentAlreadyGradedException();
-        }
-
         ca.grade(score, gradingDate);
     }
 

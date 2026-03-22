@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import cpp.commons.util.CollectionUtil;
+import cpp.model.assignment.exceptions.ContactAssignmentAlreadyGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentAlreadySubmittedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
 
@@ -110,6 +111,12 @@ public class ContactAssignment {
      * @param gradingDate the date and time when this contact assignment was graded
      */
     public void grade(float score, LocalDateTime gradingDate) {
+        if (!this.isSubmitted()) {
+            throw new ContactAssignmentNotSubmittedException();
+        }
+        if (this.isGraded()) {
+            throw new ContactAssignmentAlreadyGradedException();
+        }
         this.gradeInfo = new GradeInfo(true, gradingDate, score, this.submissionInfo);
     }
 
