@@ -183,28 +183,28 @@ public class GradeAssignmentCommand extends Command {
 
     private void buildSuccessfulGradeString(String contactName) {
         if (this.gradedContacts.length() > 0) {
-            this.gradedContacts.append(", ");
+            this.gradedContacts.append("; ");
         }
         this.gradedContacts.append(contactName);
     }
 
     private void buildAlreadyGradedString(String contactName) {
         if (this.alreadyGradedContacts.length() > 0) {
-            this.alreadyGradedContacts.append(", ");
+            this.alreadyGradedContacts.append("; ");
         }
         this.alreadyGradedContacts.append(contactName);
     }
 
     private void buildNotSubmittedString(String contactName) {
         if (this.notSubmittedContacts.length() > 0) {
-            this.notSubmittedContacts.append(", ");
+            this.notSubmittedContacts.append("; ");
         }
         this.notSubmittedContacts.append(contactName);
     }
 
     private void buildNotAllocatedString(String contactName) {
         if (this.notAllocatedContacts.length() > 0) {
-            this.notAllocatedContacts.append(", ");
+            this.notAllocatedContacts.append("; ");
         }
         this.notAllocatedContacts.append(contactName);
     }

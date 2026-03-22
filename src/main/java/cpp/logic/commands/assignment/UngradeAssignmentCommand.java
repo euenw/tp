@@ -168,28 +168,28 @@ public class UngradeAssignmentCommand extends Command {
 
     private void buildSuccessfulUngradeString(String contactName) {
         if (this.ungradedContacts.length() > 0) {
-            this.ungradedContacts.append(", ");
+            this.ungradedContacts.append("; ");
         }
         this.ungradedContacts.append(contactName);
     }
 
     private void buildNotGradedString(String contactName) {
         if (this.notGradedContacts.length() > 0) {
-            this.notGradedContacts.append(", ");
+            this.notGradedContacts.append("; ");
         }
         this.notGradedContacts.append(contactName);
     }
 
     private void buildNotSubmittedString(String contactName) {
         if (this.notSubmittedContacts.length() > 0) {
-            this.notSubmittedContacts.append(", ");
+            this.notSubmittedContacts.append("; ");
         }
         this.notSubmittedContacts.append(contactName);
     }
 
     private void buildNotAllocatedString(String contactName) {
         if (this.notAllocatedContacts.length() > 0) {
-            this.notAllocatedContacts.append(", ");
+            this.notAllocatedContacts.append("; ");
         }
         this.notAllocatedContacts.append(contactName);
     }
