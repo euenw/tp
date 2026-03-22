@@ -42,10 +42,8 @@ public class UngradeAssignmentCommandParser implements Parser<UngradeAssignmentC
                 .parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
 
         List<Index> contactIndices = List.of();
-        if (hasContact) {
-            String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
-            contactIndices = ParserUtil.parseContactIndices(contactString);
-        }
+        String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
+        contactIndices = ParserUtil.parseContactIndices(contactString);
 
         return new UngradeAssignmentCommand(assignmentName, contactIndices);
     }

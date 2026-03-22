@@ -49,10 +49,8 @@ public class GradeAssignmentCommandParser implements Parser<GradeAssignmentComma
                 .orElseGet(() -> LocalDateTime.now().format(ParserUtil.DATETIME_FORMATTER)));
 
         List<Index> contactIndices = List.of();
-        if (hasContact) {
-            String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
-            contactIndices = ParserUtil.parseContactIndices(contactString);
-        }
+        String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
+        contactIndices = ParserUtil.parseContactIndices(contactString);
 
         float score = ParserUtil.parseScore(argMultimap.getValue(CliSyntax.PREFIX_SCORE).get());
 
