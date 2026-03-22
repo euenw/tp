@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.parser.ParserUtil;
+import cpp.model.assignment.exceptions.ContactAssignmentAlreadyGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentAlreadySubmittedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
 import cpp.testutil.Assert;
@@ -99,7 +100,7 @@ public class ContactAssignmentTest {
     }
 
     @Test
-    public void grade_and_ungrade() {
+    public void grade() {
         ContactAssignment ca = new ContactAssignment("a1", "c1");
         Assertions.assertFalse(ca.isGraded());
         Assertions.assertEquals(0, ca.getScore());
@@ -108,6 +109,8 @@ public class ContactAssignmentTest {
         ca.grade(85, submissionDate.plusDays(1));
         Assertions.assertTrue(ca.isGraded());
         Assertions.assertEquals(85, ca.getScore());
+        Assert.assertThrows(ContactAssignmentAlreadyGradedException.class,
+                () -> ca.grade(90, submissionDate.plusDays(2)));
     }
 
     @Test

@@ -23,8 +23,10 @@ import cpp.logic.commands.HelpCommand;
 import cpp.logic.commands.ListCommand;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.commands.assignment.AllocateAssignmentCommand;
+import cpp.logic.commands.assignment.GradeAssignmentCommand;
 import cpp.logic.commands.assignment.SubmitAssignmentCommand;
 import cpp.logic.commands.assignment.UnallocateAssignmentCommand;
+import cpp.logic.commands.assignment.UngradeAssignmentCommand;
 import cpp.logic.commands.assignment.UnsubmitAssignmentCommand;
 import cpp.logic.commands.classgroup.AddClassGroupCommand;
 import cpp.logic.commands.classgroup.AllocateClassGroupCommand;
@@ -192,6 +194,38 @@ public class AddressBookParserTest {
                         + TypicalClassGroups.CLASS_GROUP_ONE.getName().fullName);
         Assertions.assertEquals(new UnsubmitAssignmentCommand(sampleAssignment.getName(), new ArrayList<>(),
                 TypicalClassGroups.CLASS_GROUP_ONE.getName()), commandWithClassGroup);
+    }
+
+    @Test
+    public void parseCommand_gradeAssignment() throws Exception {
+        Assignment sampleAssignment = new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_ONE).build();
+        LocalDateTime gradingDate = LocalDateTime.now();
+        LocalDateTime expectedGradingDate = LocalDateTime.parse(gradingDate.format(ParserUtil.DATETIME_FORMATTER),
+                ParserUtil.DATETIME_FORMATTER);
+        GradeAssignmentCommand command = (GradeAssignmentCommand) this.parser
+                .parseCommand(GradeAssignmentCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ASSIGNMENT
+                        + sampleAssignment.getName().fullName + " " + CommandTestUtil.CONTACT_INDICES_MULTIPLE + " "
+                        + CliSyntax.PREFIX_SCORE + "85" + " " + CliSyntax.PREFIX_DATETIME
+                        + gradingDate.format(ParserUtil.DATETIME_FORMATTER));
+        Assertions.assertEquals(new GradeAssignmentCommand(sampleAssignment.getName(),
+                new ArrayList<>(Arrays.asList(
+                        TypicalIndexes.INDEX_FIRST_CONTACT, TypicalIndexes.INDEX_SECOND_CONTACT,
+                        TypicalIndexes.INDEX_THIRD_CONTACT)),
+                85f, expectedGradingDate),
+                command);
+    }
+
+    @Test
+    public void parseCommand_ungradeAssignment() throws Exception {
+        Assignment sampleAssignment = new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_ONE).build();
+        UngradeAssignmentCommand command = (UngradeAssignmentCommand) this.parser
+                .parseCommand(UngradeAssignmentCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ASSIGNMENT
+                        + sampleAssignment.getName().fullName + " " + CommandTestUtil.CONTACT_INDICES_MULTIPLE);
+        Assertions.assertEquals(new UngradeAssignmentCommand(sampleAssignment.getName(),
+                new ArrayList<>(Arrays.asList(
+                        TypicalIndexes.INDEX_FIRST_CONTACT, TypicalIndexes.INDEX_SECOND_CONTACT,
+                        TypicalIndexes.INDEX_THIRD_CONTACT))),
+                command);
     }
 
     @Test
