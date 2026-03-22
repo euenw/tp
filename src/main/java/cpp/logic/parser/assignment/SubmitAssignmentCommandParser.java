@@ -1,5 +1,6 @@
 package cpp.logic.parser.assignment;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import cpp.commons.core.index.Index;
@@ -26,7 +27,8 @@ public class SubmitAssignmentCommandParser implements Parser<SubmitAssignmentCom
     @Override
     public SubmitAssignmentCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
-                CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_CONTACT);
+                CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_CONTACT,
+                CliSyntax.PREFIX_DATETIME);
 
         boolean hasAssignment = argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).isPresent();
         boolean hasContact = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).isPresent();
@@ -38,10 +40,13 @@ public class SubmitAssignmentCommandParser implements Parser<SubmitAssignmentCom
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS,
-                CliSyntax.PREFIX_CONTACT);
+                CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_DATETIME);
 
         AssignmentName assignmentName = ParserUtil
                 .parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
+
+        LocalDateTime submissionDate = ParserUtil.parseDeadline(argMultimap.getValue(CliSyntax.PREFIX_DATETIME)
+                .orElseGet(() -> LocalDateTime.now().format(ParserUtil.DATETIME_FORMATTER)));
 
         List<Index> contactIndices = List.of();
         if (hasContact) {
@@ -52,9 +57,9 @@ public class SubmitAssignmentCommandParser implements Parser<SubmitAssignmentCom
         if (hasClass) {
             String classGroupString = argMultimap.getValue(CliSyntax.PREFIX_CLASS).orElse("");
             ClassGroupName classGroupName = ParserUtil.parseClassGroupName(classGroupString);
-            return new SubmitAssignmentCommand(assignmentName, contactIndices, classGroupName);
+            return new SubmitAssignmentCommand(assignmentName, contactIndices, classGroupName, submissionDate);
         }
 
-        return new SubmitAssignmentCommand(assignmentName, contactIndices);
+        return new SubmitAssignmentCommand(assignmentName, contactIndices, submissionDate);
     }
 }

@@ -1,6 +1,7 @@
 package cpp.model;
 
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 
 import cpp.commons.core.GuiSettings;
@@ -130,7 +131,7 @@ public interface Model {
     /**
      * Marks the assignment as submitted for the given contact.
      */
-    void markSubmitted(Assignment assignment, Contact contact);
+    void markSubmitted(Assignment assignment, Contact contact, LocalDateTime submissionDate);
 
     /**
      * Marks the assignment as unsubmitted for the given contact.

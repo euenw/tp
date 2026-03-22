@@ -1,6 +1,7 @@
 package cpp.model;
 
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -180,11 +181,12 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void markSubmitted(Assignment assignment, Contact contact) {
+    public void markSubmitted(Assignment assignment, Contact contact, LocalDateTime submissionDate) {
         Objects.requireNonNull(assignment);
         Objects.requireNonNull(contact);
+        Objects.requireNonNull(submissionDate);
 
-        this.assignmentManager.submit(assignment.getId(), contact.getId());
+        this.assignmentManager.submit(assignment.getId(), contact.getId(), submissionDate);
     }
 
     @Override

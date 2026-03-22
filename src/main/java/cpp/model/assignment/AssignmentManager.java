@@ -1,5 +1,6 @@
 package cpp.model.assignment;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -101,12 +102,13 @@ public class AssignmentManager {
      * submitted. Contact assignment must exist and not already be marked as
      * submitted.
      *
-     * @param assignmentId the id of the assignment to mark as submitted
-     * @param contactId    the id of the contact to mark as submitted
+     * @param assignmentId   the id of the assignment to mark as submitted
+     * @param contactId      the id of the contact to mark as submitted
+     * @param submissionDate the date and time when the assignment was submitted
      */
-    public void submit(String assignmentId, String contactId) {
+    public void submit(String assignmentId, String contactId, LocalDateTime submissionDate) {
         ContactAssignment ca = this.find(assignmentId, contactId);
-        ca.markSubmitted();
+        ca.markSubmitted(submissionDate);
     }
 
     /**

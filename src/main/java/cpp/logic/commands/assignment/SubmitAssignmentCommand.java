@@ -1,5 +1,6 @@
 package cpp.logic.commands.assignment;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -46,16 +47,18 @@ public class SubmitAssignmentCommand extends Command {
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
 
     public static final String MESSAGE_SUCCESS = """
-            Marked assignment: %1$s as submitted by %2$s contacts.
-            Contacts marked submitted: %3$s
-            Contacts not marked submitted (already submitted): %4$s
-            Contacts not marked submitted (not allocated the assignment): %5$s""";
+            Marked assignment: %1$s as submitted on %2$s by %3$s contacts.
+            Contacts marked submitted: %4$s
+            Contacts not marked submitted (already submitted): %5$s
+            Contacts not marked submitted (not allocated the assignment): %6$s""";
     public static final String MESSAGE_SUBMISSION_FAILED = "No contacts were marked as submitted for the assignment";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
     private final Set<Contact> contactsToMark;
     private final ClassGroupName classGroupName;
+    private final LocalDateTime submissionDate;
+
     private int markedCount = 0;
     private int alreadyMarkedCount = 0;
     private int notAllocatedCount = 0;
@@ -67,7 +70,8 @@ public class SubmitAssignmentCommand extends Command {
      * Creates a SubmitAssignmentCommand to mark the specified assignment as
      * submitted by the specified contacts.
      */
-    public SubmitAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices) {
+    public SubmitAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
+            LocalDateTime submissionDate) {
         Objects.requireNonNull(assignmentName);
         Objects.requireNonNull(contactIndices);
         this.assignmentName = assignmentName;
@@ -77,6 +81,7 @@ public class SubmitAssignmentCommand extends Command {
         this.markedContacts = new StringBuilder();
         this.alreadyMarkedContacts = new StringBuilder();
         this.notAllocatedContacts = new StringBuilder();
+        this.submissionDate = submissionDate;
     }
 
     /**
@@ -84,7 +89,7 @@ public class SubmitAssignmentCommand extends Command {
      * submitted by the specified contacts or class group.
      */
     public SubmitAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
-            ClassGroupName classGroupName) {
+            ClassGroupName classGroupName, LocalDateTime submissionDate) {
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
         this.classGroupName = classGroupName;
@@ -92,6 +97,7 @@ public class SubmitAssignmentCommand extends Command {
         this.markedContacts = new StringBuilder();
         this.alreadyMarkedContacts = new StringBuilder();
         this.notAllocatedContacts = new StringBuilder();
+        this.submissionDate = submissionDate;
     }
 
     @Override
@@ -134,8 +140,9 @@ public class SubmitAssignmentCommand extends Command {
         }
 
         return new CommandResult(String.format(SubmitAssignmentCommand.MESSAGE_SUCCESS,
-                Messages.format(assignmentToUnallocate), this.markedCount, this.markedContacts.toString(),
-                this.alreadyMarkedContacts.toString(), this.notAllocatedContacts.toString()));
+                Messages.format(assignmentToUnallocate), this.submissionDate, this.markedCount,
+                this.markedContacts.toString(), this.alreadyMarkedContacts.toString(),
+                this.notAllocatedContacts.toString()));
 
     }
 
@@ -152,7 +159,8 @@ public class SubmitAssignmentCommand extends Command {
         SubmitAssignmentCommand otherCommand = (SubmitAssignmentCommand) other;
         return this.assignmentName.equals(otherCommand.assignmentName)
                 && this.contactIndices.equals(otherCommand.contactIndices)
-                && Objects.equals(this.classGroupName, otherCommand.classGroupName);
+                && Objects.equals(this.classGroupName, otherCommand.classGroupName)
+                && this.submissionDate.equals(otherCommand.submissionDate);
     }
 
     @Override
@@ -161,6 +169,7 @@ public class SubmitAssignmentCommand extends Command {
                 .add("assignmentName", this.assignmentName)
                 .add("contactIndices", this.contactIndices)
                 .add("classGroupName", this.classGroupName)
+                .add("submissionDate", this.submissionDate)
                 .toString();
     }
 
@@ -198,7 +207,7 @@ public class SubmitAssignmentCommand extends Command {
         }
 
         try {
-            model.markSubmitted(assignment, contact);
+            model.markSubmitted(assignment, contact, this.submissionDate);
             this.markedCount++;
             this.buildSuccessfulMarkString(contact.getName().fullName);
             this.contactsToMark.add(contact);

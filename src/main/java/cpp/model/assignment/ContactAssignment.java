@@ -1,5 +1,6 @@
 package cpp.model.assignment;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import cpp.commons.util.CollectionUtil;
@@ -18,7 +19,9 @@ public class ContactAssignment {
 
     // Data fields
     private boolean isSubmitted;
+    private LocalDateTime submissionDate;
     private boolean isGraded;
+    private LocalDateTime gradingDate;
     private int score;
 
     /**
@@ -30,7 +33,9 @@ public class ContactAssignment {
         this.assignmentId = assignmentId;
         this.contactId = contactId;
         this.isSubmitted = false;
+        this.submissionDate = null;
         this.isGraded = false;
+        this.gradingDate = null;
         this.score = 0;
     }
 
@@ -39,12 +44,17 @@ public class ContactAssignment {
      * for loading from storage, where the submission and grading state is already
      * available.
      */
-    public ContactAssignment(String assignmentId, String contactId, boolean isSubmitted, boolean isGraded, int score) {
+    public ContactAssignment(String assignmentId, String contactId, boolean isSubmitted, LocalDateTime submissionDate,
+            boolean isGraded, LocalDateTime gradingDate, int score) {
+        // Note: we allow submissionDate and gradingDate to be null, as they may not be
+        // set if the assignment is not yet submitted or graded.
         CollectionUtil.requireAllNonNull(assignmentId, contactId, isSubmitted, isGraded, score);
         this.assignmentId = assignmentId;
         this.contactId = contactId;
         this.isSubmitted = isSubmitted;
+        this.submissionDate = submissionDate;
         this.isGraded = isGraded;
+        this.gradingDate = gradingDate;
         this.score = score;
     }
 
@@ -60,8 +70,16 @@ public class ContactAssignment {
         return this.isSubmitted;
     }
 
+    public LocalDateTime getSubmissionDate() {
+        return this.submissionDate;
+    }
+
     public boolean isGraded() {
         return this.isGraded;
+    }
+
+    public LocalDateTime getGradingDate() {
+        return this.gradingDate;
     }
 
     public int getScore() {
@@ -72,11 +90,12 @@ public class ContactAssignment {
      * Marks this contact assignment as submitted. Throws an exception if it is
      * already marked as submitted.
      */
-    public void markSubmitted() {
+    public void markSubmitted(LocalDateTime submissionDate) {
         if (this.isSubmitted) {
             throw new ContactAssignmentAlreadySubmittedException();
         }
         this.isSubmitted = true;
+        this.submissionDate = submissionDate;
     }
 
     /**
@@ -89,8 +108,10 @@ public class ContactAssignment {
             throw new ContactAssignmentNotSubmittedException();
         }
         this.isGraded = false;
+        this.gradingDate = null;
         this.score = 0;
         this.isSubmitted = false;
+        this.submissionDate = null;
     }
 
     /**
