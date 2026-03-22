@@ -174,7 +174,7 @@ public class SubmitAssignmentCommand extends Command {
                 .add("assignmentName", this.assignmentName)
                 .add("contactIndices", this.contactIndices)
                 .add("classGroupName", this.classGroupName)
-                .add("submissionDate", this.submissionDate)
+                .add("submissionDate", this.submissionDate.format(ParserUtil.DATETIME_FORMATTER))
                 .toString();
     }
 
