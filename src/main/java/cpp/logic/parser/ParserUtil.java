@@ -16,6 +16,7 @@ import cpp.commons.core.index.Index;
 import cpp.commons.util.StringUtil;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
+import cpp.model.assignment.GradeInfo;
 import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Address;
 import cpp.model.contact.ContactName;
@@ -164,6 +165,20 @@ public class ParserUtil {
             throw new ParseException(AssignmentName.MESSAGE_CONSTRAINTS);
         }
         return new AssignmentName(trimmedName);
+    }
+
+    public static float parseScore(String scoreString) throws ParseException {
+        Objects.requireNonNull(scoreString);
+        String trimmedScore = scoreString.trim().replaceAll("\\s+", " ");
+        try {
+            float score = Float.parseFloat(trimmedScore);
+            if (!GradeInfo.isValidScore(score)) {
+                throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
+            }
+            return score;
+        } catch (NumberFormatException e) {
+            throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
+        }
     }
 
     /**
