@@ -142,7 +142,7 @@ public class ModelManagerTest {
     @Test
     public void addContactAssignment_validContactAssignment_addSuccessful() {
         ContactAssignment ca = new ContactAssignment(TypicalAssignments.ASSIGNMENT_ONE.getId(),
-                TypicalContacts.ALICE.getId(), false, false, 0);
+                TypicalContacts.ALICE.getId(), false, null, false, null, 0);
         this.modelManager.addContact(TypicalContacts.ALICE);
         this.modelManager.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
         this.modelManager.addContactAssignment(ca);
@@ -152,7 +152,7 @@ public class ModelManagerTest {
     @Test
     public void addContactAssignment_duplicateContactAssignment_throwsIllegalArgumentException() {
         ContactAssignment ca = new ContactAssignment(TypicalAssignments.ASSIGNMENT_ONE.getId(),
-                TypicalContacts.ALICE.getId(), false, false, 0);
+                TypicalContacts.ALICE.getId(), false, null, false, null, 0);
         this.modelManager.addContact(TypicalContacts.ALICE);
         this.modelManager.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
         this.modelManager.addContactAssignment(ca);
@@ -170,7 +170,7 @@ public class ModelManagerTest {
     @Test
     public void removeContactAssignment_validContactAssignment_removeSuccessful() {
         ContactAssignment ca = new ContactAssignment(TypicalAssignments.ASSIGNMENT_ONE.getId(),
-                TypicalContacts.ALICE.getId(), false, false, 0);
+                TypicalContacts.ALICE.getId(), false, null, false, null, 0);
         this.modelManager.addContact(TypicalContacts.ALICE);
         this.modelManager.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
         this.modelManager.addContactAssignment(ca);
@@ -182,7 +182,7 @@ public class ModelManagerTest {
     @Test
     public void removeContactAssignment_nonExistentContactAssignment_throwsIllegalArgumentException() {
         ContactAssignment ca = new ContactAssignment(TypicalAssignments.ASSIGNMENT_ONE.getId(),
-                TypicalContacts.ALICE.getId(), false, false, 0);
+                TypicalContacts.ALICE.getId(), false, null, false, null, 0);
         Assert.assertThrows(ContactAssignmentNotFoundException.class,
                 () -> this.modelManager.removeContactAssignment(ca));
     }
