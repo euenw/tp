@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.parser.ParserUtil;
+import cpp.model.assignment.exceptions.ContactAssignmentAlreadySubmittedException;
+import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
 import cpp.testutil.Assert;
 
 public class ContactAssignmentTest {
@@ -83,6 +85,7 @@ public class ContactAssignmentTest {
         Assertions.assertFalse(ca.isSubmitted());
         ca.markSubmitted(submissionDate);
         Assertions.assertTrue(ca.isSubmitted());
+        Assert.assertThrows(ContactAssignmentAlreadySubmittedException.class, () -> ca.markSubmitted(submissionDate));
     }
 
     @Test
@@ -92,6 +95,7 @@ public class ContactAssignmentTest {
         Assertions.assertTrue(ca.isSubmitted());
         ca.markUnsubmitted();
         Assertions.assertFalse(ca.isSubmitted());
+        Assert.assertThrows(ContactAssignmentNotSubmittedException.class, () -> ca.markUnsubmitted());
     }
 
     @Test
