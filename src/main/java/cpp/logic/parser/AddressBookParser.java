@@ -17,12 +17,14 @@ import cpp.logic.commands.HelpCommand;
 import cpp.logic.commands.ListCommand;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.commands.assignment.AllocateAssignmentCommand;
+import cpp.logic.commands.assignment.EditAssignmentCommand;
 import cpp.logic.commands.assignment.UnallocateAssignmentCommand;
 import cpp.logic.commands.classgroup.AddClassGroupCommand;
 import cpp.logic.commands.classgroup.AllocateClassGroupCommand;
 import cpp.logic.commands.classgroup.UnallocateClassGroupCommand;
 import cpp.logic.parser.assignment.AddAssignmentCommandParser;
 import cpp.logic.parser.assignment.AllocateAssignmentCommandParser;
+import cpp.logic.parser.assignment.EditAssignmentCommandParser;
 import cpp.logic.parser.assignment.UnallocateAssignmentCommandParser;
 import cpp.logic.parser.classgroup.AddClassGroupCommandParser;
 import cpp.logic.parser.classgroup.AllocateClassGroupCommandParser;
@@ -90,6 +92,9 @@ public class AddressBookParser {
 
         case AddAssignmentCommand.COMMAND_WORD:
             return new AddAssignmentCommandParser().parse(arguments);
+
+        case EditAssignmentCommand.COMMAND_WORD:
+            return new EditAssignmentCommandParser().parse(arguments);
 
         case AllocateAssignmentCommand.COMMAND_WORD:
             return new AllocateAssignmentCommandParser().parse(arguments);

@@ -1,23 +1,29 @@
 package cpp.logic.commands;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import cpp.commons.core.GuiSettings;
 import cpp.logic.Messages;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.model.AddressBook;
+import cpp.model.Model;
 import cpp.model.ReadOnlyAddressBook;
-import cpp.model.assignment.AssignmentName;
-import cpp.model.classgroup.ClassGroupName;
+import cpp.model.ReadOnlyUserPrefs;
+import cpp.model.assignment.Assignment;
+import cpp.model.assignment.ContactAssignment;
+import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 import cpp.testutil.Assert;
 import cpp.testutil.ContactBuilder;
-import cpp.testutil.ModelStub;
 import cpp.testutil.TypicalContacts;
+import javafx.collections.ObservableList;
 
 public class AddContactCommandTest {
 
@@ -49,56 +55,11 @@ public class AddContactCommandTest {
     }
 
     @Test
-    public void execute_invalidClassName_throwsCommandException() {
-        Contact validContact = new ContactBuilder().build();
-        AddContactCommand addContactCommand = new AddContactCommand(validContact, new ClassGroupName("CS2103T10"),
-                null);
-        ModelStub modelStub = new ModelStubAcceptingContactAdded();
-
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_CLASS_GROUP_NOT_FOUND,
-                () -> addContactCommand.execute(modelStub));
-    }
-
-    @Test
-    public void execute_invalidAssignmentName_throwsCommandException() {
-        Contact validContact = new ContactBuilder().build();
-        AddContactCommand addContactCommand = new AddContactCommand(validContact, null,
-                new AssignmentName("Assignment 9"));
-        ModelStub modelStub = new ModelStubAcceptingContactAdded();
-
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_ASSIGNMENT_NOT_FOUND,
-                () -> addContactCommand.execute(modelStub));
-    }
-
-    @Test
-    public void execute_bothInvalidOptionalNames_classGroupValidationHappensFirst() {
-        Contact validContact = new ContactBuilder().build();
-        AddContactCommand addContactCommand = new AddContactCommand(validContact,
-                new ClassGroupName("CS2103T10"), new AssignmentName("Assignment 9"));
-        ModelStub modelStub = new ModelStubAcceptingContactAdded();
-
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_CLASS_GROUP_NOT_FOUND,
-                () -> addContactCommand.execute(modelStub));
-    }
-
-    @Test
     public void equals() {
         Contact alice = new ContactBuilder().withName("Alice").build();
         Contact bob = new ContactBuilder().withName("Bob").build();
-        ClassGroupName classGroupName = new ClassGroupName("CS2103T10");
-        ClassGroupName anotherClassGroupName = new ClassGroupName("CS2101T10");
-        AssignmentName assignmentName = new AssignmentName("Assignment 1");
-        AssignmentName anotherAssignmentName = new AssignmentName("Assignment 2");
-
         AddContactCommand addAliceCommand = new AddContactCommand(alice);
         AddContactCommand addBobCommand = new AddContactCommand(bob);
-        AddContactCommand addAliceWithOptionalFieldsCommand = new AddContactCommand(alice, classGroupName,
-                assignmentName);
-        AddContactCommand addAliceWithDifferentClassCommand = new AddContactCommand(alice, anotherClassGroupName,
-                assignmentName);
-        AddContactCommand addAliceWithDifferentAssignmentCommand = new AddContactCommand(alice, classGroupName,
-                anotherAssignmentName);
-        AddContactCommand addAliceWithoutOptionalFieldsCommand = new AddContactCommand(alice);
 
         // same object -> returns true
         Assertions.assertTrue(addAliceCommand.equals(addAliceCommand));
@@ -115,22 +76,6 @@ public class AddContactCommandTest {
 
         // different contact -> returns false
         Assertions.assertFalse(addAliceCommand.equals(addBobCommand));
-
-        // same contact and same optional fields -> returns true
-        Assertions.assertTrue(addAliceWithOptionalFieldsCommand
-                .equals(new AddContactCommand(alice, classGroupName, assignmentName)));
-
-        // different class group name -> returns false
-        Assertions.assertFalse(addAliceWithOptionalFieldsCommand.equals(addAliceWithDifferentClassCommand));
-
-        // different assignment name -> returns false
-        Assertions.assertFalse(addAliceWithOptionalFieldsCommand.equals(addAliceWithDifferentAssignmentCommand));
-
-        // different class group name and assignment name -> returns false
-        Assertions.assertFalse(addAliceWithDifferentClassCommand.equals(addAliceWithDifferentAssignmentCommand));
-
-        // one command has optional fields while the other does not -> returns false
-        Assertions.assertFalse(addAliceWithOptionalFieldsCommand.equals(addAliceWithoutOptionalFieldsCommand));
     }
 
     @Test
@@ -138,6 +83,151 @@ public class AddContactCommandTest {
         AddContactCommand addContactCommand = new AddContactCommand(TypicalContacts.ALICE);
         String expected = AddContactCommand.class.getCanonicalName() + "{toAdd=" + TypicalContacts.ALICE + "}";
         Assertions.assertEquals(expected, addContactCommand.toString());
+    }
+
+    /**
+     * A default model stub that have all of the methods failing.
+     */
+    private class ModelStub implements Model {
+        @Override
+        public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyUserPrefs getUserPrefs() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public GuiSettings getGuiSettings() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setGuiSettings(GuiSettings guiSettings) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Path getAddressBookFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setAddressBookFilePath(Path addressBookFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addContact(Contact contact) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setAddressBook(ReadOnlyAddressBook newData) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyAddressBook getAddressBook() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasContact(Contact contact) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteContact(Contact target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setContact(Contact target, Contact editedContact) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Contact> getFilteredContactList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredContactList(Predicate<Contact> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasAssignment(Assignment assignment) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addAssignment(Assignment assignment) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteAssignment(Assignment target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setAssignment(Assignment target, Assignment editedAssignment) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addContactAssignment(ContactAssignment ca) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void removeContactAssignment(ContactAssignment ca) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasClassGroup(ClassGroup classGroup) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addClassGroup(ClassGroup classGroup) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setClassGroup(ClassGroup target, ClassGroup editedClassGroup) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteClassGroup(ClassGroup target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Assignment> getFilteredAssignmentList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<ClassGroup> getFilteredClassGroupList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredClassGroupList(Predicate<ClassGroup> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
