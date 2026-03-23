@@ -7,7 +7,7 @@
 
 # Classroom Plus Plus (CPP) User Guide
 
-Classroom Plus Plus (CPP) is a desktop application designed for educators to manage student and staff contact information, classes, and assignment tracking from a single, centralized place. CPP combines a simple graphical user interface with a powerful Command-Line Interface (CLI) so teachers can work quickly and reliably.
+Classroom Plus Plus (CPP) is a desktop application designed for educators to manage student and staff contact information, classes, and assignment tracking from a single, centralized place. CPP combines a simple Graphical User Interface (GUI) with a powerful Command-Line Interface (CLI) so teachers can work quickly and reliably.
 
 **Who this guide is for**
 
@@ -45,13 +45,37 @@ This quick start assumes you are a teacher who wants to install CPP, open the ap
 
 ### Prerequisites
 
+* Minimum disk space: 50 MB for app + data. Please refer to the section on [**How to check available disk space**](#how-to-check-available-disk-space) to ensure you have enough free space.
+
 * Java 17 or newer must be installed and available on your PATH. Please refer to the section on [**How to check and install Java**](#how-to-check-and-install-java) to check your Java version and install Java if needed.
 
-* Minimum disk space: 50 MB for app + data. Please refer to the section on [**How to check available disk space**](#how-to-check-available-disk-space) to ensure you have enough free space.
+#### How to check available disk space
+
+<box type="info">As a reference, 1 TB = 1048576 MB, 1 GB = 1024 MB.</box>
+
+**Windows:**
+
+1. Open File Explorer and navigate to **"This PC"** or **"My Computer"**.
+
+1. Look for the drive where you plan to store the app home (e.g., `C:\` or `D:\`).
+
+1. Check the **"Free space"** column for that drive to ensure it has at least `500MB` free.
+
+1. If you have enough free space, you may proceed to check the Java version as described in the next section [**How to check and install Java**](#how-to-check-and-install-java).
+
+**macOS:**
+
+1. Click on the Apple menu and select "About This Mac".
+
+1. Go to the "Storage" tab.
+
+1. Check the available space for the drive where you plan to store the app home (e.g., Macintosh HD) to ensure it has at least `500MB` free.
+
+1. If you have enough free space, you may proceed to check the Java version as described in the next section [**How to check and install Java**](#how-to-check-and-install-java).
 
 #### How to check and install Java
 
-**Windows specific install/check tips:**
+**Windows:**
 
 1. Open Command Prompt or PowerShell by searching for it in the Windows Search Bar.
 
@@ -60,17 +84,15 @@ This quick start assumes you are a teacher who wants to install CPP, open the ap
 1. If Java is installed, you should see output showing the Java version (e.g., `java version "17.0.1"`).
     <box type="info">Any version that is 17.0.0 or newer is acceptable.</box>
     <box type="warning">Older versions (e.g., Java 8) will not work and must be updated using Step 4.</box>
-    <box type="warning">If you see an error like 'java' is not recognized, it means Java is not installed. Please follow the next step to install Java.</box>
+    <box type="warning">If you see an error like 'java' is not recognized, it means Java is not installed. Please follow Step 4 to install Java.</box>
 
     ![Windows Java Version](images/java-version-windows.png)
 
 1. If Java is not found, you may refer to the [Windows guide](https://se-education.org/guides/tutorials/javaInstallationWindows.html) to install Java 17.
 
-1. If Java is found and the version is 17 or newer, you may proceed to check the disk space as described in the next section [**How to check available disk space**](#how-to-check-available-disk-space).
-
 1. Once Java is installed, repeat Steps 1-3 to verify the installation.
 
-**macOS specific install/check tips:**
+**macOS:**
 
 1. Open Terminal by searching for it in the Applications folder or using Mac's Spotlight.
 
@@ -79,45 +101,26 @@ This quick start assumes you are a teacher who wants to install CPP, open the ap
 1. If Java is installed, you should see output showing the Java version (e.g., `java version "17.0.1"`).
     <box type="info">Any version that is 17.0.0 or newer is acceptable.</box>
     <box type="warning">Older versions (e.g., Java 8) will not work and must be updated using Step 4.</box>
-    <box type="warning">If you see an error like 'java' is not recognized, it means Java is not installed. Please follow the next step to install Java.</box>
+    <box type="warning">If you see an error like 'java' is not recognized, it means Java is not installed. Please follow Step 4 to install Java.</box>
 
     ![macOS Java Version](images/java-version-mac.png)
     <p style="font-size: 0.9em; color: #666; text-align: center; margin-top: 0;">(Source: tutorials24x7)</p>
 
 1. If Java is not found, you may refer to the [macOS guide](https://se-education.org/guides/tutorials/javaInstallationMac.html) to install Java 17.
 
-1. If Java is found and the version is 17 or newer, you may proceed to check the disk space as described in the next section [**How to check available disk space**](#how-to-check-available-disk-space).
-
 1. Once Java is installed, repeat Steps 1-3 to verify the installation.
-
-#### How to check available disk space
-
-**Windows:**
-
-1. Open File Explorer and navigate to **"This PC"** or **"My Computer"**.
-
-1. Look for the drive where you plan to store the app home (e.g., `C:\` or `D:\`).
-
-1. Check the **"Free space"** column for that drive to ensure it has at least `50M` free. For safety, keep a few hundred MB free for updates and data growth. As a referennce, 1 TB = 1048576 MB, 1 GB = 1024 MB.
-
-**macOS:**
-
-1. Click on the Apple menu and select "About This Mac".
-
-1. Go to the "Storage" tab.
-
-1. Check the available space for the drive where you plan to store the app home (e.g., Macintosh HD) to ensure it has at least `50M` free. For safety, keep a few hundred MB free for updates and data growth.
 
 ### Install and run
 
-1. Download the latest `cpp.jar` from the project [release page](https://github.com/AY2526S2-CS2103T-T10-1/tp/releases) and save it in a folder you will use as the app home.
+1. Download the latest `cpp.jar` from the project [release page](https://github.com/AY2526S2-CS2103T-T10-1/tp/releases).
 
+1. Move it to a folder that you will use as the app home.
     <box type="info">A subfolder "data/" and a file "preferences.json" will both be created in this folder.</box>
 
-1. Users are **strongly encouraged to create a dedicated folder for CPP** (e.g., `Documents/CPP`) rather than running the JAR from a temporary download folder to prevent accidental deletion of data files.
+1. Users are **strongly encouraged to create a dedicated folder for CPP** (e.g., `Documents/CPP`) rather than running the `cpp.jar` file from a temporary download folder to prevent the accidental deletion of data files.
 
 1. Open the folder where you saved `cpp.jar`, right click on an empty space in the folder and select **"Open in Terminal" (macOS)** or **"Open Command Prompt here" (Windows)**.
-   <box type="info">On later versions of Windows, you may also see "Open Windows Terminal here" which is also fine.</box>
+   <box type="info">On later versions of Windows, you may also see "Open in Terminal" which is also fine.</box>
 
 1. To launch the app, type in the following command and press Enter:
 
@@ -140,6 +143,18 @@ Within a few seconds the application will appear. The main User Interface (UI) c
 
 ### Quick CLI tutorial (common tasks and expected output)
 
+#### Tips
+
+<box type="tip" seamless>
+
+* Do not attempt to copy multiple commands at once. Copy and paste one command at a time, and wait for the result display to show the confirmation message before pasting the next command.
+
+* Use `help` in the command box for a quick list of commands: `help`.
+
+* If you are unsure of the command format, you may enter the command with incomplete parameters (e.g., `addcontact n/John Doe`) and the app will show an error message with the correct usage.
+
+</box>
+
 * **List all contacts:**
 
     Command:
@@ -148,7 +163,7 @@ Within a few seconds the application will appear. The main User Interface (UI) c
     list contacts
     ```
 
-    Expected: Displays numbered list of contacts in the main panel.
+    Expected: Displays a numbered list of contacts in the main panel.
 
     ```text
     Listed all contacts
@@ -159,13 +174,13 @@ Within a few seconds the application will appear. The main User Interface (UI) c
     Command:
 
     ```text
-    addcontact n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2 t/FinancialAid t/TransferStudent
+    addcontact n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2 t/TransferStudent t/FinancialAid
     ```
 
     Expected: Confirmation message in result display and new contact appears in the list.
 
     ```text
-    New contact added: John Doe Test; Phone: 98765432; Email: <johnd@example.com>; Address: 311, Clementi Ave 2; Tags: [TransferStudent][FinancialAssistance]
+    New contact added: John Doe; Phone: 98765432; Email: johnd@example.com; Address: 311, Clementi Ave 2; Tags: [TransferStudent][FinancialAid]
     ```
 
 * **Delete the 1st, 2nd and 3rd contact in the list:**
@@ -198,23 +213,11 @@ Within a few seconds the application will appear. The main User Interface (UI) c
     2 contacts listed!
     ```
 
-#### Tips
-
-<box type="tip" seamless>
-
-* Do not attempt to copy multiple commands at once. Copy and paste one command at a time, and wait for the result display to show the confirmation message before pasting the next command.
-
-* Use `help` in the command box for a quick list of commands: `help`.
-
-* If you are unsure of the command format, you may enter the command with incomplete parameters (e.g., `addcontact n/John Doe`) and the app will show an error message with the correct usage.
-
-</box>
-
 #### Warnings and expected failures
 
 <box type="warning" seamless>
 
-* Back up your data folder (`data/addressbook.json`) before manual edits. Corrupted JSON will cause the app to start with an empty dataset.
+* Back up your data folder (`data/addressbook.json`) before manual edits. A corrupted `addressbook.json` will cause the app to start with an empty dataset.
 
 * The app prevents obvious duplicates at entry; if you attempt to add contacts, assignments, or class groups with the same name, CPP will reject the entry with an explanatory error.
 
@@ -234,11 +237,11 @@ Refer to the [**Features**](#features) below for advanced features with the full
   e.g. in `addcontact n/NAME`, `NAME` is a parameter which can be used as `addcontact n/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n/NAME [t/TAG]...` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 
-* Items with `…`​ after them can be used multiple times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.<br>
-  e.g. `ct/CONTACT_INDICES` can be used as `ct/1`, `ct/1 2 3`, `ct/1 3 5 7` etc.
+* Items with `...`​ after them can be used multiple times.<br>
+  e.g. `[t/TAG]...` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.<br>
+  e.g. `ct/CONTACT_INDICES...` can be used as `ct/1`, `ct/1 2 3`, `ct/1 3 5 7` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -261,7 +264,7 @@ Format: `help`
 
 Adds a contact to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
 
 <box type="tip" seamless>
 
@@ -284,9 +287,9 @@ Format: `list`
 
 Edits an existing contact in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
 
-* Edits the contact at the specified `INDEX`. The index refers to the index number shown in the displayed contact list. The index **must be a positive integer** 1, 2, 3, …​
+* Edits the contact at the specified `INDEX`. The index refers to the index number shown in the displayed contact list. The index **must be a positive integer** 1, 2, 3, ...
 
 * At least one of the optional fields must be provided.
 
@@ -336,7 +339,7 @@ Format: `delete INDEX`
 
 * The index refers to the index number shown in the displayed contact list.
 
-* The index **must be a positive integer** 1, 2, 3, …​
+* The index **must be a positive integer** 1, 2, 3, ...
 
 Examples:
 
@@ -348,17 +351,17 @@ Examples:
 
 Adds an assignment to the address book.
 
-Format: `addass ass/ASSIGNMENT NAME d/DEADLINE [c/CLASS_NAME] [ct/CONTACT_INDICES...]​`
+Format: `addass ass/ASSIGNMENT_NAME d/DEADLINE [c/CLASS_NAME] [ct/CONTACT_INDICES...]​`
 
-* Creates an assignment with the specified `ASSIGNMENT NAME` and `DEADLINE`.
+* Creates an assignment with the specified `ASSIGNMENT_NAME` and `DEADLINE`.
 
 * The `DEADLINE` provided must be in the format `dd-MM-yyyy HH:mm`.
 
-* `c/CLASS_NAME` is optional and can be used to allocate the assignment to all contacts in that class.
+* `c/CLASS_NAME` is optional and can be used to allocate the assignment to all contacts in that class. If the `c/` prefix is included, the `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
-* `ct/CONTACT_INDICES` is optional and can be used to allocate the assignment to specific contacts. If the `ct/` prefix is included, at least 1 contact index must be specified.
+* `ct/CONTACT_INDICES...` is optional and can be used to allocate the assignment to specific contacts. If the `ct/` prefix is included, at least 1 contact index must be specified.
 
-* These `CONTACT_INDICES` must be positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
+* These `CONTACT_INDICES...` must be positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
 
 <box type="warning" seamless>
 
@@ -374,7 +377,7 @@ Format: `addass ass/ASSIGNMENT NAME d/DEADLINE [c/CLASS_NAME] [ct/CONTACT_INDICE
 
 <box type="tip" seamless>
 
-* You can enter the `c/CLASS_NAME` and/or `ct/CONTACT_INDICES` parameters to allocate the assignment to specific contacts at the time of creation. This is optional and can also be done later using the `allocass` command.
+* You can enter both the `c/CLASS_NAME` and `ct/CONTACT_INDICES...` parameters to allocate the assignment to specific contacts at the time of creation. This is optional and can also be done later using the `allocass` command.
 
 </box>
 
@@ -392,22 +395,24 @@ Examples:
 * `list contacts` followed by `addass ass/Assignment 4 d/15-01-2024 23:59 c/CS2103T ct/4 5`<br>
   Creates an assignment with the name "Assignment 4" and deadline "15 Jan 2024 23:59", allocated to the 4th and 5th contacts in the list, as well as all contacts belonging to class "CS2103T".
   
-  In this example, the class "CS2103T" consists of contacts 2-5.\
+  The screenshot below illustrates the last example, where the class "CS2103T" consists of contacts 2-5.\
   ![Creating and allocating Assignment 4](images/addass-result.png)
 
-### Allocate assignments to contacts: `allocass`
+### Allocating assignments to contacts: `allocass`
 
 Allocates an assignment to specific contacts.
 
-Format: `allocass ass/ASSIGNMENT NAME [ct/CONTACT_INDICES...] [c/CLASS_NAME]`
+Format: `allocass ass/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]`
 
 * Allocates the assignment to the specified contacts, as well as all contacts in the specified class.
 
-* The `ASSIGNMENT NAME` must match the name of an existing assignment (case-insensitive).
+* The `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
 
-* At least 1 of `[ct/CONTACT_INDICES...]` or `[c/CLASS_NAME]` must be provided.
+* At least 1 of `[c/CLASS_NAME]` or `[ct/CONTACT_INDICES...]` must be provided.
 
-* The `CONTACT_INDICES` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
+  * The `CLASS_NAME` must match the name of an existing class (case-insensitive).
+
+* The `CONTACT_INDICES...` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
   
 <box type="warning" seamless>
 
@@ -425,7 +430,7 @@ Format: `allocass ass/ASSIGNMENT NAME [ct/CONTACT_INDICES...] [c/CLASS_NAME]`
 
 <box type="tip" seamless>
 
-* You can enter both the `c/CLASS_NAME` and `ct/CONTACT_INDICES` parameters to allocate the assignment to more contacts at the same time.
+* You can enter both the `c/CLASS_NAME` and `ct/CONTACT_INDICES...` parameters to allocate the assignment to more contacts at the same time.
 
 </box>
 
@@ -440,22 +445,24 @@ Examples:
 * `allocass ass/Assignment 3 c/CS2103T ct/1 2 3`<br>
   Allocates the "Assignment 3" to the 1st, 2nd, and 3rd contacts in the list, as well as all contacts belonging to class "CS2103T".
 
-  In this example, the class "CS2103T" contains contacts 2-5, and contact 3 was already allocated the assignment.<br>
+  The screenshot below illustrates the last example, where the class "CS2103T" contains contacts 2-5, and contact 3 was already allocated the assignment.<br>
   ![Allocating Assignment 3](images/allocass-result.png)
 
-### Unallocate assignments from contacts: `unallocass`
+### Unallocating assignments from contacts: `unallocass`
 
 Unallocates an assignment from specific contacts.
 
-Format: `unallocass ass/ASSIGNMENT NAME [ct/CONTACT_INDICES...] [c/CLASS_NAME]`
+Format: `unallocass ass/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]`
 
 * Unallocates the assignment from the specified contacts, as well as all contacts in the specified class.
 
-* The `ASSIGNMENT NAME` must match the name of an existing assignment (case-insensitive).
+* The `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
 
-* At least 1 of `[ct/CONTACT_INDICES...]` or `[c/CLASS_NAME]` must be provided.
+* At least 1 of `[c/CLASS_NAME]` or `[ct/CONTACT_INDICES...]` must be provided.
+  
+* The `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
-* The `CONTACT_INDICES` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
+* The `CONTACT_INDICES...` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
   
 <box type="warning" seamless>
 
@@ -473,7 +480,7 @@ Format: `unallocass ass/ASSIGNMENT NAME [ct/CONTACT_INDICES...] [c/CLASS_NAME]`
 
 <box type="tip" seamless>
 
-* You can enter both the `c/CLASS_NAME` and `ct/CONTACT_INDICES` parameters to unallocate the assignment from more contacts at the same time.
+* You can enter both the `c/CLASS_NAME` and `ct/CONTACT_INDICES...` parameters to unallocate the assignment from more contacts at the same time.
 
 </box>
 
@@ -488,7 +495,7 @@ Examples:
 * `unallocass ass/Assignment 3 c/CS2103T ct/1 2 3`<br>
   Unallocates the "Assignment 3" from the 1st, 2nd, and 3rd contacts in the list, as well as all contacts belonging to class "CS2103T".
 
-  In this example, the class "CS2103T" contains contacts 2-5, and only contacts 1, 2, 4, and 5 had the assignment allocated.<br>
+  The screenshot below illustrates the last example, where the class "CS2103T" contains contacts 2-5, and only contacts 1, 2, 4, and 5 had the assignment allocated.<br>
   ![Unallocating Assignment 3](images/unallocass-result.png)
 
 ### Clearing all entries : `clear`
@@ -505,11 +512,11 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+AddressBook data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+AddressBook data is saved automatically in `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
@@ -527,28 +534,32 @@ _Details coming soon ..._
 ## FAQ
 
 **Q**: How do I transfer my data to another computer?\
-**A**: Install CPP on the other computer by following the installation instructions in [**Install and run**](#install-and-run), then copy the `data/addressbook.json` file from your existing app home folder into the new app home folder (overwrite the empty file created on first run). Always stop the app before copying files.
+**A**: Install CPP on the other computer by following the installation instructions in [**Install and run**](#install-and-run), then copy the `data/addressbook.json` file from your existing app home folder into the new app home folder by overwriting the empty file created on first run. Always stop the app before copying files.
 
 **Q**: How can I back up my data and restore it if something goes wrong?\
-**A**: Make a copy of `data/addressbook.json` and store it in a safe location (cloud or external drive). To restore, stop CPP, replace the `addressbook.json` in the app home `data/` folder, then start CPP.
+**A**: Make a copy of `data/addressbook.json` and store it in a safe location such as a cloud or external drive. To restore, stop CPP, replace the `addressbook.json` in the app home `data/` folder, then start CPP.
 
 **Q**: How does CPP prevent duplicate contacts?\
 **A**: CPP performs basic duplicate detection at entry. **For contacts**, the **name**, **phone number**, and **email** should be unique. No 2 contacts should share the same name, or the same phone number, or the same email. If you attempt to add a contact that violates these rules, CPP will reject the entry and show an error message. **For classes and assignments**, the **name** should be unique.
 
 **Q**: Can I export/import data for other systems (e.g., Excel)?\
-**A**: The primary data format used by CPP is JSON. We do not support importing from Excel, but users may manually convert their Excel files to JSON format, adhering to the structure and format of the `addressbook.json` file generated on first run. Manual editing of `addressbook.json` is not recommended unless you are comfortable with JSON.
+**A**: The primary data format used by CPP is JavaScript Object Notation (JSON). We do not support importing from Excel, but users may manually convert their Excel files to JSON format, adhering to the structure and format of the `addressbook.json` file generated on first run. Manual editing of `addressbook.json` is not recommended unless you are comfortable with JSON.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Known issues and workarounds
 
-1. **Multiple screens / off-screen window**: If you move the app to a secondary monitor and later use only the primary monitor, the GUI may open off-screen. Workaround: delete `preferences.json` in the app home folder while the app is closed; the window position will reset on next start.
+1. **Multiple screens / off-screen window**: If you move the app to a secondary monitor and later use only the primary monitor, the GUI may open off-screen.<br>
+   Workaround: delete `preferences.json` in the app home folder while the app is closed; the window position will reset on next start.
 
-1. **Minimized Help Window**: If the Help Window is minimized and you run `help` again, the existing window may remain minimized. Workaround: restore it manually from the taskbar.
+1. **Minimized Help Window**: If the Help Window is minimized and you run `help` again, the existing window may remain minimized.<br>
+   Workaround: restore it manually from the taskbar.
 
-1. **Preferences or data corruption**: If `preferences.json` or `addressbook.json` becomes invalid (e.g., partial writes), CPP will start with an empty dataset. Always keep backups before making changes.
+1. **Preferences or data corruption**: If `preferences.json` or `addressbook.json` becomes invalid (e.g., partial writes), CPP will start with an empty dataset.<br>
+   Workaround: Always keep backups before making changes.
 
-1. **File permission issues (Windows)**: Running the app from a protected folder (e.g., `C:\Program Files`) may prevent writing `data/` or `preferences.json`. Run from a user-writable folder (e.g., Documents) or run the terminal as Administrator.
+1. **File permission issues (Windows)**: Running the app from a protected folder (e.g., `C:\Program Files`) may prevent writing `data/` or `preferences.json`.<br>
+   Workaround: Run from a user-writable folder (e.g., Documents) or run the terminal as Administrator.
 
 If you encounter other issues, please raise a ticket with the project maintainers and include `data/addressbook.json` and `preferences.json` for troubleshooting.
 
@@ -556,17 +567,17 @@ If you encounter other issues, please raise a ticket with the project maintainer
 
 ## Command summary
 
-| Action                    | Format, Examples                                                                                                                                                      |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Add**                   | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
-| **Clear**                 | `clear`                                                                                                                                                               |
-| **Add Assignment**        | `addass n/ASSIGNMENT_NAME d/DEADLINE [c/CLASS_NAME] [ct/CONTACT_INDICES...]​` <br> e.g., `addass ass/Assignment 4 d/15-01-2024 23:59 c/CS2103T ct/4 5`                |
-| **Allocate Assignment**   | `allocass n/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]` <br> e.g., `allocass ass/Assignment 3 c/CS2103T ct/1 2 3`                                         |
-| **Unallocate Assignment** | `unallocass n/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]` <br> e.g., `unallocass ass/Assignment 3 c/CS2103T ct/1 2 3`                                     |
-| **Delete**                | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                   |
-| **Edit**                  | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
-| **Find**                  | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                            |
-| **List**                  | `list`                                                                                                                                                                |
-| **Help**                  | `help`                                                                                                                                                                |
+| Action                    | Format, Examples                                                                                                                                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Add**                   | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
+| **Clear**                 | `clear`                                                                                                                                                                 |
+| **Add Assignment**        | `addass n/ASSIGNMENT_NAME d/DEADLINE [c/CLASS_NAME] [ct/CONTACT_INDICES...]​` <br> e.g., `addass ass/Assignment 4 d/15-01-2024 23:59 c/CS2103T ct/4 5`                  |
+| **Allocate Assignment**   | `allocass n/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]` <br> e.g., `allocass ass/Assignment 3 c/CS2103T ct/1 2 3`                                           |
+| **Unallocate Assignment** | `unallocass n/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]` <br> e.g., `unallocass ass/Assignment 3 c/CS2103T ct/1 2 3`                                       |
+| **Delete**                | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                     |
+| **Edit**                  | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
+| **Find**                  | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                              |
+| **List**                  | `list`                                                                                                                                                                  |
+| **Help**                  | `help`                                                                                                                                                                  |
 
 </div>
