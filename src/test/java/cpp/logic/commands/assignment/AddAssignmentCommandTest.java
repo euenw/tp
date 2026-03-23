@@ -143,14 +143,14 @@ public class AddAssignmentCommandTest {
         Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
         AddAssignmentCommand addAssignmentCommand = new AddAssignmentCommand(assignment,
                 ParserUtil.parseContactIndices("1 2"), new ClassGroupName("ValidClassGroup"));
-        AddAssignmentCommand addContactCommandCopy = new AddAssignmentCommand(assignment,
+        AddAssignmentCommand addAssignmentCommandCopy = new AddAssignmentCommand(assignment,
                 ParserUtil.parseContactIndices("1 2"), new ClassGroupName("ValidClassGroup"));
 
         // same object -> true
         Assertions.assertTrue(addAssignmentCommand.equals(addAssignmentCommand));
 
         // same values -> true
-        Assertions.assertTrue(addAssignmentCommand.equals(addContactCommandCopy));
+        Assertions.assertTrue(addAssignmentCommand.equals(addAssignmentCommandCopy));
     }
 
     @Test
