@@ -210,7 +210,6 @@ public class UnsubmitAssignmentCommand extends Command {
             model.markUnsubmitted(assignment, contact);
             this.unmarkedCount++;
             this.buildSuccessfulUnmarkString(contact.getName().fullName);
-            this.contactsToUnmark.add(contact);
 
         } catch (ContactAssignmentNotFoundException e) {
             // Skip contacts that don't have the assignment allocated.
@@ -221,6 +220,8 @@ public class UnsubmitAssignmentCommand extends Command {
             this.alreadyUnmarkedCount++;
             this.buildAlreadyUnmarkedString(contact.getName().fullName);
         }
+
+        this.contactsToUnmark.add(contact);
     }
 
     private void buildSuccessfulUnmarkString(String contactName) {

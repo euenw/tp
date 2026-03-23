@@ -223,7 +223,6 @@ public class SubmitAssignmentCommand extends Command {
             model.markSubmitted(assignment, contact, this.submissionDate);
             this.markedCount++;
             this.buildSuccessfulMarkString(contact.getName().fullName);
-            this.contactsToMark.add(contact);
 
         } catch (ContactAssignmentNotFoundException e) {
             // Skip contacts that don't have the assignment allocated.
@@ -234,6 +233,8 @@ public class SubmitAssignmentCommand extends Command {
             this.alreadyMarkedCount++;
             this.buildAlreadyMarkedString(contact.getName().fullName);
         }
+
+        this.contactsToMark.add(contact);
     }
 
     private void buildSuccessfulMarkString(String contactName) {
