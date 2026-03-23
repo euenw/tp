@@ -72,6 +72,56 @@ public class EditAssignmentCommandTest {
     }
 
     @Test
+    public void execute_onlyDeadlineEdited_success() {
+        // ASSIGNMENT_ONE is already in the typical address book at index 1
+        Assignment editedAssignment = new AssignmentBuilder()
+                .withId(TypicalAssignments.ASSIGNMENT_ONE.getId())
+                .withName(TypicalAssignments.ASSIGNMENT_ONE.getName().fullName)
+                .withDeadline("25-12-2026 23:59")
+                .build();
+
+        EditAssignmentDescriptor descriptor = new EditAssignmentDescriptor();
+        descriptor.setDeadline(editedAssignment.getDeadline());
+
+        EditAssignmentCommand editCommand = new EditAssignmentCommand(Index.fromOneBased(1), descriptor);
+
+        String expectedMessage = String.format(EditAssignmentCommand.MESSAGE_EDIT_ASSIGNMENT_SUCCESS,
+                Messages.format(editedAssignment));
+
+        ModelManager expectedModel = new ModelManager(this.model.getAddressBook(), new UserPrefs());
+        expectedModel.setAssignment(TypicalAssignments.ASSIGNMENT_ONE, editedAssignment);
+
+        CommandTestUtil.assertCommandSuccess(editCommand, this.model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_duplicateAssignment_throwsCommandException() {
+        // Add ASSIGNMENT_TWO so we can attempt a name+deadline collision
+        this.model.addAssignment(TypicalAssignments.ASSIGNMENT_TWO);
+
+        // Try to edit ASSIGNMENT_ONE to match ASSIGNMENT_TWO's name and deadline exactly
+        EditAssignmentDescriptor descriptor = new EditAssignmentDescriptor();
+        descriptor.setName(TypicalAssignments.ASSIGNMENT_TWO.getName());
+        descriptor.setDeadline(TypicalAssignments.ASSIGNMENT_TWO.getDeadline());
+
+        EditAssignmentCommand editCommand = new EditAssignmentCommand(Index.fromOneBased(1), descriptor);
+
+        CommandTestUtil.assertCommandFailure(editCommand, this.model,
+                EditAssignmentCommand.MESSAGE_DUPLICATE_ASSIGNMENT);
+    }
+
+    @Test
+    public void toStringMethod() {
+        Index index = Index.fromOneBased(1);
+        EditAssignmentDescriptor descriptor = new EditAssignmentDescriptor();
+        descriptor.setName(new AssignmentName("Assignment 1"));
+        EditAssignmentCommand cmd = new EditAssignmentCommand(index, descriptor);
+        String expected = EditAssignmentCommand.class.getCanonicalName()
+                + "{index=" + index + ", editAssignmentDescriptor=" + descriptor + "}";
+        Assertions.assertEquals(expected, cmd.toString());
+    }
+
+    @Test
     public void equals_sameValues_returnsTrue() {
         EditAssignmentDescriptor descriptor = new EditAssignmentDescriptor();
         descriptor.setName(new AssignmentName("Assignment 1"));
