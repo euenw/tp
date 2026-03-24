@@ -663,8 +663,8 @@ _Details coming soon ..._
 **Q**: How can I back up my data and restore it if something goes wrong?\
 **A**: Make a copy of `data/addressbook.json` and store it in a safe location such as a cloud or external drive. To restore, stop CPP, replace the `addressbook.json` in the app home `data/` folder, then start CPP.
 
-**Q**: How does CPP prevent duplicate contacts?\
-**A**: CPP performs basic duplicate detection at entry. **For contacts, classes and assignments**, the **name** should be unique. No 2 contacts should share the same name. If you attempt to add a contact that violates these rules, CPP will reject the entry and show an error message.
+**Q**: How does CPP prevent duplicate entries?\
+**A**: CPP performs basic duplicate detection at entry. **For contacts, classes and assignments**, the **name** should be unique. No 2 contacts, classes nor assignments should share the same name. If you attempt to add a contact, class or assignment that violates these rules, CPP will reject the entry and show an error message.
 
 **Q**: Can I export/import data for other systems (e.g., Excel)?\
 **A**: The primary data format used by CPP is JavaScript Object Notation (JSON). We do not support importing from Excel, but users may manually convert their Excel files to JSON format, adhering to the structure and format of the `addressbook.json` file generated on first run. Manual editing of `addressbook.json` is not recommended unless you are comfortable with JSON.
