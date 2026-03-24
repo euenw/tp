@@ -285,11 +285,57 @@ Format: `list contacts`
 
 * If your address book is completely empty (no contacts have been added yet), running this command will simply display an empty list. It will not generate an error.
 
-* The Contact List panel on will update to display all contacts.
+* The tab will be automatically switched to `Contacts` upon successful execution.
 
 * The result box will display the message: `Listed all contacts`
 
 * The command does not accept any additional arguments. If you type extra words (e.g., `list contacts cs2103t`), the system will reject it and display an `Invalid command format!` error.
+
+<box type="tip" seamless>
+
+**Tip:** You may also click on the tabs to switch between Contacts, Classes, and Assignments. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
+
+</box>
+
+### Listing all assignments : `list assignments`
+
+Shows a list of all assignments in the address book.
+
+Format: `list assignments`
+
+* If your assignment list is completely empty (no assignments have been added yet), running this command will simply display an empty list. It will not generate an error.
+
+* The tab will be automatically switched to `Assignments` upon successful execution.
+
+* The result box will display the message: `Listed all assignments`
+
+* The command does not accept any additional arguments. If you type extra words (e.g., `list assignments cs2103t`), the system will reject it and display an `Invalid command format!` error.
+
+<box type="tip" seamless>
+
+**Tip:** You may also click on the tabs to switch between Contacts, Classes, and Assignments. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
+
+</box>
+
+### Listing all classes : `list classes`
+
+Shows a list of all classes in the address book.
+
+Format: `list classes`
+
+* If no classes have been added yet, running this command will simply display an empty list. It will not generate an error.
+
+* The tab will be automatically switched to `Classes` upon successful execution.
+
+* The result box will display the message: `Listed all classes`
+
+* The command does not accept any additional arguments. If you type extra words (e.g., `list classes cs2103t`), the system will reject it and display an `Invalid command format!` error.
+
+<box type="tip" seamless>
+
+**Tip:** You may also click on the tabs to switch between Contacts, Classes, and Assignments. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
+
+</box>
   
 ### Editing a contact : `edit`
 
@@ -406,20 +452,6 @@ Examples:
   The screenshot below illustrates the last example, where the class "CS2103T" consists of contacts 2-5.\
   ![Creating and allocating Assignment 4](images/addass-result.png)
 
-### Listing all assignments : `list assignments`
-
-Shows a list of all assignments in the address book.
-
-Format: `list assignments`
-
-* If your assignment list is completely empty (no assignments have been added yet), running this command will simply display an empty list. It will not generate an error.
-
-* The Assignment List panel on will update to display all contacts.
-
-* The result box will display the message: `Listed all assignments`
-
-* The command does not accept any additional arguments. If you type extra words (e.g., `list assignments cs2103t`), the system will reject it and display an `Invalid command format!` error.
-  
 ### Allocating assignments to contacts: `allocass`
 
 Allocates an assignment to specific contacts.
@@ -520,20 +552,6 @@ Examples:
   The screenshot below illustrates the last example, where the class "CS2103T" contains contacts 2-5, and only contacts 1, 2, 4, and 5 had the assignment allocated.<br>
   ![Unallocating Assignment 3](images/unallocass-result.png)
 
-### Listing all classes : `list classes`
-
-Shows a list of all classes in the address book.
-
-Format: `list classes`
-
-* If no classes have been added yet, running this command will simply display an empty list. It will not generate an error.
-
-* The Class List panel on will update to display all contacts.
-
-* The result box will display the message: `Listed all classes`
-
-* The command does not accept any additional arguments. If you type extra words (e.g., `list classes cs2103t`), the system will reject it and display an `Invalid command format!` error.
-  
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
@@ -613,7 +631,9 @@ If you encounter other issues, please raise a ticket with the project maintainer
 | **Delete**                | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                    |
 | **Edit**                  | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
 | **Find**                  | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                             |
-| **List**                  | `list`                                                                                                                                                                 |
+| **List Contacts**         | `list contacts`                                                                                                                                                        |
+| **List Assignments**      | `list assignments`                                                                                                                                                     |
+| **List Classes**          | `list classes`                                                                                                                                                         |
 | **Help**                  | `help`                                                                                                                                                                 |
 
 </div>
