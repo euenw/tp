@@ -43,7 +43,8 @@ public class AddClassGroupCommandTest {
                 .execute(modelStub);
 
         Assertions.assertEquals(
-                String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(validClassGroup)),
+                String.format(AddClassGroupCommand.MESSAGE_SUCCESS_WITH_ALLOCATION, Messages.format(validClassGroup), 2,
+                        "Alice Pauline; Benson Meier"),
                 commandResult.getFeedbackToUser());
         Assertions.assertEquals(1, modelStub.classGroupsAdded.size());
         Assertions.assertEquals(validClassGroup, modelStub.classGroupsAdded.get(0));

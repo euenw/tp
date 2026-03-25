@@ -32,9 +32,16 @@ public class AddClassGroupCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New class grouping added: %1$s";
     public static final String MESSAGE_DUPLICATE_CLASS_GROUP = "This class grouping already exists in the address book";
+    public static final String MESSAGE_SUCCESS_WITH_ALLOCATION = """
+            New class grouping added: %1$s
+            Allocated class grouping to %2$s contact(s).
+            Contacts allocated: %3$s""";
 
     private final ClassGroup toAdd;
     private final List<Index> contactIndices;
+
+    private int allocatedCount;
+    private StringBuilder allocatedContacts;
 
     /**
      * Creates an AddClassGroupCommand with the specified class group to add.
@@ -44,6 +51,8 @@ public class AddClassGroupCommand extends Command {
         Objects.requireNonNull(contactIndices);
         this.toAdd = classGroup;
         this.contactIndices = contactIndices;
+        this.allocatedCount = 0;
+        this.allocatedContacts = new StringBuilder();
     }
 
     @Override
@@ -59,7 +68,13 @@ public class AddClassGroupCommand extends Command {
         this.allocateContactsToClassGroup(model, lastShownContactList);
 
         model.addClassGroup(this.toAdd);
-        return new CommandResult(String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(this.toAdd)));
+
+        if (this.contactIndices.isEmpty()) {
+            return new CommandResult(String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(this.toAdd)));
+        } else {
+            return new CommandResult(String.format(AddClassGroupCommand.MESSAGE_SUCCESS_WITH_ALLOCATION,
+                    Messages.format(this.toAdd), this.allocatedCount, this.allocatedContacts.toString()));
+        }
     }
 
     @Override
@@ -86,12 +101,18 @@ public class AddClassGroupCommand extends Command {
 
     private void allocateContactsToClassGroup(Model model, List<Contact> lastShownContactList) {
         for (Index index : this.contactIndices) {
-            String contactId = lastShownContactList.get(index.getZeroBased()).getId();
+            Contact contactToAllocate = lastShownContactList.get(index.getZeroBased());
+            String contactId = contactToAllocate.getId();
 
             // Assumption: No catching of ContactAlreadyAllocatedClassGroupException is
             // necessary, as the ClassGroup is newly created and thus cannot have any
             // contacts allocated to it yet.
             this.toAdd.allocateContact(contactId);
+            this.allocatedCount++;
+            if (this.allocatedContacts.length() > 0) {
+                this.allocatedContacts.append("; ");
+            }
+            this.allocatedContacts.append(contactToAllocate.getName().fullName);
         }
     }
 }
