@@ -190,7 +190,9 @@ public class ParserUtil {
             if (!GradeInfo.isValidScore(score)) {
                 throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
             }
-            return score;
+
+            // Round to 3 decimal places to avoid issues with floating-point precision
+            return Math.round(score * 1000.0f) / 1000.0f;
         } catch (NumberFormatException e) {
             throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
         }

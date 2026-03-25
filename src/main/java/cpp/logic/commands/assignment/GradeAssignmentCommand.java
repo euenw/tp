@@ -32,7 +32,8 @@ public class GradeAssignmentCommand extends Command {
     public static final String COMMAND_WORD = "gradeass";
 
     public static final String MESSAGE_USAGE = GradeAssignmentCommand.COMMAND_WORD
-            + ": Grades an assignment for a contact with a score. "
+            + ": Grades an assignment for contact(s) with a score (decimal places allowed) from 0 to 100, "
+            + "rounded to 3 decimal places.\n"
             + "If no grading date is provided, the current date and time will be used.\n"
             + "Parameters: "
             + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
@@ -46,7 +47,7 @@ public class GradeAssignmentCommand extends Command {
             + CliSyntax.PREFIX_DATETIME + "21-02-2026 23:50";
 
     public static final String MESSAGE_SUCCESS = """
-            Graded assignment: %1$s on %2$s for %3$s contact(s) with score %4$.2f.
+            Graded assignment: %1$s on %2$s for %3$s contact(s) with score %4$.3f.
             Contacts graded: %5$s
             Contacts not graded (already graded): %6$s
             Contacts not graded (not submitted yet): %7$s

@@ -13,9 +13,9 @@ public final class GradeInfo {
     public static final String INVALID_GRADE_STRING = """
             isGraded cannot be true if submissionInfo is not marked as submitted;
             gradingDate must exist only when marked as graded;
-            score must be a non-negative float between 0 and 100;
+            score must be a non-negative number (decimal places allowed) between 0 and 100;
             gradingDate cannot be before submissionDate""";
-    public static final String INVALID_SCORE_STRING = "Score must be a non-negative float between 0 and 100";
+    public static final String INVALID_SCORE_STRING = "Score must be a non-negative number (decimal places allowed) between 0 and 100";
 
     private final boolean isGraded;
     private final LocalDateTime gradingDate;
