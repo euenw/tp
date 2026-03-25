@@ -16,9 +16,9 @@ import cpp.model.ReadOnlyAddressBook;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.exceptions.ContactAssignmentAlreadyGradedException;
+import cpp.model.assignment.exceptions.ContactAssignmentGradedBeforeSubmissionException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
-import cpp.model.assignment.exceptions.ContactAssignmentGradedBeforeSubmissionException;
 import cpp.model.contact.Contact;
 import cpp.testutil.Assert;
 import cpp.testutil.ClassGroupBuilder;
@@ -274,12 +274,12 @@ public class GradeAssignmentCommandTest {
         }
     }
 
-        private class ModelStubGradeAllGradeTimeBeforeSubmission extends ModelStubAcceptingGrade {
-                @Override
-                public void grade(Assignment assignment, Contact contact, float score, LocalDateTime gradingDate)
-                                throws ContactAssignmentGradedBeforeSubmissionException {
-                        throw new ContactAssignmentGradedBeforeSubmissionException();
-                }
+    private class ModelStubGradeAllGradeTimeBeforeSubmission extends ModelStubAcceptingGrade {
+        @Override
+        public void grade(Assignment assignment, Contact contact, float score, LocalDateTime gradingDate)
+                throws ContactAssignmentGradedBeforeSubmissionException {
+            throw new ContactAssignmentGradedBeforeSubmissionException();
         }
+    }
 
 }
