@@ -2,8 +2,10 @@ package cpp.logic.commands.assignment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import cpp.commons.core.index.Index;
 import cpp.commons.util.ToStringBuilder;
@@ -20,8 +22,11 @@ import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.exceptions.ContactAssignmentAlreadyGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
+import cpp.model.classgroup.ClassGroup;
+import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Contact;
 import cpp.model.util.AssignmentUtil;
+import cpp.model.util.ClassGroupUtil;
 
 /**
  * Grades an assignment for a contact. The assignment must have been submitted
@@ -29,7 +34,7 @@ import cpp.model.util.AssignmentUtil;
  */
 public class GradeAssignmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "gradeass";
+    public static final String COMMAND_WORD = "grade";
 
     public static final String MESSAGE_USAGE = GradeAssignmentCommand.COMMAND_WORD
             + ": Grades an assignment for contact(s) with a score (decimal places allowed) from 0 to 100, "
@@ -37,11 +42,14 @@ public class GradeAssignmentCommand extends Command {
             + "If no grading date is provided, the current date and time will be used.\n"
             + "Parameters: "
             + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
-            + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES... "
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...] "
             + CliSyntax.PREFIX_SCORE + "SCORE "
             + "[" + CliSyntax.PREFIX_DATETIME + "GRADING_DATE]\n"
+            + "At least one of " + CliSyntax.PREFIX_CLASS + " or " + CliSyntax.PREFIX_CONTACT + " must be provided.\n"
             + "Example: " + GradeAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
+            + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3 "
             + CliSyntax.PREFIX_SCORE + "67.9 "
             + CliSyntax.PREFIX_DATETIME + "21-02-2026 23:50";
@@ -59,7 +67,9 @@ public class GradeAssignmentCommand extends Command {
             Contacts not graded (not allocated the assignment): %3$s""";
 
     private final AssignmentName assignmentName;
+    private final ClassGroupName classGroupName;
     private final List<Index> contactIndices;
+    private final Set<Contact> contactsToGrade = new HashSet<>();
     private final float score;
     private final LocalDateTime gradingDate;
 
@@ -74,12 +84,33 @@ public class GradeAssignmentCommand extends Command {
 
     /**
      * Creates a GradeAssignmentCommand to grade the specified assignment for the
+     * specified contacts or class group with the given grade info.
+     */
+    public GradeAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
+            ClassGroupName classGroupName, float score, LocalDateTime gradingDate) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(classGroupName);
+        Objects.requireNonNull(gradingDate);
+        this.assignmentName = assignmentName;
+        this.contactIndices = new ArrayList<>(contactIndices);
+        this.classGroupName = classGroupName;
+        this.score = score;
+        this.gradingDate = gradingDate;
+    }
+
+    /**
+     * Creates a GradeAssignmentCommand to grade the specified assignment for the
      * specified contacts with the given grade info.
      */
     public GradeAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices, float score,
             LocalDateTime gradingDate) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(gradingDate);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
+        this.classGroupName = null;
         this.score = score;
         this.gradingDate = gradingDate;
     }
@@ -100,7 +131,20 @@ public class GradeAssignmentCommand extends Command {
 
         CommandUtil.checkContactIndices(lastShownContactList, this.contactIndices);
 
+        ClassGroup classGroupToGrade = ClassGroupUtil.findClassGroup(model.getAddressBook().getClassGroupList(),
+                this.classGroupName);
+        if (this.classGroupName != null && classGroupToGrade == null) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
+        }
+
+        if (classGroupToGrade != null && classGroupToGrade.getContactIdSet().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NO_CONTACTS);
+        }
+
         this.gradeByContactIndices(model, assignmentToGrade, lastShownContactList);
+        if (classGroupToGrade != null) {
+            this.gradeByClassGroup(model, assignmentToGrade, classGroupToGrade);
+        }
 
         if (this.alreadyGradedCount == 0) {
             this.alreadyGradedContacts.append("None");
@@ -138,6 +182,7 @@ public class GradeAssignmentCommand extends Command {
         GradeAssignmentCommand o = (GradeAssignmentCommand) other;
         return this.assignmentName.equals(o.assignmentName)
                 && this.contactIndices.equals(o.contactIndices)
+                && Objects.equals(this.classGroupName, o.classGroupName)
                 && Float.compare(this.score, o.score) == 0;
     }
 
@@ -146,6 +191,7 @@ public class GradeAssignmentCommand extends Command {
         return new ToStringBuilder(this)
                 .add("assignmentName", this.assignmentName)
                 .add("contactIndices", this.contactIndices)
+                .add("classGroupName", this.classGroupName)
                 .add("score", this.score)
                 .toString();
     }
@@ -160,7 +206,28 @@ public class GradeAssignmentCommand extends Command {
         }
     }
 
+    private void gradeByClassGroup(Model model, Assignment assignmentToGrade, ClassGroup classGroupToGrade) {
+        List<Contact> contactList = model.getAddressBook().getContactList();
+
+        for (String contactId : classGroupToGrade.getContactIdSet()) {
+            Contact contact = contactList.stream()
+                    .filter(c -> c.getId().equals(contactId))
+                    .findAny()
+                    .orElse(null);
+
+            if (contact != null) {
+                this.gradeByContact(model, assignmentToGrade, contact);
+            }
+        }
+    }
+
     private void gradeByContact(Model model, Assignment assignment, Contact contact) {
+        if (this.contactsToGrade.contains(contact)) {
+            // Skip contacts that have already been marked as submitted through
+            // contact indices in the same command
+            return;
+        }
+
         try {
             model.grade(assignment, contact, this.score, this.gradingDate);
             this.gradedCount++;
@@ -180,6 +247,8 @@ public class GradeAssignmentCommand extends Command {
             this.alreadyGradedCount++;
             this.buildAlreadyGradedString(contact.getName().fullName);
         }
+
+        this.contactsToGrade.add(contact);
     }
 
     private void buildSuccessfulGradeString(String contactName) {

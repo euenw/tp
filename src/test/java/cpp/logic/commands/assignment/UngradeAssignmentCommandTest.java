@@ -29,13 +29,6 @@ import javafx.collections.ObservableList;
 public class UngradeAssignmentCommandTest {
 
     @Test
-    public void constructor_nullAssignmentName_allowsNull() {
-        // UngradeAssignmentCommand constructor does not explicitly throw on null
-        // assignment name.
-        new UngradeAssignmentCommand(null, List.of());
-    }
-
-    @Test
     public void execute_assignmentAcceptedByModel_ungradeSuccessful() throws Exception {
         ModelStubAcceptingUngrade modelStub = new ModelStubAcceptingUngrade();
         Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
@@ -146,7 +139,9 @@ public class UngradeAssignmentCommandTest {
         String expected = UngradeAssignmentCommand.class.getCanonicalName() + "{"
                 + "assignmentName=" + TypicalAssignments.ASSIGNMENT_ONE.getName()
                 + ", contactIndices=[" + TypicalIndexes.INDEX_FIRST_CONTACT + ", " + TypicalIndexes.INDEX_SECOND_CONTACT
-                + "]}";
+                + "], "
+                + "classGroupName=null"
+                + "}";
         Assertions.assertEquals(expected, cmd.toString());
     }
 

@@ -30,13 +30,6 @@ import javafx.collections.ObservableList;
 public class GradeAssignmentCommandTest {
 
     @Test
-    public void constructor_nullAssignmentName_allowsNull() {
-        // GradeAssignmentCommand constructor does not explicitly throw on null
-        // assignment name.
-        new GradeAssignmentCommand(null, List.of(), 0f, LocalDateTime.now());
-    }
-
-    @Test
     public void execute_assignmentAcceptedByModel_gradeSuccessful() throws Exception {
         ModelStubAcceptingGrade modelStub = new ModelStubAcceptingGrade();
         Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
@@ -163,6 +156,7 @@ public class GradeAssignmentCommandTest {
                 + "assignmentName=" + TypicalAssignments.ASSIGNMENT_ONE.getName()
                 + ", contactIndices=[" + TypicalIndexes.INDEX_FIRST_CONTACT + ", " + TypicalIndexes.INDEX_SECOND_CONTACT
                 + "]"
+                + ", classGroupName=null"
                 + ", score=10.0"
                 + "}";
         Assertions.assertEquals(expected, cmd.toString());

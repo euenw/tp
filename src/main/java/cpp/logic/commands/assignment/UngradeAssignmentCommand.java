@@ -1,8 +1,10 @@
 package cpp.logic.commands.assignment;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import cpp.commons.core.index.Index;
 import cpp.commons.util.ToStringBuilder;
@@ -18,8 +20,11 @@ import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
+import cpp.model.classgroup.ClassGroup;
+import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Contact;
 import cpp.model.util.AssignmentUtil;
+import cpp.model.util.ClassGroupUtil;
 
 /**
  * Grades an assignment for a contact. The assignment must have been submitted
@@ -27,15 +32,18 @@ import cpp.model.util.AssignmentUtil;
  */
 public class UngradeAssignmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "ungradeass";
+    public static final String COMMAND_WORD = "ungrade";
 
     public static final String MESSAGE_USAGE = UngradeAssignmentCommand.COMMAND_WORD
-            + ": Ungrades an assignment for a contact."
+            + ": Ungrades an assignment for contact(s)."
             + "Parameters: "
             + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
-            + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES... "
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...] "
+            + "At least one of " + CliSyntax.PREFIX_CLASS + " or " + CliSyntax.PREFIX_CONTACT + " must be provided.\n"
             + "Example: " + UngradeAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
+            + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
 
     public static final String MESSAGE_SUCCESS = """
@@ -51,7 +59,9 @@ public class UngradeAssignmentCommand extends Command {
             Contacts not ungraded (not allocated the assignment): %3$s""";
 
     private final AssignmentName assignmentName;
+    private final ClassGroupName classGroupName;
     private final List<Index> contactIndices;
+    private final Set<Contact> contactsToUngrade = new HashSet<>();
 
     private int ungradedCount = 0;
     private int notGradedCount = 0;
@@ -67,8 +77,25 @@ public class UngradeAssignmentCommand extends Command {
      * the specified contacts.
      */
     public UngradeAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
+        this.classGroupName = null;
+    }
+
+    /**
+     * Creates a UngradeAssignmentCommand to ungrade the specified assignment for
+     * the specified contacts or class group.
+     */
+    public UngradeAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
+            ClassGroupName classGroupName) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(classGroupName);
+        this.assignmentName = assignmentName;
+        this.contactIndices = new ArrayList<>(contactIndices);
+        this.classGroupName = classGroupName;
     }
 
     @Override
@@ -87,7 +114,20 @@ public class UngradeAssignmentCommand extends Command {
 
         CommandUtil.checkContactIndices(lastShownContactList, this.contactIndices);
 
+        ClassGroup classGroupToUngrade = ClassGroupUtil.findClassGroup(model.getAddressBook().getClassGroupList(),
+                this.classGroupName);
+        if (this.classGroupName != null && classGroupToUngrade == null) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
+        }
+
+        if (classGroupToUngrade != null && classGroupToUngrade.getContactIdSet().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NO_CONTACTS);
+        }
+
         this.ungradeByContactIndices(model, assignmentToUngrade, lastShownContactList);
+        if (classGroupToUngrade != null) {
+            this.ungradeByClassGroup(model, assignmentToUngrade, classGroupToUngrade);
+        }
 
         if (this.notGradedCount == 0) {
             this.notGradedContacts.append("None");
@@ -123,7 +163,8 @@ public class UngradeAssignmentCommand extends Command {
         }
         UngradeAssignmentCommand o = (UngradeAssignmentCommand) other;
         return this.assignmentName.equals(o.assignmentName)
-                && this.contactIndices.equals(o.contactIndices);
+                && this.contactIndices.equals(o.contactIndices)
+                && Objects.equals(this.classGroupName, o.classGroupName);
     }
 
     @Override
@@ -131,6 +172,7 @@ public class UngradeAssignmentCommand extends Command {
         return new ToStringBuilder(this)
                 .add("assignmentName", this.assignmentName)
                 .add("contactIndices", this.contactIndices)
+                .add("classGroupName", this.classGroupName)
                 .toString();
     }
 
@@ -144,7 +186,28 @@ public class UngradeAssignmentCommand extends Command {
         }
     }
 
+    private void ungradeByClassGroup(Model model, Assignment assignmentToUngrade, ClassGroup classGroupToUngrade) {
+        List<Contact> contactList = model.getAddressBook().getContactList();
+
+        for (String contactId : classGroupToUngrade.getContactIdSet()) {
+            Contact contact = contactList.stream()
+                    .filter(c -> c.getId().equals(contactId))
+                    .findAny()
+                    .orElse(null);
+
+            if (contact != null) {
+                this.ungradeByContact(model, assignmentToUngrade, contact);
+            }
+        }
+    }
+
     private void ungradeByContact(Model model, Assignment assignment, Contact contact) {
+        if (this.contactsToUngrade.contains(contact)) {
+            // Skip contacts that have already been marked as submitted through
+            // contact indices in the same command
+            return;
+        }
+
         try {
             model.ungrade(assignment, contact);
             this.ungradedCount++;
@@ -164,6 +227,8 @@ public class UngradeAssignmentCommand extends Command {
             this.notGradedCount++;
             this.buildNotGradedString(contact.getName().fullName);
         }
+
+        this.contactsToUngrade.add(contact);
     }
 
     private void buildSuccessfulUngradeString(String contactName) {

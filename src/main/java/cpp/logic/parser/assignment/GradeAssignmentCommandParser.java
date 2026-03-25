@@ -13,6 +13,7 @@ import cpp.logic.parser.Parser;
 import cpp.logic.parser.ParserUtil;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
+import cpp.model.classgroup.ClassGroupName;
 
 /**
  * Parses input arguments and creates a new {@code GradeAssignmentCommand}
@@ -27,20 +28,21 @@ public class GradeAssignmentCommandParser implements Parser<GradeAssignmentComma
     @Override
     public GradeAssignmentCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
-                CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_SCORE,
+                CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_SCORE,
                 CliSyntax.PREFIX_DATETIME);
 
         boolean hasAssignment = argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).isPresent();
         boolean hasContact = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).isPresent();
+        boolean hasClass = argMultimap.getValue(CliSyntax.PREFIX_CLASS).isPresent();
         boolean hasScore = argMultimap.getValue(CliSyntax.PREFIX_SCORE).isPresent();
 
-        if (!hasAssignment || !hasContact || !hasScore || !argMultimap.getPreamble().isEmpty()) {
+        if (!hasAssignment || !(hasClass || hasContact) || !hasScore || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                     GradeAssignmentCommand.MESSAGE_USAGE));
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CONTACT,
-                CliSyntax.PREFIX_SCORE, CliSyntax.PREFIX_DATETIME);
+                CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_SCORE, CliSyntax.PREFIX_DATETIME);
 
         AssignmentName assignmentName = ParserUtil
                 .parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
@@ -48,11 +50,19 @@ public class GradeAssignmentCommandParser implements Parser<GradeAssignmentComma
         LocalDateTime gradingDate = ParserUtil.parseDateTime(argMultimap.getValue(CliSyntax.PREFIX_DATETIME)
                 .orElseGet(() -> LocalDateTime.now().format(ParserUtil.DATETIME_FORMATTER)));
 
-        List<Index> contactIndices = List.of();
-        String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
-        contactIndices = ParserUtil.parseContactIndices(contactString);
-
         float score = ParserUtil.parseScore(argMultimap.getValue(CliSyntax.PREFIX_SCORE).get());
+
+        List<Index> contactIndices = List.of();
+        if (hasContact) {
+            String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
+            contactIndices = ParserUtil.parseContactIndices(contactString);
+        }
+
+        if (hasClass) {
+            String classGroupString = argMultimap.getValue(CliSyntax.PREFIX_CLASS).orElse("");
+            ClassGroupName classGroupName = ParserUtil.parseClassGroupName(classGroupString);
+            return new GradeAssignmentCommand(assignmentName, contactIndices, classGroupName, score, gradingDate);
+        }
 
         return new GradeAssignmentCommand(assignmentName, contactIndices, score, gradingDate);
     }

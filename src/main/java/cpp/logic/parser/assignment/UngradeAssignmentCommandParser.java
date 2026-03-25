@@ -12,6 +12,7 @@ import cpp.logic.parser.Parser;
 import cpp.logic.parser.ParserUtil;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
+import cpp.model.classgroup.ClassGroupName;
 
 /**
  * Parses input arguments and creates a new {@code UngradeAssignmentCommand}
@@ -26,24 +27,34 @@ public class UngradeAssignmentCommandParser implements Parser<UngradeAssignmentC
     @Override
     public UngradeAssignmentCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
-                CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CONTACT);
+                CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_CLASS);
 
         boolean hasAssignment = argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).isPresent();
         boolean hasContact = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).isPresent();
+        boolean hasClass = argMultimap.getValue(CliSyntax.PREFIX_CLASS).isPresent();
 
-        if (!hasAssignment || !hasContact || !argMultimap.getPreamble().isEmpty()) {
+        if (!hasAssignment || !(hasContact || hasClass) || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                     UngradeAssignmentCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CONTACT);
+        argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CONTACT,
+                CliSyntax.PREFIX_CLASS);
 
         AssignmentName assignmentName = ParserUtil
                 .parseAssignmentName(argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get());
 
         List<Index> contactIndices = List.of();
-        String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
-        contactIndices = ParserUtil.parseContactIndices(contactString);
+        if (hasContact) {
+            String contactString = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).orElse("");
+            contactIndices = ParserUtil.parseContactIndices(contactString);
+        }
+
+        if (hasClass) {
+            String classGroupString = argMultimap.getValue(CliSyntax.PREFIX_CLASS).orElse("");
+            ClassGroupName classGroupName = ParserUtil.parseClassGroupName(classGroupString);
+            return new UngradeAssignmentCommand(assignmentName, contactIndices, classGroupName);
+        }
 
         return new UngradeAssignmentCommand(assignmentName, contactIndices);
     }

@@ -36,7 +36,7 @@ public class SubmitAssignmentCommand extends Command {
     public static final String COMMAND_WORD = "submit";
 
     public static final String MESSAGE_USAGE = SubmitAssignmentCommand.COMMAND_WORD
-            + ": Marks an assignment as submitted by contact(s) or class group. "
+            + ": Marks an assignment as submitted by contact(s). "
             + "If no submission date is provided, the current date and time will be used.\n"
             + "Parameters: "
             + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
@@ -81,6 +81,7 @@ public class SubmitAssignmentCommand extends Command {
             LocalDateTime submissionDate) {
         Objects.requireNonNull(assignmentName);
         Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(submissionDate);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
         this.classGroupName = null;
@@ -97,6 +98,10 @@ public class SubmitAssignmentCommand extends Command {
      */
     public SubmitAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
             ClassGroupName classGroupName, LocalDateTime submissionDate) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(classGroupName);
+        Objects.requireNonNull(submissionDate);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
         this.classGroupName = classGroupName;
