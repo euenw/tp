@@ -1,12 +1,17 @@
 package cpp.logic.commands.view;
 
+import java.util.List;
 import java.util.Objects;
 
 import cpp.commons.util.ToStringBuilder;
+import cpp.logic.Messages;
 import cpp.logic.commands.CommandResult;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.model.Model;
+import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.ClassGroupName;
+import cpp.model.contact.Contact;
+import cpp.model.util.ClassGroupUtil;
 
 /**
  * Views a class group identified using its name as displayed in the address
@@ -26,6 +31,16 @@ public class ViewClassGroupCommand extends ViewCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         Objects.requireNonNull(model);
+
+        List<ClassGroup> classGroupList = model.getAddressBook().getClassGroupList();
+        ClassGroup classGroupToView = ClassGroupUtil.findClassGroup(classGroupList, this.classGroupName);
+
+        if (classGroupToView == null) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
+        }
+
+        List<Contact> allContacts = model.getAddressBook().getContactList();
+        List<Contact> contactsInClassGroup = ClassGroupUtil.getContactsInClassGroup(allContacts, classGroupToView);
 
         return new CommandResult("Implementation in progress.");
     }
