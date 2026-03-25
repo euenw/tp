@@ -34,7 +34,20 @@ public class AddClassGroupCommandTest {
     }
 
     @Test
-    public void execute_classGroupAcceptedByModel_addSuccessful() throws Exception {
+    public void execute_classGroupAcceptedByModelWithoutAllocation_addSuccessful() throws Exception {
+        ModelStubAcceptingClassGroupAdded modelStub = new ModelStubAcceptingClassGroupAdded();
+        ClassGroup validClassGroup = TypicalClassGroups.CLASS_GROUP_ONE;
+
+        CommandResult commandResult = new AddClassGroupCommand(validClassGroup, new ArrayList<>()).execute(modelStub);
+
+        Assertions.assertEquals(String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(validClassGroup)),
+                commandResult.getFeedbackToUser());
+        Assertions.assertEquals(1, modelStub.classGroupsAdded.size());
+        Assertions.assertEquals(validClassGroup, modelStub.classGroupsAdded.get(0));
+    }
+
+    @Test
+    public void execute_classGroupAcceptedByModelWithAllocation_addSuccessful() throws Exception {
         ModelStubAcceptingClassGroupAdded modelStub = new ModelStubAcceptingClassGroupAdded();
         ClassGroup validClassGroup = TypicalClassGroups.CLASS_GROUP_ONE;
 
@@ -43,7 +56,8 @@ public class AddClassGroupCommandTest {
                 .execute(modelStub);
 
         Assertions.assertEquals(
-                String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(validClassGroup)),
+                String.format(AddClassGroupCommand.MESSAGE_SUCCESS_WITH_ALLOCATION, Messages.format(validClassGroup), 2,
+                        "Alice Pauline; Benson Meier"),
                 commandResult.getFeedbackToUser());
         Assertions.assertEquals(1, modelStub.classGroupsAdded.size());
         Assertions.assertEquals(validClassGroup, modelStub.classGroupsAdded.get(0));
