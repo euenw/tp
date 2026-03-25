@@ -33,7 +33,7 @@ import cpp.model.util.ClassGroupUtil;
  */
 public class SubmitAssignmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "submitass";
+    public static final String COMMAND_WORD = "submit";
 
     public static final String MESSAGE_USAGE = SubmitAssignmentCommand.COMMAND_WORD
             + ": Marks an assignment as submitted by contact(s) or class group. "

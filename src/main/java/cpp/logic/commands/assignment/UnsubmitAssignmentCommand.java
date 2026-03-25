@@ -31,7 +31,7 @@ import cpp.model.util.ClassGroupUtil;
  */
 public class UnsubmitAssignmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "unsubmitass";
+    public static final String COMMAND_WORD = "unsubmit";
 
     public static final String MESSAGE_USAGE = UnsubmitAssignmentCommand.COMMAND_WORD
             + ": Marks an assignment as unsubmitted by contact(s) or class group. "
