@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import cpp.commons.util.CollectionUtil;
-import cpp.model.assignment.exceptions.AssignmentNotSubmittedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 import cpp.model.contact.Contact;
 
@@ -133,13 +132,21 @@ public class AssignmentManager {
      * @param score        the score to assign to this contact assignment
      * @param gradingDate  the date and time when this contact assignment was graded
      */
-    public void grade(String assignmentId, String contactId, int score, LocalDateTime gradingDate) {
+    public void grade(String assignmentId, String contactId, float score, LocalDateTime gradingDate) {
         ContactAssignment ca = this.find(assignmentId, contactId);
-        if (ca.isSubmitted()) {
-            ca.grade(score, gradingDate);
-        } else {
-            throw new AssignmentNotSubmittedException();
-        }
+        ca.grade(score, gradingDate);
+    }
+
+    /**
+     * Ungrades the contact assignment for the given assignment and contact. Contact
+     * assignment must exist and be currently marked as graded.
+     *
+     * @param assignmentId the id of the assignment to ungrade
+     * @param contactId    the id of the contact to ungrade
+     */
+    public void ungrade(String assignmentId, String contactId) {
+        ContactAssignment ca = this.find(assignmentId, contactId);
+        ca.ungrade();
     }
 
     /**

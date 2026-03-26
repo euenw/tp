@@ -67,7 +67,9 @@ public final class SubmissionInfo {
 
     @Override
     public String toString() {
-        return "SubmissionInfo[submitted=" + this.isSubmitted + ", date="
-                + this.submissionDate.format(ParserUtil.DATETIME_FORMATTER) + "]";
+        String formattedDate = (this.submissionDate == null)
+                ? "None"
+                : this.submissionDate.format(ParserUtil.DATETIME_FORMATTER);
+        return "SubmissionInfo[submitted=" + this.isSubmitted + ", date=" + formattedDate + "]";
     }
 }

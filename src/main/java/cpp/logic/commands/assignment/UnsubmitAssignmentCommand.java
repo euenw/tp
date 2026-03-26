@@ -26,20 +26,21 @@ import cpp.model.util.AssignmentUtil;
 import cpp.model.util.ClassGroupUtil;
 
 /**
- * Marks an assignment as submitted by contact(s) or class group. The assignment
- * must have been allocated to the contact(s) before it can be submitted.
+ * Marks an assignment as unsubmitted by contact(s) or class group. The
+ * assignment must have been allocated and submitted by the contact(s) before it
+ * can be unsubmitted.
  */
 public class UnsubmitAssignmentCommand extends Command {
 
     public static final String COMMAND_WORD = "unsubmit";
 
     public static final String MESSAGE_USAGE = UnsubmitAssignmentCommand.COMMAND_WORD
-            + ": Marks an assignment as unsubmitted by contact(s) or class group. "
+            + ": Marks an assignment as unsubmitted by contact(s). "
             + "Also removes any grade status for the contact(s) for the assignment.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME "
-            + "[" + CliSyntax.PREFIX_CLASS + "CLASS NAME] "
-            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...]\n"
+            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...]\n"
             + "At least one of " + CliSyntax.PREFIX_CLASS + " or " + CliSyntax.PREFIX_CONTACT + " must be provided.\n"
             + "Example: " + UnsubmitAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
@@ -89,6 +90,9 @@ public class UnsubmitAssignmentCommand extends Command {
      */
     public UnsubmitAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
             ClassGroupName classGroupName) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(classGroupName);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
         this.classGroupName = classGroupName;
@@ -201,7 +205,7 @@ public class UnsubmitAssignmentCommand extends Command {
 
     private void markUnsubmittedByContact(Model model, Assignment assignment, Contact contact) {
         if (this.contactsToUnmark.contains(contact)) {
-            // Skip contacts that have already been marked as submitted through
+            // Skip contacts that have already been marked as unsubmitted through
             // contact indices in the same command
             return;
         }

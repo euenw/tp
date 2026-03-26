@@ -1,5 +1,6 @@
 package cpp.logic.parser;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -16,6 +17,7 @@ import cpp.commons.core.index.Index;
 import cpp.commons.util.StringUtil;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.AssignmentName;
+import cpp.model.assignment.GradeInfo;
 import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Address;
 import cpp.model.contact.ContactName;
@@ -176,6 +178,25 @@ public class ParserUtil {
             throw new ParseException(AssignmentName.MESSAGE_CONSTRAINTS);
         }
         return new AssignmentName(trimmedName);
+    }
+
+    /**
+     * Parses a {@code String score} into a {@code float}.
+     */
+    public static float parseScore(String scoreString) throws ParseException {
+        Objects.requireNonNull(scoreString);
+        String trimmedScore = scoreString.trim().replaceAll("\\s+", " ");
+        try {
+            BigDecimal score = new BigDecimal(trimmedScore);
+            if (!GradeInfo.isValidScore(score)) {
+                throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
+            }
+
+            // Round to 1 decimal place
+            return Math.round(score.doubleValue() * 10.0d) / 10.0f;
+        } catch (NumberFormatException e) {
+            throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
+        }
     }
 
     /**

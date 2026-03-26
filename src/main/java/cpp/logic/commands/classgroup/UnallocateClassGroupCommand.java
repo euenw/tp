@@ -31,8 +31,8 @@ public class UnallocateClassGroupCommand extends Command {
     public static final String MESSAGE_USAGE = UnallocateClassGroupCommand.COMMAND_WORD
             + ": Unallocates contact(s) from a class group.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_CLASS + "CLASS NAME "
-            + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...\n"
+            + CliSyntax.PREFIX_CLASS + "CLASS_NAME "
+            + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...\n"
             + "Example: " + UnallocateClassGroupCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3";

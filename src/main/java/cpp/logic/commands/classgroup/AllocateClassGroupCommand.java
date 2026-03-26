@@ -32,8 +32,8 @@ public class AllocateClassGroupCommand extends Command {
     public static final String MESSAGE_USAGE = AllocateClassGroupCommand.COMMAND_WORD
             + ": Allocates contact(s) to a class group.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_CLASS + "CLASS NAME "
-            + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...\n"
+            + CliSyntax.PREFIX_CLASS + "CLASS_NAME "
+            + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...\n"
             + "Example: " + AllocateClassGroupCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3";

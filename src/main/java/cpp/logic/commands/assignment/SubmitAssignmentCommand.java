@@ -36,13 +36,13 @@ public class SubmitAssignmentCommand extends Command {
     public static final String COMMAND_WORD = "submit";
 
     public static final String MESSAGE_USAGE = SubmitAssignmentCommand.COMMAND_WORD
-            + ": Marks an assignment as submitted by contact(s) or class group. "
+            + ": Marks an assignment as submitted by contact(s). "
             + "If no submission date is provided, the current date and time will be used.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME "
-            + "[" + CliSyntax.PREFIX_CLASS + "CLASS NAME] "
-            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...] "
-            + "[" + CliSyntax.PREFIX_DATETIME + "SUBMISSION DATE]\n"
+            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...] "
+            + "[" + CliSyntax.PREFIX_DATETIME + "SUBMISSION_DATE]\n"
             + "At least one of " + CliSyntax.PREFIX_CLASS + " or " + CliSyntax.PREFIX_CONTACT + " must be provided.\n"
             + "Example: " + SubmitAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
@@ -81,6 +81,7 @@ public class SubmitAssignmentCommand extends Command {
             LocalDateTime submissionDate) {
         Objects.requireNonNull(assignmentName);
         Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(submissionDate);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
         this.classGroupName = null;
@@ -97,6 +98,10 @@ public class SubmitAssignmentCommand extends Command {
      */
     public SubmitAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
             ClassGroupName classGroupName, LocalDateTime submissionDate) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(classGroupName);
+        Objects.requireNonNull(submissionDate);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
         this.classGroupName = classGroupName;

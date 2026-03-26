@@ -28,7 +28,7 @@ public class AddContactCommand extends Command {
             + ": Adds a contact to the address book.\n"
             + "Parameters: "
             + CliSyntax.PREFIX_NAME + "NAME "
-            + CliSyntax.PREFIX_PHONE + "PHONE "
+            + CliSyntax.PREFIX_PHONE + "PHONE_NUMBER "
             + CliSyntax.PREFIX_EMAIL + "EMAIL "
             + CliSyntax.PREFIX_ADDRESS + "ADDRESS "
             + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "

@@ -36,9 +36,9 @@ public class UnallocateAssignmentCommand extends Command {
     public static final String MESSAGE_USAGE = UnallocateAssignmentCommand.COMMAND_WORD
             + ": Unallocates an assignment from contact(s).\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME "
-            + "[" + CliSyntax.PREFIX_CLASS + "CLASS NAME] "
-            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...]\n"
+            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...]\n"
             + "At least one of " + CliSyntax.PREFIX_CLASS + " or " + CliSyntax.PREFIX_CONTACT + " must be provided.\n"
             + "Example: " + UnallocateAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "

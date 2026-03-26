@@ -198,6 +198,23 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void grade(Assignment assignment, Contact contact, float score, LocalDateTime gradingDate) {
+        Objects.requireNonNull(assignment);
+        Objects.requireNonNull(contact);
+        Objects.requireNonNull(gradingDate);
+
+        this.assignmentManager.grade(assignment.getId(), contact.getId(), score, gradingDate);
+    }
+
+    @Override
+    public void ungrade(Assignment assignment, Contact contact) {
+        Objects.requireNonNull(assignment);
+        Objects.requireNonNull(contact);
+
+        this.assignmentManager.ungrade(assignment.getId(), contact.getId());
+    }
+
+    @Override
     public boolean hasClassGroup(ClassGroup classGroup) {
         Objects.requireNonNull(classGroup);
         return this.addressBook.hasClassGroup(classGroup);

@@ -219,9 +219,31 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasClassGroup_nullClassGroup_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class,
-                () -> this.modelManager.hasClassGroup(null));
+    public void grade() {
+        ContactAssignment ca = new ContactAssignment(TypicalAssignments.ASSIGNMENT_ONE.getId(),
+                TypicalContacts.ALICE.getId(), true, LocalDateTime.now(), false, null, 0);
+        this.modelManager.addContact(TypicalContacts.ALICE);
+        this.modelManager.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
+        this.modelManager.addContactAssignment(ca);
+        Assertions.assertFalse(ca.isGraded());
+        Assertions.assertEquals(0, ca.getScore());
+        this.modelManager.grade(TypicalAssignments.ASSIGNMENT_ONE, TypicalContacts.ALICE, 85, LocalDateTime.now());
+        Assertions.assertTrue(ca.isGraded());
+        Assertions.assertEquals(85, ca.getScore());
+    }
+
+    @Test
+    public void ungrade() {
+        ContactAssignment ca = new ContactAssignment(TypicalAssignments.ASSIGNMENT_ONE.getId(),
+                TypicalContacts.ALICE.getId(), true, LocalDateTime.now(), true, LocalDateTime.now(), 85);
+        this.modelManager.addContact(TypicalContacts.ALICE);
+        this.modelManager.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
+        this.modelManager.addContactAssignment(ca);
+        Assertions.assertTrue(ca.isGraded());
+        Assertions.assertEquals(85, ca.getScore());
+        this.modelManager.ungrade(TypicalAssignments.ASSIGNMENT_ONE, TypicalContacts.ALICE);
+        Assertions.assertFalse(ca.isGraded());
+        Assertions.assertEquals(0, ca.getScore());
     }
 
     @Test

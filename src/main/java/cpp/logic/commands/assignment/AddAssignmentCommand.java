@@ -31,10 +31,10 @@ public class AddAssignmentCommand extends Command {
     public static final String MESSAGE_USAGE = AddAssignmentCommand.COMMAND_WORD
             + ": Adds an assignment to the assignment list.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME "
+            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
             + CliSyntax.PREFIX_DATETIME + "DEADLINE "
-            + "[" + CliSyntax.PREFIX_CLASS + "CLASS NAME] "
-            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...]\n"
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...]\n"
             + "Example: " + AddAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
             + CliSyntax.PREFIX_DATETIME + "21-02-2026 23:59 "

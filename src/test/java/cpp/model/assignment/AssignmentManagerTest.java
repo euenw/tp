@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import cpp.model.assignment.exceptions.AssignmentNotSubmittedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
+import cpp.model.assignment.exceptions.ContactAssignmentNotGradedException;
+import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
 import cpp.testutil.Assert;
 import cpp.testutil.TypicalAssignments;
 import cpp.testutil.TypicalContacts;
@@ -145,8 +146,36 @@ public class AssignmentManagerTest {
     @Test
     public void grade_withoutSubmit_throws() {
         this.manager.registerContactAssignment(this.ca2);
-        Assert.assertThrows(AssignmentNotSubmittedException.class,
+        Assert.assertThrows(ContactAssignmentNotSubmittedException.class,
                 () -> this.manager.grade("A2", "C2", 50, LocalDateTime.now()));
+    }
+
+    @Test
+    public void ungrade_withoutGrade_throwsContactAssignmentNotGradedException() {
+        this.manager.registerContactAssignment(this.ca2);
+        this.manager.submit("A2", "C2", LocalDateTime.now());
+        Assert.assertThrows(ContactAssignmentNotGradedException.class,
+                () -> this.manager.ungrade("A2", "C2"));
+    }
+
+    @Test
+    public void ungrade_withoutSubmit_throwsContactAssignmentNotSubmittedException() {
+        this.manager.registerContactAssignment(this.ca2);
+        Assert.assertThrows(ContactAssignmentNotSubmittedException.class,
+                () -> this.manager.ungrade("A2", "C2"));
+    }
+
+    @Test
+    public void ungrade_success() {
+        LocalDateTime submissionDate = LocalDateTime.now();
+        LocalDateTime gradingDate = submissionDate.plusDays(1);
+        this.manager.registerContactAssignment(this.ca2);
+        this.manager.submit("A2", "C2", submissionDate);
+        this.manager.grade("A2", "C2", 50, gradingDate);
+
+        this.manager.ungrade("A2", "C2");
+        Assertions.assertFalse(this.ca2.isGraded());
+        Assertions.assertEquals(0, this.ca2.getScore());
     }
 
     @Test
