@@ -10,16 +10,17 @@ Package Contact as ContactPackage <<Rectangle>>{
     Class Phone
     Class Email
     Class Address
+    Class Tag
 }
 
-AddressBook *-left-> "1" UniqueContactList
+AddressBook *-right-> "1" UniqueContactList
 
-UniqueContactList -down-> "*" Contact
+UniqueContactList --> "*" Contact
 
-Contact -up-> "*" Tag
+Contact *--> "*" Tag
 
-Contact *--> ContactName
-Contact *--> Phone
-Contact *--> Email
-Contact *--> Address
+Contact *--> "1" ContactName
+Contact *--> "1" Phone
+Contact *--> "1" Email
+Contact *--> "1" Address
 @enduml

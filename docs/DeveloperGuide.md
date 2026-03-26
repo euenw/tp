@@ -121,23 +121,36 @@ How the parsing works:
 
 **API** : [`Model.java`](https://github.com/AY2526S2-CS2103T-T10-1/tp/tree/master/src/main/java/cpp/model/Model.java)
 
+#### Model — current design
+
 <puml src="diagrams/ModelClassDiagram.puml" width="450" />
+
+**Model (current design):** shows `AddressBook`, `Contact`, `UniqueContactList`, and their primary relationships.
+
+---
+
+#### Contacts view
+
+<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+
+**Contacts view:** highlights classes and contact-related entities.
+
+---
+
+#### Assignments view
+
+<puml src="diagrams/ModelClassDiagramAssignments.puml" width="450" />
+
+**Assignments view:** highlights classes and assignment-related entities and their relations to `Contact`.
+
+---
 
 The `Model` component,
 
-* stores the address book data i.e., all `Contact` objects (which are contained in a `UniqueContactList` object).
-* stores the currently 'selected' `Contact` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Contact>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
-
-<box type="info" seamless>
-
-**Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Contact` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Contact` needing their own `Tag` objects.<br>
-
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
-<puml src="diagrams/ModelClassDiagramAssignments.puml" width="450" />
-
-</box>
+* stores the address book data (all `Contact` objects, contained in a `UniqueContactList`).
+* exposes the currently selected/filtered contacts as an unmodifiable `ObservableList<Contact>` for UI binding.
+* stores a `UserPref` object exposed as a `ReadOnlyUserPref`.
+* is self-contained and does not depend on `UI`, `Logic` or `Storage` implementations.
 
 ### Storage component
 

@@ -15,14 +15,14 @@ Package ContactAssignment as ContactAssignmentPackage <<Rectangle>>{
     Class SubmissionInfo
 }
 
-AddressBook *-right-> "1" UniqueAssignmentList
-AddressBook *-left-> "1" UniqueContactAssignmentList
-UniqueAssignmentList -down-> Assignment
-UniqueContactAssignmentList -down-> ContactAssignment
+AddressBook *--> "1" UniqueAssignmentList
+AddressBook *--> "1" UniqueContactAssignmentList
+UniqueAssignmentList --> Assignment
+UniqueContactAssignmentList --> ContactAssignment
 
 Assignment *--> "1" AssignmentName
 ContactAssignment *--> "1" SubmissionInfo
 ContactAssignment *--> "1" GradeInfo
-ContactAssignment .right.> Assignment
-ContactAssignment .left.> Contact
+Contact  -- "*" Assignment :assignedTo 
+(Contact, Assignment) .. ContactAssignment
 @enduml
