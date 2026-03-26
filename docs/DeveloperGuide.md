@@ -164,7 +164,7 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/AY2526S2-CS2103T-T10-1/tp/tree/master/src/main/java/cpp/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="550" />
+<puml src="diagrams/StorageClassDiagram.puml" width="900" />
 
 The `Storage` component,
 
