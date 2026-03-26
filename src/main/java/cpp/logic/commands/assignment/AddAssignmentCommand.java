@@ -29,15 +29,15 @@ public class AddAssignmentCommand extends Command {
     public static final String COMMAND_WORD = "addass";
 
     public static final String MESSAGE_USAGE = AddAssignmentCommand.COMMAND_WORD
-            + ": Adds an assignment to the assignment list. "
+            + ": Adds an assignment to the assignment list.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME "
-            + CliSyntax.PREFIX_DEADLINE + "DEADLINE "
-            + "[" + CliSyntax.PREFIX_CLASS + "CLASS NAME] "
-            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...]\n"
+            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
+            + CliSyntax.PREFIX_DATETIME + "DEADLINE "
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...]\n"
             + "Example: " + AddAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
-            + CliSyntax.PREFIX_DEADLINE + "21-02-2026 23:59 "
+            + CliSyntax.PREFIX_DATETIME + "21-02-2026 23:59 "
             + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
 
@@ -99,6 +99,10 @@ public class AddAssignmentCommand extends Command {
                 this.classGroupName);
         if (this.classGroupName != null && classGroupToAllocate == null) {
             throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
+        }
+
+        if (classGroupToAllocate != null && classGroupToAllocate.getContactIdSet().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NO_CONTACTS);
         }
 
         this.allocateToContactsByContactIndices(model, this.toAdd, lastShownContactList);

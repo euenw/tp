@@ -34,11 +34,11 @@ public class AllocateAssignmentCommand extends Command {
     public static final String COMMAND_WORD = "allocass";
 
     public static final String MESSAGE_USAGE = AllocateAssignmentCommand.COMMAND_WORD
-            + ": Allocates an assignment to contact(s). "
+            + ": Allocates an assignment to contact(s).\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME "
-            + "[" + CliSyntax.PREFIX_CLASS + "CLASS NAME] "
-            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...]\n"
+            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
+            + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...]\n"
             + "At least one of " + CliSyntax.PREFIX_CLASS + " or " + CliSyntax.PREFIX_CONTACT + " must be provided.\n"
             + "Example: " + AllocateAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
@@ -49,7 +49,9 @@ public class AllocateAssignmentCommand extends Command {
             Allocated assignment: %1$s to %2$s contact(s).
             Contacts allocated: %3$s
             Contacts not allocated (already allocated this assignment): %4$s""";
-    public static final String MESSAGE_ALLOCATION_FAILED = "No contacts were allocated the assignment";
+    public static final String MESSAGE_ALLOCATION_FAILED = """
+            No contacts were allocated the assignment.
+            Contacts not allocated (already allocated this assignment): %1$s""";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
@@ -118,17 +120,22 @@ public class AllocateAssignmentCommand extends Command {
             throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
         }
 
+        if (classGroupToAllocate != null && classGroupToAllocate.getContactIdSet().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NO_CONTACTS);
+        }
+
         this.allocateToContactsByContactIndices(model, assignmentToAllocate, lastShownContactList);
         if (classGroupToAllocate != null) {
             this.allocateToContactsByClassGroup(model, assignmentToAllocate, classGroupToAllocate);
         }
 
-        if (this.successfulAllocationCount == 0) {
-            throw new CommandException(AllocateAssignmentCommand.MESSAGE_ALLOCATION_FAILED);
-        }
-
         if (this.unsuccessfulAllocationCount == 0) {
             this.unsuccessfulContactAllocations.append("None");
+        }
+
+        if (this.successfulAllocationCount == 0) {
+            throw new CommandException(String.format(AllocateAssignmentCommand.MESSAGE_ALLOCATION_FAILED,
+                    this.unsuccessfulContactAllocations.toString()));
         }
 
         return new CommandResult(String.format(AllocateAssignmentCommand.MESSAGE_SUCCESS,

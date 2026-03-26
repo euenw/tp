@@ -138,7 +138,9 @@ public class UnallocateClassGroupCommandTest {
         UnallocateClassGroupCommand unallocateClassGroupCommand = new UnallocateClassGroupCommand(validClassGroupName,
                 validContactIndices);
 
-        Assert.assertThrows(CommandException.class, UnallocateClassGroupCommand.MESSAGE_UNALLOCATION_FAILED,
+        Assert.assertThrows(CommandException.class,
+                String.format(UnallocateClassGroupCommand.MESSAGE_UNALLOCATION_FAILED,
+                        TypicalContacts.ALICE.getName().fullName),
                 () -> unallocateClassGroupCommand.execute(modelStub));
     }
 

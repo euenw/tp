@@ -22,10 +22,10 @@ public class AddClassGroupCommand extends Command {
 
     public static final String COMMAND_WORD = "addclass";
 
-    public static final String MESSAGE_USAGE = AddClassGroupCommand.COMMAND_WORD + ": Defines a new class grouping. "
+    public static final String MESSAGE_USAGE = AddClassGroupCommand.COMMAND_WORD + ": Defines a new class grouping.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_CLASS + "NAME "
-            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...]\n"
+            + CliSyntax.PREFIX_CLASS + "CLASS_NAME "
+            + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...]\n"
             + "Example: " + AddClassGroupCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3";

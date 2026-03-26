@@ -30,10 +30,10 @@ public class AllocateClassGroupCommand extends Command {
     public static final String COMMAND_WORD = "allocclass";
 
     public static final String MESSAGE_USAGE = AllocateClassGroupCommand.COMMAND_WORD
-            + ": Allocates contact(s) to a class group. "
+            + ": Allocates contact(s) to a class group.\n"
             + "Parameters: "
-            + CliSyntax.PREFIX_CLASS + "CLASS NAME "
-            + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...\n"
+            + CliSyntax.PREFIX_CLASS + "CLASS_NAME "
+            + CliSyntax.PREFIX_CONTACT + "CONTACT_INDICES...\n"
             + "Example: " + AllocateClassGroupCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
@@ -42,7 +42,9 @@ public class AllocateClassGroupCommand extends Command {
             Allocated class group: %1$s to %2$s contact(s).
             Contacts allocated: %3$s
             Contacts not allocated (already allocated to class group): %4$s""";
-    public static final String MESSAGE_ALLOCATION_FAILED = "No new contacts were allocated the class group";
+    public static final String MESSAGE_ALLOCATION_FAILED = """
+            No new contacts were allocated the class group.
+            Contacts not allocated (already allocated to class group): %1$s""";
 
     private final ClassGroupName classGroupName;
     private final List<Index> contactIndices;
@@ -85,6 +87,11 @@ public class AllocateClassGroupCommand extends Command {
             this.unsuccessfulContactAllocations.append("None");
         }
 
+        if (this.successfulAllocationCount == 0) {
+            throw new CommandException(String.format(AllocateClassGroupCommand.MESSAGE_ALLOCATION_FAILED,
+                    this.unsuccessfulContactAllocations.toString()));
+        }
+
         return new CommandResult(
                 String.format(AllocateClassGroupCommand.MESSAGE_SUCCESS, this.classGroupName.fullName,
                         this.successfulAllocationCount, this.successfulContactAllocations.toString(),
@@ -114,15 +121,12 @@ public class AllocateClassGroupCommand extends Command {
                 .toString();
     }
 
-    private void allocateContactsToClassGroup(ClassGroup classGroupToAllocate, List<Contact> lastShownContactList)
-            throws CommandException {
-        boolean anySuccessfulAllocation = false;
+    private void allocateContactsToClassGroup(ClassGroup classGroupToAllocate, List<Contact> lastShownContactList) {
         for (Index index : this.contactIndices) {
             Contact contact = lastShownContactList.get(index.getZeroBased());
             String contactId = contact.getId();
             try {
                 classGroupToAllocate.allocateContact(contactId);
-                anySuccessfulAllocation = true;
                 this.successfulAllocationCount++;
                 this.buildSuccessfulAllocationString(contact.getName().fullName);
             } catch (ContactAlreadyAllocatedClassGroupException e) {
@@ -130,10 +134,6 @@ public class AllocateClassGroupCommand extends Command {
                 this.unsuccessfulAllocationCount++;
                 this.buildUnsuccessfulAllocationString(contact.getName().fullName);
             }
-        }
-
-        if (!anySuccessfulAllocation) {
-            throw new CommandException(AllocateClassGroupCommand.MESSAGE_ALLOCATION_FAILED);
         }
     }
 
