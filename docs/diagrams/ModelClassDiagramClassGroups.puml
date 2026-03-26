@@ -14,5 +14,5 @@ AddressBook *-right-> "1" UniqueClassGroupList
 UniqueClassGroupList -right-> "*" ClassGroup
 
 ClassGroup *--> "1" ClassGroupName
-Contact "*" -left- ClassGroup :assignedTo < 
+Contact "*" -left- ClassGroup :assignedTo <
 @enduml
