@@ -123,17 +123,25 @@ How the parsing works:
 
 #### Model — current design
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<puml src="diagrams/ModelClassDiagram.puml" width="900" />
 
-**Model (current design):** shows `AddressBook`, `Contact`, `UniqueContactList`, and their primary relationships.
+**Model (current design):** shows `AddressBook` and its relations to the 3 main entities: `Contact`, `ClassGroup`, and `Assignment` through the `Unique{Entity}List` counterparts. The `Model` component also includes a `UserPref` class to store user preferences (e.g., file path of the address book data, GUI settings).
 
 ---
 
 #### Contacts view
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/ModelClassDiagramContacts.puml" width="450" />
 
 **Contacts view:** highlights classes and contact-related entities.
+
+---
+
+#### Classes view
+
+<puml src="diagrams/ModelClassDiagramClassGroups.puml" width="450" />
+
+**ClassGroup view:** highlights classes and class group-related entities.
 
 ---
 
@@ -147,8 +155,9 @@ How the parsing works:
 
 The `Model` component,
 
-* stores the address book data (all `Contact` objects, contained in a `UniqueContactList`).
-* exposes the currently selected/filtered contacts as an unmodifiable `ObservableList<Contact>` for UI binding.
+* stores the address book data (with 3 main entities: `Contact`, `ClassGroup`, and `Assignment`).
+* each entity has a corresponding `Unique{Entity}List` (e.g., `UniqueContactList`, `UniqueClassGroupList`, `UniqueAssignmentList`) to manage the list of that entity and enforce uniqueness constraints.
+* exposes the currently selected/filtered entities as an unmodifiable `ObservableList<{Entity}>` for UI binding.
 * stores a `UserPref` object exposed as a `ReadOnlyUserPref`.
 * is self-contained and does not depend on `UI`, `Logic` or `Storage` implementations.
 
@@ -156,7 +165,7 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/AY2526S2-CS2103T-T10-1/tp/tree/master/src/main/java/cpp/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="550" />
+<puml src="diagrams/StorageClassDiagram.puml" width="900" />
 
 The `Storage` component,
 
