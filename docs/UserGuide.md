@@ -644,7 +644,7 @@ Marks a specific assignment as unsubmitted for the specified contacts.
 
 * Marks the assignment as unsubmitted for the specified contacts, as well as all contacts in the specified class.
 
-* If the assignment is not submitted for the specified contact, the submission status and submission date will not be updated.
+* If the assignment is not submitted for the specified contact, then it will not be updated.
 
 * The `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
 
@@ -764,7 +764,7 @@ Ungrades a specific assignment for the specified contacts.
 
 * Marks an assignment as ungraded for the specified contacts, as well as contacts in the specified class.
 
-* If the assignment is not graded for the specified contact, the grading status and grading date will not be updated.
+* If the assignment is not graded for the specified contact, then it will not be updated.
 
 * The `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
 
