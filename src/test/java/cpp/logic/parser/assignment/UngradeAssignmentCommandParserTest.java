@@ -1,5 +1,7 @@
 package cpp.logic.parser.assignment;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.Messages;
@@ -27,6 +29,18 @@ public class UngradeAssignmentCommandParserTest {
         CommandParserTestUtil.assertParseSuccess(this.parser, userInput,
                 new UngradeAssignmentCommand(expectedAssignment.getName(),
                         ParserUtil.parseContactIndices(CommandTestUtil.VALID_CONTACT_INDICES)));
+    }
+
+    @Test
+    public void parse_classGroupPresent_success() throws Exception {
+        Assignment expectedAssignment = new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_ONE).build();
+
+        String userInput = CommandTestUtil.PREAMBLE_WHITESPACE + " " + CliSyntax.PREFIX_ASSIGNMENT
+                + expectedAssignment.getName().fullName + " " + CommandTestUtil.CLASS_NAME_DESC;
+
+        CommandParserTestUtil.assertParseSuccess(this.parser, userInput,
+                new UngradeAssignmentCommand(expectedAssignment.getName(), List.of(),
+                        ParserUtil.parseClassGroupName(CommandTestUtil.VALID_CLASS_NAME_CS2103T)));
     }
 
     @Test

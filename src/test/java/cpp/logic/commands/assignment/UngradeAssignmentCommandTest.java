@@ -19,6 +19,7 @@ import cpp.model.assignment.exceptions.ContactAssignmentNotGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
 import cpp.model.contact.Contact;
 import cpp.testutil.Assert;
+import cpp.testutil.ClassGroupBuilder;
 import cpp.testutil.ModelStub;
 import cpp.testutil.TypicalAssignments;
 import cpp.testutil.TypicalContacts;
@@ -27,13 +28,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class UngradeAssignmentCommandTest {
-
-    @Test
-    public void constructor_nullAssignmentName_allowsNull() {
-        // UngradeAssignmentCommand constructor does not explicitly throw on null
-        // assignment name.
-        new UngradeAssignmentCommand(null, List.of());
-    }
 
     @Test
     public void execute_assignmentAcceptedByModel_ungradeSuccessful() throws Exception {
@@ -52,6 +46,27 @@ public class UngradeAssignmentCommandTest {
                 "None", "None", "None");
 
         Assertions.assertEquals(expected, result.getFeedbackToUser());
+    }
+
+    @Test
+    public void execute_classGroupAcceptedByModel_ungradeSuccessful() throws Exception {
+        ModelStubAcceptingUngrade modelStub = new ModelStubAcceptingUngrade();
+        Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
+
+        UngradeAssignmentCommand cmd = new UngradeAssignmentCommand(assignment.getName(), List.of(),
+                ParserUtil.parseClassGroupName("CS2103T10"));
+
+        CommandResult result = cmd.execute(modelStub);
+        String feedback = result.getFeedbackToUser();
+
+        Assertions.assertTrue(feedback.contains(Messages.format(assignment)));
+        Assertions.assertTrue(feedback.contains("3"));
+        // ensure all three contacts are present (order independent)
+        Assertions.assertTrue(feedback.contains(TypicalContacts.ALICE.getName().fullName));
+        Assertions.assertTrue(feedback.contains(TypicalContacts.BENSON.getName().fullName));
+        Assertions.assertTrue(feedback.contains(TypicalContacts.CARL.getName().fullName));
+        // other buckets should be "None"
+        Assertions.assertTrue(feedback.contains("None"));
     }
 
     @Test
@@ -146,7 +161,23 @@ public class UngradeAssignmentCommandTest {
         String expected = UngradeAssignmentCommand.class.getCanonicalName() + "{"
                 + "assignmentName=" + TypicalAssignments.ASSIGNMENT_ONE.getName()
                 + ", contactIndices=[" + TypicalIndexes.INDEX_FIRST_CONTACT + ", " + TypicalIndexes.INDEX_SECOND_CONTACT
-                + "]}";
+                + "], "
+                + "classGroupName=null"
+                + "}";
+        Assertions.assertEquals(expected, cmd.toString());
+    }
+
+    @Test
+    public void toString_classGroupValue_correctOutput() throws Exception {
+        UngradeAssignmentCommand cmd = new UngradeAssignmentCommand(TypicalAssignments.ASSIGNMENT_ONE.getName(),
+                List.of(TypicalIndexes.INDEX_FIRST_CONTACT, TypicalIndexes.INDEX_SECOND_CONTACT),
+                ParserUtil.parseClassGroupName("CS2103T10"));
+        String expected = UngradeAssignmentCommand.class.getCanonicalName() + "{"
+                + "assignmentName=" + TypicalAssignments.ASSIGNMENT_ONE.getName()
+                + ", contactIndices=[" + TypicalIndexes.INDEX_FIRST_CONTACT + ", " + TypicalIndexes.INDEX_SECOND_CONTACT
+                + "], "
+                + "classGroupName=CS2103T10"
+                + "}";
         Assertions.assertEquals(expected, cmd.toString());
     }
 
@@ -167,6 +198,10 @@ public class UngradeAssignmentCommandTest {
                 ab.addContact(c);
             }
             ab.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
+            // add a class group that contains first three typical contacts
+            ab.addClassGroup(new ClassGroupBuilder().withName("CS2103T10").withContactIds(
+                    TypicalContacts.ALICE.getId(), TypicalContacts.BENSON.getId(), TypicalContacts.CARL.getId())
+                    .build());
             return ab;
         }
 

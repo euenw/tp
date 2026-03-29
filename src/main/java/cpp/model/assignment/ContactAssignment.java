@@ -6,6 +6,7 @@ import java.util.Objects;
 import cpp.commons.util.CollectionUtil;
 import cpp.model.assignment.exceptions.ContactAssignmentAlreadyGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentAlreadySubmittedException;
+import cpp.model.assignment.exceptions.ContactAssignmentGradedBeforeSubmissionException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotGradedException;
 import cpp.model.assignment.exceptions.ContactAssignmentNotSubmittedException;
 
@@ -120,6 +121,9 @@ public class ContactAssignment {
         }
         if (this.isGraded()) {
             throw new ContactAssignmentAlreadyGradedException();
+        }
+        if (gradingDate.isBefore(this.submissionInfo.getSubmissionDate())) {
+            throw new ContactAssignmentGradedBeforeSubmissionException();
         }
         this.gradeInfo = new GradeInfo(true, gradingDate, score, this.submissionInfo);
     }

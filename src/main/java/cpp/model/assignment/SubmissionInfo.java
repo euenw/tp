@@ -31,13 +31,6 @@ public final class SubmissionInfo {
      * SubmissionInfo.
      */
     public static boolean isValidSubmissionInfo(boolean isSubmitted, LocalDateTime submissionDate) {
-        // if (isSubmitted && submissionDate == null) {
-        // return false;
-        // }
-        // if (!isSubmitted && submissionDate != null) {
-        // return false;
-        // }
-
         // Return false if submitted but no submission date, or if not submitted but
         // submission date exists
         if (isSubmitted ^ (submissionDate != null)) {
@@ -74,7 +67,9 @@ public final class SubmissionInfo {
 
     @Override
     public String toString() {
-        return "SubmissionInfo[submitted=" + this.isSubmitted + ", date="
-                + this.submissionDate.format(ParserUtil.DATETIME_FORMATTER) + "]";
+        String formattedDate = (this.submissionDate == null)
+                ? "None"
+                : this.submissionDate.format(ParserUtil.DATETIME_FORMATTER);
+        return "SubmissionInfo[submitted=" + this.isSubmitted + ", date=" + formattedDate + "]";
     }
 }

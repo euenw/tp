@@ -1,5 +1,6 @@
 package cpp.logic.parser;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -186,13 +187,13 @@ public class ParserUtil {
         Objects.requireNonNull(scoreString);
         String trimmedScore = scoreString.trim().replaceAll("\\s+", " ");
         try {
-            float score = Float.parseFloat(trimmedScore);
+            BigDecimal score = new BigDecimal(trimmedScore);
             if (!GradeInfo.isValidScore(score)) {
                 throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
             }
 
-            // Round to 3 decimal places to avoid issues with floating-point precision
-            return Math.round(score * 1000.0f) / 1000.0f;
+            // Round to 1 decimal place
+            return Math.round(score.doubleValue() * 10.0d) / 10.0f;
         } catch (NumberFormatException e) {
             throw new ParseException(GradeInfo.INVALID_SCORE_STRING);
         }

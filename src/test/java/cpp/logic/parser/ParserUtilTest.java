@@ -246,7 +246,6 @@ public class ParserUtilTest {
     public void parseDateTime_validValueWithoutWhitespace_returnsLocalDateTime() throws Exception {
         LocalDateTime expected = LocalDateTime.parse(ParserUtilTest.VALID_DEADLINE,
                 DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
-        ;
         Assertions.assertEquals(expected, ParserUtil.parseDateTime(ParserUtilTest.VALID_DEADLINE));
     }
 

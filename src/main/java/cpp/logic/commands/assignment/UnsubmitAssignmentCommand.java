@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import cpp.commons.core.LogsCenter;
 import cpp.commons.core.index.Index;
 import cpp.commons.util.ToStringBuilder;
+import cpp.logic.LogicManager;
 import cpp.logic.Messages;
 import cpp.logic.commands.Command;
 import cpp.logic.commands.CommandResult;
@@ -26,15 +29,16 @@ import cpp.model.util.AssignmentUtil;
 import cpp.model.util.ClassGroupUtil;
 
 /**
- * Marks an assignment as submitted by contact(s) or class group. The assignment
- * must have been allocated to the contact(s) before it can be submitted.
+ * Marks an assignment as unsubmitted by contact(s) or class group. The
+ * assignment must have been allocated and submitted by the contact(s) before it
+ * can be unsubmitted.
  */
 public class UnsubmitAssignmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "unsubmitass";
+    public static final String COMMAND_WORD = "unsubmit";
 
     public static final String MESSAGE_USAGE = UnsubmitAssignmentCommand.COMMAND_WORD
-            + ": Marks an assignment as unsubmitted by contact(s) or class group. "
+            + ": Marks an assignment as unsubmitted by contact(s). "
             + "Also removes any grade status for the contact(s) for the assignment.\n"
             + "Parameters: "
             + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME "
@@ -67,6 +71,8 @@ public class UnsubmitAssignmentCommand extends Command {
     private StringBuilder alreadyUnmarkedContacts;
     private StringBuilder notAllocatedContacts;
 
+    private final Logger logger = LogsCenter.getLogger(LogicManager.class);
+
     /**
      * Creates an UnsubmitAssignmentCommand to mark the specified assignment as
      * unsubmitted by the specified contacts.
@@ -89,6 +95,9 @@ public class UnsubmitAssignmentCommand extends Command {
      */
     public UnsubmitAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
             ClassGroupName classGroupName) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(classGroupName);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
         this.classGroupName = classGroupName;
@@ -201,7 +210,7 @@ public class UnsubmitAssignmentCommand extends Command {
 
     private void markUnsubmittedByContact(Model model, Assignment assignment, Contact contact) {
         if (this.contactsToUnmark.contains(contact)) {
-            // Skip contacts that have already been marked as submitted through
+            // Skip contacts that have already been marked as unsubmitted through
             // contact indices in the same command
             return;
         }
@@ -212,13 +221,15 @@ public class UnsubmitAssignmentCommand extends Command {
             this.buildSuccessfulUnmarkString(contact.getName().fullName);
 
         } catch (ContactAssignmentNotFoundException e) {
-            // Skip contacts that don't have the assignment allocated.
             this.notAllocatedCount++;
             this.buildNotAllocatedString(contact.getName().fullName);
+            this.logger.info(
+                    "Contact not marked as unsubmitted (not allocated to assignment): " + contact.getName().fullName);
         } catch (ContactAssignmentNotSubmittedException e) {
-            // Skip contacts that are not currently marked as submitted.
             this.alreadyUnmarkedCount++;
             this.buildAlreadyUnmarkedString(contact.getName().fullName);
+            this.logger.info(
+                    "Contact not marked as unsubmitted (not submitted): " + contact.getName().fullName);
         }
 
         this.contactsToUnmark.add(contact);

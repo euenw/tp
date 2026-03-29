@@ -1,5 +1,6 @@
 package cpp.model.assignment;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -31,12 +32,21 @@ public final class GradeInfo {
      * - gradingDate cannot be before submissionDate
      */
     public GradeInfo(boolean isGraded, LocalDateTime gradingDate, float score, SubmissionInfo submissionInfo) {
-        if (!GradeInfo.isValidGradeInfo(isGraded, gradingDate, score, submissionInfo)) {
-            throw new IllegalArgumentException(GradeInfo.INVALID_GRADE_STRING);
-        }
         this.isGraded = isGraded;
         this.gradingDate = gradingDate;
         this.score = score;
+    }
+
+    /**
+     * Creates a GradeInfo when loading from storage. This strictly validates
+     * invariants and throws {@link IllegalArgumentException} on invalid data.
+     */
+    public static GradeInfo createFromStorage(boolean isGraded, LocalDateTime gradingDate, float score,
+            SubmissionInfo submissionInfo) {
+        if (!GradeInfo.isValidGradeInfo(isGraded, gradingDate, score, submissionInfo)) {
+            throw new IllegalArgumentException(GradeInfo.INVALID_GRADE_STRING);
+        }
+        return new GradeInfo(isGraded, gradingDate, score, submissionInfo);
     }
 
     /**
@@ -54,7 +64,7 @@ public final class GradeInfo {
         if (!isGraded && gradingDate != null) {
             return false;
         }
-        if (score < 0 || score > 100) {
+        if (!GradeInfo.isValidScore(new BigDecimal(score))) {
             return false;
         }
         if (isGraded && submissionInfo.isSubmitted() && gradingDate.isBefore(submissionInfo.getSubmissionDate())) {
@@ -63,8 +73,8 @@ public final class GradeInfo {
         return true;
     }
 
-    public static boolean isValidScore(float score) {
-        return score >= 0 && score <= 100;
+    public static boolean isValidScore(BigDecimal score) {
+        return score.compareTo(BigDecimal.ZERO) >= 0 && score.compareTo(new BigDecimal(100)) <= 0;
     }
 
     public boolean isGraded() {
@@ -100,7 +110,10 @@ public final class GradeInfo {
 
     @Override
     public String toString() {
-        return "GradeInfo[graded=" + this.isGraded + ", date=" + this.gradingDate.format(ParserUtil.DATETIME_FORMATTER)
+        String dateString = (this.gradingDate == null)
+                ? "None"
+                : this.gradingDate.format(ParserUtil.DATETIME_FORMATTER);
+        return "GradeInfo[graded=" + this.isGraded + ", date=" + dateString
                 + ", score=" + this.score + "]";
     }
 }

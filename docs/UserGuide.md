@@ -65,9 +65,11 @@ This quick start assumes you are a teacher who wants to install CPP, open the ap
 
 **macOS:**
 
-1. Click on the Apple menu and select "About This Mac".
+1. Click on the Apple menu and select "System Settings".
 
-1. Go to the "Storage" tab.
+1. Go to "General" in the left sidebar.
+
+1. Click on "Storage".
 
 1. Check the available space for the drive where you plan to store the app home (e.g., Macintosh HD) to ensure it has at least `500MB` free.
 
@@ -94,14 +96,15 @@ This quick start assumes you are a teacher who wants to install CPP, open the ap
 
 **macOS:**
 
-1. Open Terminal by searching for it in the Applications folder or using Mac's Spotlight.
+1. Open Terminal by pressing `Cmd + Space` to open Spotlight, then type "Terminal" and press Enter.
 
-1. To check Java from Terminal, run `java -version`.
+1. Run the following command to check your Java version:
+   `java -version`
 
-1. If Java is installed, you should see output showing the Java version (e.g., `java version "17.0.1"`).
-    <box type="info">Any version that is 17.0.0 or newer is acceptable.</box>
+1. If Java is installed, you should see output showing the Java version (e.g., `java version "17"`).
+    <box type="info">Any version that is 17 or newer is acceptable.</box>
     <box type="warning">Older versions (e.g., Java 8) will not work and must be updated using Step 4.</box>
-    <box type="warning">If you see an error like "bash: java: command not found", it means Java is not installed. Please follow Step 4 to install Java.</box>
+    <box type="warning">If you see an error like `zsh: command not found: java`, it means Java is not installed. Please follow Step 4 to install Java.</box>
 
     ![macOS Java Version](images/java-version-mac.png)
     <p style="font-size: 0.9em; color: #666; text-align: center; margin-top: 0;">(Source: tutorials24x7)</p>
@@ -374,7 +377,7 @@ Shows a list of all assignments in the address book.
 **Tip:** You may also click on the tabs to switch between Contacts, Classes, and Assignments. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
 
 </box>
-  
+
 ### [TO BE UPDATED] Editing a contact : `edit`
 
 TO BE UPDATED.
@@ -430,7 +433,7 @@ Allocates a class to specific contacts.
 * The `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
 * These `CONTACT_INDICES...` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
-  
+
 <box type="warning" seamless>
 
 **Warnings:**
@@ -464,7 +467,7 @@ Unallocates a class from specific contacts.
 * The `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
 * These `CONTACT_INDICES...` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
-  
+
 <box type="warning" seamless>
 
 **Warnings:**
@@ -538,7 +541,7 @@ Adds an assignment to the address book.
 
 * `list contacts` followed by `addass ass/Assignment 4 d/15-01-2024 23:59 c/CS2103T-T10-1 ct/4 5`<br>
   Creates an assignment with the name "Assignment 4" and deadline "15 Jan 2024 23:59", allocated to the 4th and 5th contacts in the list, as well as all contacts belonging to class "CS2103T-T10-1".
-  
+
   The screenshot below illustrates the last example, where the class "CS2103T-T10-1" consists of contacts 2-5.\
   ![Creating and allocating Assignment 4](images/addass-result.png)
 
@@ -557,7 +560,7 @@ Allocates an assignment to specific contacts.
 * The `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
 * The `CONTACT_INDICES...` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
-  
+
 <box type="warning" seamless>
 
 **Warnings:**
@@ -605,11 +608,11 @@ Unallocates an assignment from specific contacts.
 * The `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
 
 * At least 1 of `[c/CLASS_NAME]` or `[ct/CONTACT_INDICES...]` must be provided.
-  
+
 * The `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
 * The `CONTACT_INDICES...` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
-  
+
 <box type="warning" seamless>
 
 **Warnings:**
