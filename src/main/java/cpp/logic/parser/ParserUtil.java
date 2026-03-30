@@ -2,6 +2,7 @@ package cpp.logic.parser;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -162,7 +163,7 @@ public class ParserUtil {
      */
     public static LocalDateTime parseDateTime(String datetime) throws ParseException {
         LocalDateTime dateTime = ParserUtil.parseDeadline(datetime);
-        if (dateTime.isAfter(LocalDateTime.now())) {
+        if (dateTime.isAfter(LocalDateTime.now(ZoneId.of("GMT+8")))) {
             throw new ParseException(ParserUtil.MESSAGE_INVALID_FUTURE_DATETIME);
         }
         return dateTime;
