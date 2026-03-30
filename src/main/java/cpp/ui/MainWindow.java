@@ -106,6 +106,10 @@ public class MainWindow extends UiPart<Stage> {
         this.logic = logic;
 
         // Configure the UI
+        if (logic.getGuiSettings().getWindowHeight() < 700 || logic.getGuiSettings().getWindowWidth() < 450) {
+            logic.setGuiSettings(new GuiSettings(450, 700, (int) logic.getGuiSettings().getWindowCoordinates().getX(),
+                    (int) logic.getGuiSettings().getWindowCoordinates().getY()));
+        }
         this.setWindowDefaultSize(logic.getGuiSettings());
 
         this.setAccelerators();

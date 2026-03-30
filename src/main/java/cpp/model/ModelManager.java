@@ -250,7 +250,7 @@ public class ModelManager implements Model {
         CollectionUtil.requireAllNonNull(target, editedClassGroup);
         this.addressBook.setClassGroup(target, editedClassGroup);
         if (this.viewState.get().isViewingClassGroup(target)) {
-            // this.viewClassGroup(editedClassGroup);
+            this.viewClassGroup(editedClassGroup);
         }
     }
 

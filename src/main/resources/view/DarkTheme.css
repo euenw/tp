@@ -25,7 +25,13 @@
 .main-tab:selected {
     -fx-background-color: transparent;
     -fx-border-color: transparent transparent #3e7b91 transparent;
-    -fx-border-width: 0 0 2 0;
+    -fx-border-width: 0 0 2 0 !important;
+}
+
+.main-tab:hover {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #3e7b91 transparent;
+    -fx-border-width: 0 0 1 0;
 }
 
 .label {
@@ -176,6 +182,11 @@
 .pane-with-border {
      -fx-background-color: derive(#1d1d1d, 20%);
      -fx-border-color: derive(#1d1d1d, 10%);
+     -fx-border-top-width: 1px;
+}
+
+.pane-with-white-border {
+     -fx-border-color: derive(#ffffff, 10%);
      -fx-border-top-width: 1px;
 }
 
