@@ -18,8 +18,6 @@ import javafx.scene.layout.StackPane;
  */
 public class UniqueContactView extends UiPart<Region> {
     private static final String FXML = "UniqueContactView.fxml";
-    private static final int MAX_VISIBLE_ROWS = 3;
-    private static final double CARD_ROW_HEIGHT = 105.0;
 
     @FXML
     private Label contactName;
@@ -47,8 +45,6 @@ public class UniqueContactView extends UiPart<Region> {
      */
     public UniqueContactView() {
         super(UniqueContactView.FXML);
-        this.resizeBlock(this.contactClassGroupsPlaceholder, 0);
-        this.resizeBlock(this.contactAssignmentsPlaceholder, 0);
     }
 
     /**
@@ -81,9 +77,6 @@ public class UniqueContactView extends UiPart<Region> {
         List<ClassGroup> safeClassGroups = classGroups == null ? List.of() : classGroups;
         List<ContactAssignmentWithAssignment> safeCas = cas == null ? List.of() : cas;
 
-        this.resizeBlock(this.contactClassGroupsPlaceholder, safeClassGroups.size());
-        this.resizeBlock(this.contactAssignmentsPlaceholder, safeCas.size());
-
         if (safeClassGroups.isEmpty()) {
             this.contactClassGroupsPlaceholder.getChildren().clear();
         }
@@ -111,19 +104,5 @@ public class UniqueContactView extends UiPart<Region> {
             this.assignmentListPanel = new ContactAssignmentAssignmentListPanel(observableCas);
             this.contactAssignmentsPlaceholder.getChildren().add(this.assignmentListPanel.getRoot());
         }
-    }
-
-    private void resizeBlock(StackPane block, int itemCount) {
-        double targetHeight = this.computeBlockHeight(itemCount);
-        block.setMinHeight(targetHeight);
-        block.setPrefHeight(targetHeight);
-        block.setMaxHeight(targetHeight);
-    }
-
-    private double computeBlockHeight(int itemCount) {
-        if (itemCount <= 0) {
-            return 0.0;
-        }
-        return Math.min(itemCount, UniqueContactView.MAX_VISIBLE_ROWS) * UniqueContactView.CARD_ROW_HEIGHT;
     }
 }

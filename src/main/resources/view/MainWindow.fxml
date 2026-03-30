@@ -14,7 +14,7 @@
 <?import javafx.scene.control.TabPane?>
 
 <fx:root type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-         title="ClassroomPlusPlus" minWidth="450" minHeight="600" onCloseRequest="#handleExit">
+         title="ClassroomPlusPlus" minWidth="450" minHeight="700" onCloseRequest="#handleExit">
   <icons>
     <Image url="@/images/cpp-icon.png" />
   </icons>
@@ -41,8 +41,8 @@
           </padding>
         </StackPane>
 
-        <StackPane VBox.vgrow="NEVER" fx:id="resultDisplayPlaceholder" styleClass="pane-with-border"
-                   minHeight="100">
+        <StackPane VBox.vgrow="SOMETIMES" fx:id="resultDisplayPlaceholder" styleClass="pane-with-border"
+              minHeight="100" maxHeight="200">
           <padding>
             <Insets top="5" right="10" bottom="5" left="10" />
           </padding>
