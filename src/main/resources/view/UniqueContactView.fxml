@@ -15,6 +15,7 @@
         <Label fx:id="contactPhone" styleClass="view_cell_small_label" />
         <Label fx:id="contactEmail" styleClass="view_cell_small_label" />
         <Label fx:id="contactAddress" styleClass="view_cell_small_label" />
+        <StackPane fx:id="contactClassGroupsPlaceholder" prefHeight="0.0" />
+        <StackPane fx:id="contactAssignmentsPlaceholder" prefHeight="0.0" />
     </VBox>
-    <StackPane fx:id="contactAssignmentsPlaceholder" VBox.vgrow="ALWAYS" />
 </VBox>
