@@ -249,11 +249,17 @@ public class ModelManager implements Model {
     public void setClassGroup(ClassGroup target, ClassGroup editedClassGroup) {
         CollectionUtil.requireAllNonNull(target, editedClassGroup);
         this.addressBook.setClassGroup(target, editedClassGroup);
+        if (this.viewState.get().isViewingClassGroup(target)) {
+            // this.viewClassGroup(editedClassGroup);
+        }
     }
 
     @Override
     public void deleteClassGroup(ClassGroup target) {
         this.addressBook.removeClassGroup(target);
+        if (this.viewState.get().isViewingClassGroup(target)) {
+            this.clearViewState();
+        }
     }
 
     // =========== Filtered Contact List Accessors
