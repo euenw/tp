@@ -11,10 +11,10 @@
         <padding>
             <Insets top="5" right="5" bottom="5" left="15" />
         </padding>
-        <Label fx:id="ContactName" styleClass="view_cell_big_label" />
-        <Label fx:id="ContactPhone" styleClass="view_cell_small_label" />
-        <Label fx:id="ContactEmail" styleClass="view_cell_small_label" />
-        <Label fx:id="ContactAddress" styleClass="view_cell_small_label" />
+        <Label fx:id="contactName" styleClass="view_cell_big_label" />
+        <Label fx:id="contactPhone" styleClass="view_cell_small_label" />
+        <Label fx:id="contactEmail" styleClass="view_cell_small_label" />
+        <Label fx:id="contactAddress" styleClass="view_cell_small_label" />
     </VBox>
     <StackPane fx:id="contactAssignmentsPlaceholder" VBox.vgrow="ALWAYS" />
 </VBox>

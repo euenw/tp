@@ -11,6 +11,7 @@ import cpp.model.ReadOnlyAddressBook;
 import cpp.model.ReadOnlyUserPrefs;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.ContactAssignment;
+import cpp.model.assignment.ContactAssignmentWithAssignment;
 import cpp.model.assignment.ContactAssignmentWithContact;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
@@ -187,6 +188,11 @@ public class ModelStub implements Model {
         throw new AssertionError("This method should not be called.");
     }
 
+    @Override
+    public void viewContact(Contact contact) {
+        throw new AssertionError("This method should not be called.");
+    }
+
     /** Clears any currently viewed assignment. */
     @Override
     public void clearViewState() {
@@ -197,6 +203,13 @@ public class ModelStub implements Model {
     @Override
     public List<ContactAssignmentWithContact> getContactAssignmentsWithContactsForAssignment(
             Assignment assignment) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    /** Returns the contact assignments for the given contact. */
+    @Override
+    public List<ContactAssignmentWithAssignment> getContactAssignmentsWithAssignmentsForContact(
+            Contact contact) {
         throw new AssertionError("This method should not be called.");
     }
 

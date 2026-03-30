@@ -9,8 +9,6 @@ import cpp.logic.Messages;
 import cpp.logic.commands.CommandResult;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.model.Model;
-import cpp.model.ReadOnlyAddressBook;
-import cpp.model.assignment.ContactAssignment;
 import cpp.model.contact.Contact;
 
 /**
@@ -20,7 +18,7 @@ import cpp.model.contact.Contact;
  */
 public class ViewContactCommand extends ViewCommand {
 
-    public static final String MESSAGE_VIEW_CONTACT_SUCCESS = "Viewed Contact:\n%1$s";
+    public static final String MESSAGE_SUCCESS = "Viewed Contact:\n%1$s";
 
     private final Index targetIndex;
 
@@ -39,33 +37,10 @@ public class ViewContactCommand extends ViewCommand {
 
         Contact contactToView = lastShownList.get(this.targetIndex.getZeroBased());
 
-        /**
-         * ReadOnlyAddressBook addressBook = model.getAddressBook();
-         * List<ClassGroup> relevantClassGroups = addressBook.getClassGroupList()
-         * .stream()
-         * .filter(classGroup ->
-         * classGroup.getContactIdSet().contains(contactToView.getId()))
-         * .toList();
-         * List<ContactAssignment> relevantContactAssignments =
-         * model.getContactAssignmentsForContact(contactToView);
-         * 
-         * String contactDetails = contactToView.toString() + "\nClasses:\n"
-         * + (relevantClassGroups.isEmpty() ? "None"
-         * : relevantClassGroups.stream()
-         * .map(cg -> Messages.format(cg))
-         * .collect(Collectors.joining("\n")))
-         * + "\nAssignments:\n"
-         * + (relevantContactAssignments.isEmpty() ? "None"
-         * : relevantContactAssignments.stream()
-         * .map(ca -> this.formatContactAssignment(addressBook, ca))
-         * .collect(Collectors.joining("\n")));
-         */
-
         model.viewContact(contactToView);
 
         return new CommandResult(
-                String.format(ViewAssignmentCommand.MESSAGE_SUCCESS, Messages.format(
-                        contactToView)),
+                String.format(ViewContactCommand.MESSAGE_SUCCESS, Messages.format(contactToView)),
                 CommandResult.ViewType.CONTACT);
     }
 
@@ -88,16 +63,5 @@ public class ViewContactCommand extends ViewCommand {
         return new ToStringBuilder(this)
                 .add("targetIndex", this.targetIndex)
                 .toString();
-    }
-
-    private String formatContactAssignment(ReadOnlyAddressBook addressBook, ContactAssignment contactAssignment) {
-        String assignmentText = addressBook.getAssignmentList().stream()
-                .filter(assignment -> assignment.getId().equals(contactAssignment.getAssignmentId()))
-                .findFirst()
-                .map(Messages::format)
-                .orElse(contactAssignment.getAssignmentId());
-
-        return assignmentText + "; Submitted: " + contactAssignment.isSubmitted()
-                + "; Graded: " + contactAssignment.isGraded();
     }
 }

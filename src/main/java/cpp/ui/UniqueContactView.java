@@ -22,16 +22,16 @@ public class UniqueContactView extends UiPart<Region> {
     private static final String FXML = "UniqueContactView.fxml";
 
     @FXML
-    private Label ContactName;
+    private Label contactName;
 
     @FXML
-    private Label ContactPhone;
+    private Label contactPhone;
 
     @FXML
-    private Label ContactEmail;
+    private Label contactEmail;
 
     @FXML
-    private Label ContactAddress;
+    private Label contactAddress;
 
     @FXML
     private StackPane contactAssignmentsPlaceholder;
@@ -46,10 +46,10 @@ public class UniqueContactView extends UiPart<Region> {
      * Sets the contact details shown in this view.
      */
     public void setContact(Contact contact) {
-        this.ContactName.setText(contact.getName().fullName);
-        this.ContactPhone.setText(contact.getPhone().value);
-        this.ContactEmail.setText(contact.getEmail().value);
-        this.ContactAddress.setText(contact.getAddress().value);
+        this.contactName.setText(contact.getName().fullName);
+        this.contactPhone.setText(contact.getPhone().value);
+        this.contactEmail.setText(contact.getEmail().value);
+        this.contactAddress.setText(contact.getAddress().value);
     }
 
     /**
