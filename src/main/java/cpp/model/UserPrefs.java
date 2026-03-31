@@ -65,6 +65,9 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     }
 
     public void setTimeZoneOffset(int timeZoneOffset) {
+        if (timeZoneOffset < -18 || timeZoneOffset > 18) {
+            throw new IllegalArgumentException("Time zone offset must be between -18 and 18 inclusive");
+        }
         this.timeZoneOffset = timeZoneOffset;
     }
 

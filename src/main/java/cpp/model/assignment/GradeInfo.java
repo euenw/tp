@@ -13,7 +13,8 @@ public final class GradeInfo {
 
     public static final String INVALID_GRADE_STRING = """
             isGraded cannot be true if submissionInfo is not marked as submitted;
-            gradingDate and score must exist if and only if marked as graded;
+            gradingDate must be null if and only if ungraded;
+            score must be 0 when ungraded;
             score must be a non-negative number (decimal places allowed) between 0 and 100;
             gradingDate cannot be before submissionDate""";
     public static final String INVALID_SCORE_STRING = """
@@ -27,7 +28,8 @@ public final class GradeInfo {
      * Creates a GradeInfo with the given details. GradeInfo is valid only if the
      * given details satisfy the following invariants:
      * - isGraded cannot be true if submissionInfo is not marked as submitted
-     * - gradingDate and score must exist if and only if marked as graded
+     * - gradingDate must be null if and only if ungraded
+     * - score must be 0 when ungraded
      * - score must be a non-negative float between 0 and 100
      * - gradingDate cannot be before submissionDate
      */

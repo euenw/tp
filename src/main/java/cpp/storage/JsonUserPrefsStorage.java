@@ -3,7 +3,9 @@ package cpp.storage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.logging.Logger;
 
+import cpp.commons.core.LogsCenter;
 import cpp.commons.exceptions.DataLoadingException;
 import cpp.commons.util.JsonUtil;
 import cpp.model.ReadOnlyUserPrefs;
@@ -15,6 +17,7 @@ import cpp.model.UserPrefs;
 public class JsonUserPrefsStorage implements UserPrefsStorage {
 
     private Path filePath;
+    private static final Logger logger = LogsCenter.getLogger(JsonUserPrefsStorage.class);
 
     public JsonUserPrefsStorage(Path filePath) {
         this.filePath = filePath;
@@ -37,7 +40,16 @@ public class JsonUserPrefsStorage implements UserPrefsStorage {
      * @throws DataLoadingException if the file format is not as expected.
      */
     public Optional<UserPrefs> readUserPrefs(Path prefsFilePath) throws DataLoadingException {
-        return JsonUtil.readJsonFile(prefsFilePath, UserPrefs.class);
+        Optional<UserPrefs> prefs = JsonUtil.readJsonFile(prefsFilePath, UserPrefs.class);
+        if (prefs.isPresent()) {
+            int tz = prefs.get().getTimeZoneOffset();
+            if (tz < -18 || tz > 18) {
+                JsonUserPrefsStorage.logger.info("Invalid time zone offset in file: " + tz);
+                throw new DataLoadingException(new IllegalArgumentException(
+                        "Invalid time zone offset in file: " + tz));
+            }
+        }
+        return prefs;
     }
 
     @Override
