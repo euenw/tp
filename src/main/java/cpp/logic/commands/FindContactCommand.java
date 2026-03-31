@@ -15,8 +15,10 @@ import cpp.model.contact.ContactNameContainsKeywordsPredicate;
 public class FindContactCommand extends Command {
 
     public static final String COMMAND_WORD = "findcontact";
+    public static final String COMMAND_WORD_ABBREV = "findct";
 
-    public static final String MESSAGE_USAGE = FindContactCommand.COMMAND_WORD
+    public static final String MESSAGE_USAGE = FindContactCommand.COMMAND_WORD + " ("
+            + FindContactCommand.COMMAND_WORD_ABBREV + ")"
             + ": Finds all contacts whose names contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"

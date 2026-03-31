@@ -92,9 +92,11 @@ public class AddressBookParser {
             return new ClearCommand();
 
         case FindContactCommand.COMMAND_WORD:
+        case FindContactCommand.COMMAND_WORD_ABBREV:
             return new FindContactCommandParser().parse(arguments);
 
         case FindClassCommand.COMMAND_WORD:
+        case FindClassCommand.COMMAND_WORD_ABBREV:
             return new FindClassCommandParser().parse(arguments);
 
         case FindAssignmentCommand.COMMAND_WORD:
