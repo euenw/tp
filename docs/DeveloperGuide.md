@@ -124,7 +124,7 @@ How the parsing works:
 
 #### Model — current design
 
-<puml src="diagrams/ModelClassDiagram.puml" width="900" />
+<puml src="diagrams/ModelClassDiagram.puml" width="1100" />
 
 **Model (current design):** shows `AddressBook` and its relations to the 3 main entities: `Contact`, `ClassGroup`, and `Assignment` through the `Unique{Entity}List` counterparts. The `Model` component also includes a `UserPref` class to store user preferences (e.g., file path of the address book data, GUI settings).
 
@@ -140,7 +140,7 @@ How the parsing works:
 
 #### Classes view
 
-<puml src="diagrams/ModelClassDiagramClassGroups.puml" width="450" />
+<puml src="diagrams/ModelClassDiagramClassGroups.puml" width="500" />
 
 **ClassGroup view:** highlights classes and class group-related entities.
 
@@ -166,7 +166,7 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/AY2526S2-CS2103T-T10-1/tp/tree/master/src/main/java/cpp/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="900" />
+<puml src="diagrams/StorageClassDiagram.puml" width="1100" />
 
 The `Storage` component,
 
@@ -199,6 +199,8 @@ The `Model` component manages `Assignment` entities using `UniqueAssignmentList`
 Similar to the `ClassGroup` design, the `ContactAssignment` class also stores the `Contact`'s `id` field instead of a reference to the `Contact` object itself, for easier management of edits to `Contact`s. `ContactAssignment` objects also store the `Assignment`'s `id` field so that any edits to the `Assignment` can be easily managed as well.
 
 A separate `UniqueContactAssignmentList` is used to manage the list of `ContactAssignment`s, and enforce uniqueness constraints for them.
+
+<puml src="diagrams/AssignmentsCombinedDiagram.puml" width="700" />
 
 ### \[Proposed\] Undo/redo feature
 
