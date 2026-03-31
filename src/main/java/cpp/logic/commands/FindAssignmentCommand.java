@@ -5,7 +5,7 @@ import java.util.Objects;
 import cpp.commons.util.ToStringBuilder;
 import cpp.logic.Messages;
 import cpp.model.Model;
-import cpp.model.assignment.AssignmentNameContainsKeywordsPredicate;
+import cpp.model.assignment.AssignmentSearchPredicate;
 
 /**
  * Finds and lists all assignments in address book whose name contains the
@@ -17,14 +17,17 @@ public class FindAssignmentCommand extends Command {
     public static final String COMMAND_WORD = "findass";
 
     public static final String MESSAGE_USAGE = FindAssignmentCommand.COMMAND_WORD
-            + ": Finds all assignments whose names contain the specified search string "
+            + ": Finds all assignments whose names or deadlines contain the specified keywords "
             + "(case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: SEARCH_STRING\n"
-            + "Example: " + FindAssignmentCommand.COMMAND_WORD + " Assignment 1";
+            + "Parameters: SEARCH_STRING | d/ DEADLINE\n"
+            + "Default search: name\n"
+            + "Deadline formats: dd-MM-yyyy or dd-MM-yyyy HH:mm\n"
+            + "Example: " + FindAssignmentCommand.COMMAND_WORD + " Assignment 1\n"
+            + "Example: " + FindAssignmentCommand.COMMAND_WORD + " d/ 31-12-2024";
 
-    private final AssignmentNameContainsKeywordsPredicate predicate;
+    private final AssignmentSearchPredicate predicate;
 
-    public FindAssignmentCommand(AssignmentNameContainsKeywordsPredicate predicate) {
+    public FindAssignmentCommand(AssignmentSearchPredicate predicate) {
         this.predicate = predicate;
     }
 

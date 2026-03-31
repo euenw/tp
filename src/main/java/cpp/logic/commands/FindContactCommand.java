@@ -5,10 +5,11 @@ import java.util.Objects;
 import cpp.commons.util.ToStringBuilder;
 import cpp.logic.Messages;
 import cpp.model.Model;
-import cpp.model.contact.ContactNameContainsKeywordsPredicate;
+import cpp.model.contact.ContactSearchPredicate;
 
 /**
- * Finds and lists all contacts in address book whose name contains any of the
+ * Finds and lists all contacts in address book whose name/phone/email contains
+ * any of the
  * argument keywords.
  * Keyword matching is case insensitive.
  */
@@ -19,14 +20,18 @@ public class FindContactCommand extends Command {
 
     public static final String MESSAGE_USAGE = FindContactCommand.COMMAND_WORD + " ("
             + FindContactCommand.COMMAND_WORD_ABBREV + ")"
-            + ": Finds all contacts whose names contain any of "
+            + ": Finds all contacts whose name/phone/email contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + FindContactCommand.COMMAND_WORD + " alice bob charlie";
+            + "Parameters: (KEYWORD [MORE_KEYWORDS]... | p/ PHONE_KEYWORD [MORE_KEYWORDS]... | "
+            + "e/ EMAIL_KEYWORD [MORE_KEYWORDS]...)\n"
+            + "Default search: name\n"
+            + "Example: " + FindContactCommand.COMMAND_WORD + " alice bob\n"
+            + "Example: " + FindContactCommand.COMMAND_WORD + " p/ 91234567 98765432\n"
+            + "Example: " + FindContactCommand.COMMAND_WORD + " e/ gmail yahoo";
 
-    private final ContactNameContainsKeywordsPredicate predicate;
+    private final ContactSearchPredicate predicate;
 
-    public FindContactCommand(ContactNameContainsKeywordsPredicate predicate) {
+    public FindContactCommand(ContactSearchPredicate predicate) {
         this.predicate = predicate;
     }
 
