@@ -179,6 +179,9 @@ public class ModelManager implements Model {
         Objects.requireNonNull(target);
         Objects.requireNonNull(editedAssignment);
         this.addressBook.setAssignment(target, editedAssignment);
+        if (this.viewState.get().isViewingAssignment(target)) {
+            this.viewAssignment(editedAssignment);
+        }
     }
 
     @Override
