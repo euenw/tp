@@ -31,7 +31,7 @@ public class FindContactCommand extends Command {
             + FindContactCommand.COMMAND_WORD_ABBREV + ")"
             + ": Finds all contacts whose name contains the specified keywords or whose phone/email "
             + "match exactly (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]... | p/PHONE | e/EMAIL | n/NAME [MORE_NAMES]...\n"
+            + "Parameters: KEYWORD [MORE_KEYWORDS]... | p/PHONE | e/EMAIL\n"
             + "Default search: name (keyword-based)\n"
             + "Phone/Email search: exact match (no spaces)\n"
             + "Example: " + FindContactCommand.COMMAND_WORD + " alice bob\n"
