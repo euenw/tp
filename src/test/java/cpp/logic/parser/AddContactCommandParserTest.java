@@ -41,6 +41,14 @@ public class AddContactCommandParserTest {
                         + CommandTestUtil.TAG_DESC_HUSBAND
                         + CommandTestUtil.TAG_DESC_FRIEND,
                 new AddContactCommand(expectedContactMultipleTags));
+
+        // multiple tags with one tag prefix accepted
+        CommandParserTestUtil.assertParseSuccess(this.parser,
+                CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
+                        + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB
+                        + " " + CliSyntax.PREFIX_TAG + CommandTestUtil.VALID_TAG_HUSBAND
+                        + " " + CommandTestUtil.VALID_TAG_FRIEND,
+                new AddContactCommand(expectedContactMultipleTags));
     }
 
     @Test

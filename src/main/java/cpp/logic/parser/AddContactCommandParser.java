@@ -1,5 +1,7 @@
 package cpp.logic.parser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import cpp.logic.Messages;
@@ -56,7 +58,21 @@ public class AddContactCommandParser implements Parser<AddContactCommand> {
                 ? ParserUtil.parseAssignmentName(assignmentNameValue)
                 : null;
 
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(CliSyntax.PREFIX_TAG));
+        List<String> flattenedTags = new ArrayList<>();
+        for (String rawTagValue : argMultimap.getAllValues(CliSyntax.PREFIX_TAG)) {
+            String trimmedTagValue = rawTagValue.trim();
+            if (trimmedTagValue.isEmpty()) {
+                continue;
+            }
+
+            for (String tagToken : trimmedTagValue.split("\\s+")) {
+                if (!tagToken.isBlank()) {
+                    flattenedTags.add(tagToken);
+                }
+            }
+        }
+
+        Set<Tag> tagList = ParserUtil.parseTags(flattenedTags);
 
         Contact contact = new Contact(name, phone, email, address, tagList);
 

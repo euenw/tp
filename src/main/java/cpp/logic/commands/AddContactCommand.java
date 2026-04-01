@@ -33,7 +33,7 @@ public class AddContactCommand extends Command {
             + CliSyntax.PREFIX_ADDRESS + "ADDRESS "
             + "[" + CliSyntax.PREFIX_CLASS + "CLASS_NAME] "
             + "[" + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME] "
-            + "[" + CliSyntax.PREFIX_TAG + "TAG]...\n"
+            + "[" + CliSyntax.PREFIX_TAG + "TAG [TAG]...]\n"
             + "Example: " + AddContactCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_NAME + "John Doe "
             + CliSyntax.PREFIX_PHONE + "98765432 "
@@ -41,8 +41,7 @@ public class AddContactCommand extends Command {
             + CliSyntax.PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
-            + CliSyntax.PREFIX_TAG + "friends "
-            + CliSyntax.PREFIX_TAG + "owesMoney";
+            + CliSyntax.PREFIX_TAG + "friends owesMoney";
 
     public static final String MESSAGE_SUCCESS = "New contact added: %1$s%2$s%3$s";
     public static final String MESSAGE_SUCCESS_CLASS_GROUP_ALLOCATION = "\nAllocated class group: %1$s";
