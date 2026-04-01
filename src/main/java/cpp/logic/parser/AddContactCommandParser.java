@@ -1,7 +1,5 @@
 package cpp.logic.parser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import cpp.logic.Messages;
@@ -42,7 +40,8 @@ public class AddContactCommandParser implements Parser<AddContactCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_EMAIL,
-                CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_ASSIGNMENT);
+                CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_ASSIGNMENT,
+                CliSyntax.PREFIX_TAG);
         ContactName name = ParserUtil.parseName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(CliSyntax.PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(CliSyntax.PREFIX_EMAIL).get());
@@ -58,21 +57,8 @@ public class AddContactCommandParser implements Parser<AddContactCommand> {
                 ? ParserUtil.parseAssignmentName(assignmentNameValue)
                 : null;
 
-        List<String> flattenedTags = new ArrayList<>();
-        for (String rawTagValue : argMultimap.getAllValues(CliSyntax.PREFIX_TAG)) {
-            String trimmedTagValue = rawTagValue.trim();
-            if (trimmedTagValue.isEmpty()) {
-                continue;
-            }
-
-            for (String tagToken : trimmedTagValue.split("\\s+")) {
-                if (!tagToken.isBlank()) {
-                    flattenedTags.add(tagToken);
-                }
-            }
-        }
-
-        Set<Tag> tagList = ParserUtil.parseTags(flattenedTags);
+        String tagString = argMultimap.getValue(CliSyntax.PREFIX_TAG).orElse("");
+        Set<Tag> tagList = ParserUtil.parseTags(tagString);
 
         Contact contact = new Contact(name, phone, email, address, tagList);
 

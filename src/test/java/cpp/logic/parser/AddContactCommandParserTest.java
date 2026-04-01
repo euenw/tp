@@ -31,18 +31,10 @@ public class AddContactCommandParserTest {
                         + CommandTestUtil.ADDRESS_DESC_BOB + CommandTestUtil.TAG_DESC_FRIEND,
                 new AddContactCommand(expectedContact));
 
-        // multiple tags - all accepted
+        // multiple tags with one tag prefix accepted
         Contact expectedContactMultipleTags = new ContactBuilder(TypicalContacts.BOB)
                 .withTags(CommandTestUtil.VALID_TAG_FRIEND, CommandTestUtil.VALID_TAG_HUSBAND)
                 .build();
-        CommandParserTestUtil.assertParseSuccess(this.parser,
-                CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
-                        + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB
-                        + CommandTestUtil.TAG_DESC_HUSBAND
-                        + CommandTestUtil.TAG_DESC_FRIEND,
-                new AddContactCommand(expectedContactMultipleTags));
-
-        // multiple tags with one tag prefix accepted
         CommandParserTestUtil.assertParseSuccess(this.parser,
                 CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
                         + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB
@@ -55,7 +47,7 @@ public class AddContactCommandParserTest {
     public void parse_repeatedNonTagValue_failure() {
         String validExpectedContactString = CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
                 + CommandTestUtil.EMAIL_DESC_BOB
-                + CommandTestUtil.ADDRESS_DESC_BOB + CommandTestUtil.TAG_DESC_FRIEND;
+                + CommandTestUtil.ADDRESS_DESC_BOB;
 
         // multiple names
         CommandParserTestUtil.assertParseFailure(this.parser,
@@ -196,6 +188,11 @@ public class AddContactCommandParserTest {
                         + validExpectedContactString
                         + " " + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 2",
                 Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_ASSIGNMENT));
+
+        CommandParserTestUtil.assertParseFailure(this.parser,
+                validExpectedContactString + CommandTestUtil.TAG_DESC_FRIEND
+                        + CommandTestUtil.TAG_DESC_HUSBAND,
+                Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_TAG));
     }
 
     @Test
@@ -254,35 +251,39 @@ public class AddContactCommandParserTest {
         CommandParserTestUtil.assertParseFailure(this.parser,
                 CommandTestUtil.INVALID_NAME_DESC + CommandTestUtil.PHONE_DESC_BOB
                         + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB
-                        + CommandTestUtil.TAG_DESC_HUSBAND + CommandTestUtil.TAG_DESC_FRIEND,
+                        + " " + CliSyntax.PREFIX_TAG + CommandTestUtil.VALID_TAG_HUSBAND
+                        + " " + CommandTestUtil.VALID_TAG_FRIEND,
                 ContactName.MESSAGE_CONSTRAINTS);
 
         // invalid phone
         CommandParserTestUtil.assertParseFailure(this.parser,
                 CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.INVALID_PHONE_DESC
                         + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB
-                        + CommandTestUtil.TAG_DESC_HUSBAND + CommandTestUtil.TAG_DESC_FRIEND,
+                        + " " + CliSyntax.PREFIX_TAG + CommandTestUtil.VALID_TAG_HUSBAND
+                        + " " + CommandTestUtil.VALID_TAG_FRIEND,
                 Phone.MESSAGE_CONSTRAINTS);
 
         // invalid email
         CommandParserTestUtil.assertParseFailure(this.parser,
                 CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
                         + CommandTestUtil.INVALID_EMAIL_DESC + CommandTestUtil.ADDRESS_DESC_BOB
-                        + CommandTestUtil.TAG_DESC_HUSBAND + CommandTestUtil.TAG_DESC_FRIEND,
+                        + " " + CliSyntax.PREFIX_TAG + CommandTestUtil.VALID_TAG_HUSBAND
+                        + " " + CommandTestUtil.VALID_TAG_FRIEND,
                 Email.MESSAGE_CONSTRAINTS);
 
         // invalid address
         CommandParserTestUtil.assertParseFailure(this.parser,
                 CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
                         + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.INVALID_ADDRESS_DESC
-                        + CommandTestUtil.TAG_DESC_HUSBAND + CommandTestUtil.TAG_DESC_FRIEND,
+                        + " " + CliSyntax.PREFIX_TAG + CommandTestUtil.VALID_TAG_HUSBAND
+                        + " " + CommandTestUtil.VALID_TAG_FRIEND,
                 Address.MESSAGE_CONSTRAINTS);
 
         // invalid tag
         CommandParserTestUtil.assertParseFailure(this.parser,
                 CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
                         + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB
-                        + CommandTestUtil.INVALID_TAG_DESC + CommandTestUtil.VALID_TAG_FRIEND,
+                        + " " + CliSyntax.PREFIX_TAG + "hubby* " + CommandTestUtil.VALID_TAG_FRIEND,
                 Tag.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
@@ -295,8 +296,8 @@ public class AddContactCommandParserTest {
         CommandParserTestUtil.assertParseFailure(this.parser,
                 CommandTestUtil.PREAMBLE_NON_EMPTY + CommandTestUtil.NAME_DESC_BOB
                         + CommandTestUtil.PHONE_DESC_BOB + CommandTestUtil.EMAIL_DESC_BOB
-                        + CommandTestUtil.ADDRESS_DESC_BOB + CommandTestUtil.TAG_DESC_HUSBAND
-                        + CommandTestUtil.TAG_DESC_FRIEND,
+                        + CommandTestUtil.ADDRESS_DESC_BOB + " " + CliSyntax.PREFIX_TAG
+                        + CommandTestUtil.VALID_TAG_HUSBAND + " " + CommandTestUtil.VALID_TAG_FRIEND,
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddContactCommand.MESSAGE_USAGE));
     }
 }

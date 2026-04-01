@@ -79,13 +79,13 @@ public class EditContactCommandParserTest {
         // parsing it together with a valid tag results in error
         CommandParserTestUtil.assertParseFailure(this.parser, "1" + CommandTestUtil.TAG_DESC_FRIEND
                 + CommandTestUtil.TAG_DESC_HUSBAND + EditContactCommandParserTest.TAG_EMPTY,
-                Tag.MESSAGE_CONSTRAINTS);
+                Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_TAG));
         CommandParserTestUtil.assertParseFailure(this.parser, "1" + CommandTestUtil.TAG_DESC_FRIEND
                 + EditContactCommandParserTest.TAG_EMPTY + CommandTestUtil.TAG_DESC_HUSBAND,
-                Tag.MESSAGE_CONSTRAINTS);
+                Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_TAG));
         CommandParserTestUtil.assertParseFailure(this.parser, "1" + EditContactCommandParserTest.TAG_EMPTY
                 + CommandTestUtil.TAG_DESC_FRIEND + CommandTestUtil.TAG_DESC_HUSBAND,
-                Tag.MESSAGE_CONSTRAINTS);
+                Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_TAG));
 
         // multiple invalid values, but only the first invalid value is captured
         CommandParserTestUtil.assertParseFailure(this.parser,
@@ -98,10 +98,10 @@ public class EditContactCommandParserTest {
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = TypicalIndexes.INDEX_SECOND_CONTACT;
         String userInput = targetIndex.getOneBased() + CommandTestUtil.PHONE_DESC_BOB
-                + CommandTestUtil.TAG_DESC_HUSBAND
                 + CommandTestUtil.EMAIL_DESC_AMY + CommandTestUtil.ADDRESS_DESC_AMY
                 + CommandTestUtil.NAME_DESC_AMY
-                + CommandTestUtil.TAG_DESC_FRIEND;
+                + " " + CliSyntax.PREFIX_TAG + CommandTestUtil.VALID_TAG_HUSBAND
+                + " " + CommandTestUtil.VALID_TAG_FRIEND;
 
         EditContactDescriptor descriptor = new EditContactDescriptorBuilder()
                 .withName(CommandTestUtil.VALID_NAME_AMY)
@@ -197,7 +197,8 @@ public class EditContactCommandParserTest {
         CommandParserTestUtil.assertParseFailure(this.parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_PHONE,
                         CliSyntax.PREFIX_EMAIL,
-                        CliSyntax.PREFIX_ADDRESS));
+                        CliSyntax.PREFIX_ADDRESS,
+                        CliSyntax.PREFIX_TAG));
 
         // multiple invalid values
         userInput = targetIndex.getOneBased() + CommandTestUtil.INVALID_PHONE_DESC
