@@ -453,11 +453,17 @@ Adds an assignment to the address book.
 
 * If the specified class does not contain any students, the command will fail and no assignment is created.
 
+* The deadline stored in `addressbook.json` is in GMT. Any direct modifications to `addressbook.json` must ensure that date and time values are in GMT, otherwise the user will see incorrect deadlines in the app and may encounter issues when trying to update submission statuses or grading information for those assignments.
+
 </box>
 
 <box type="tip" seamless>
 
-**Tip:** You can enter both the `c/CLASS_NAME` and `ct/CONTACT_INDICES...` parameters to allocate the assignment to specific contacts at the time of creation. This is optional and can also be done later using the `allocass` command.
+**Tips:**
+
+* You can enter both the `c/CLASS_NAME` and `ct/CONTACT_INDICES...` parameters to allocate the assignment to specific contacts at the time of creation. This is optional and can also be done later using the `allocass` command.
+
+* The deadline will be based on the timezone set in `preferences.json`. By default, this is set to GMT +8, but you can change it to your local timezone if needed. Acceptable values range from -18 to 18, and any invalid or missing timezone values will default to GMT +8.
 
 </box>
 
@@ -616,11 +622,19 @@ Marks a specific assignment as submitted for the specified contacts.
 
 * If no contacts are marked as submitted at the end of the command, the command will fail and the user will see an error message specifying the issue.
 
+* The submission date and time stored in `addressbook.json` is in GMT. Any direct modifications to `addressbook.json` must ensure that date and time values are in GMT, otherwise the user will see incorrect submission dates in the app and may encounter issues when trying to update submission statuses or grading information for those assignments.
+
+* It is recommended to use the `submit` command to mark assignments as submitted, as the app will automatically convert the specified submission date and time from the user's local timezone to GMT before storing it in `addressbook.json`.
+
 </box>
 
 <box type="tip" seamless>
 
-**Tip:** You may omit the `d/SUBMISSION_DATE` parameter to use the current date and time as the submission date.
+**Tips:**
+
+* You may omit the `d/SUBMISSION_DATE` parameter to use the current date and time as the submission date.
+
+* The submission date and time will be based on the timezone set in `preferences.json`. By default, this is set to GMT +8, but you can change it to your local timezone if needed. Acceptable values range from -18 to 18, and any invalid or missing timezone values will default to GMT +8.
 
 </box>
 
@@ -736,11 +750,19 @@ Grades a specific assignment for the specified contacts with a score.
 
 * If no contacts are graded at the end of the command, the command will fail and the user will see an error message specifying the issue.
 
+* The grading date and time stored in `addressbook.json` is in GMT. Any direct modifications to `addressbook.json` must ensure that date and time values are in GMT, otherwise the user will see incorrect grading dates in the app and may encounter issues when trying to update grading information for those assignments.
+
+* It is recommended to use the `grade` command to mark assignments as graded, as the app will automatically convert the specified grading date and time from the user's local timezone to GMT before storing it in `addressbook.json`.
+
 </box>
 
 <box type="tip" seamless>
 
-**Tip:** You may omit the `d/GRADING_DATE` parameter to use the current date and time as the grading date.
+**Tips:**
+
+* You may omit the `d/GRADING_DATE` parameter to use the current date and time as the grading date.
+
+* The grading date and time will be based on the timezone set in `preferences.json`. By default, this is set to GMT +8, but you can change it to your local timezone if needed. Acceptable values range from -18 to 18, and any invalid or missing timezone values will default to GMT +8.
 
 </box>
 
@@ -1013,6 +1035,10 @@ CPP data is saved automatically in `[JAR file location]/data/addressbook.json`. 
 
 * Certain edits can cause CPP to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
+
+### Editing the preferences file
+
+CPP preferences are saved in `[JAR file location]/preferences.json`. This should only be used to modify the timezone setting, which is used to determine the deadlines and submission/grading dates shown in the app. By default, this is set to GMT +8, but you can change it to your local timezone if needed. Acceptable values range from -18 to 18, and any invalid or missing timezone values will default to GMT +8.
 
 --------------------------------------------------------------------------------------------------------------------
 
