@@ -19,6 +19,7 @@ import cpp.logic.commands.HelpCommand;
 import cpp.logic.commands.ListCommand;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.commands.assignment.AllocateAssignmentCommand;
+import cpp.logic.commands.assignment.EditAssignmentCommand;
 import cpp.logic.commands.assignment.GradeAssignmentCommand;
 import cpp.logic.commands.assignment.SubmitAssignmentCommand;
 import cpp.logic.commands.assignment.UnallocateAssignmentCommand;
@@ -30,6 +31,7 @@ import cpp.logic.commands.classgroup.EditClassGroupCommand;
 import cpp.logic.commands.classgroup.UnallocateClassGroupCommand;
 import cpp.logic.parser.assignment.AddAssignmentCommandParser;
 import cpp.logic.parser.assignment.AllocateAssignmentCommandParser;
+import cpp.logic.parser.assignment.EditAssignmentCommandParser;
 import cpp.logic.parser.assignment.GradeAssignmentCommandParser;
 import cpp.logic.parser.assignment.SubmitAssignmentCommandParser;
 import cpp.logic.parser.assignment.UnallocateAssignmentCommandParser;
@@ -77,6 +79,7 @@ public class AddressBookParser {
         switch (commandWord) {
 
         case AddContactCommand.COMMAND_WORD:
+        case AddContactCommand.COMMAND_WORD_ALIAS:
             return new AddContactCommandParser().parse(arguments);
 
         case EditContactCommand.COMMAND_WORD:
@@ -84,6 +87,9 @@ public class AddressBookParser {
 
         case EditClassGroupCommand.COMMAND_WORD:
             return new EditClassGroupCommandParser().parse(arguments);
+
+        case EditAssignmentCommand.COMMAND_WORD:
+            return new EditAssignmentCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
@@ -133,12 +139,15 @@ public class AddressBookParser {
             return new UngradeAssignmentCommandParser().parse(arguments);
 
         case AddClassGroupCommand.COMMAND_WORD:
+        case AddClassGroupCommand.COMMAND_WORD_ALIAS:
             return new AddClassGroupCommandParser().parse(arguments);
 
         case AllocateClassGroupCommand.COMMAND_WORD:
+        case AllocateClassGroupCommand.COMMAND_WORD_ALIAS:
             return new AllocateClassGroupCommandParser().parse(arguments);
 
         case UnallocateClassGroupCommand.COMMAND_WORD:
+        case UnallocateClassGroupCommand.COMMAND_WORD_ALIAS:
             return new UnallocateClassGroupCommandParser().parse(arguments);
 
         default:
