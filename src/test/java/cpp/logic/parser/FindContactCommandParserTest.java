@@ -20,7 +20,7 @@ public class FindContactCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsFindCommand() {
-        // no leading and trailing whitespaces
+        // no trailing whitespaces
         FindContactCommand expectedFindCommand = new FindContactCommand(
                 new ContactNameContainsKeywordsPredicate(Arrays.asList("Alice", "Bob")));
         CommandParserTestUtil.assertParseSuccess(this.parser, " n/Alice Bob", expectedFindCommand);

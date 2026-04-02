@@ -63,7 +63,7 @@ public class AddressBookParser {
      */
     public Command parseCommand(String userInput) throws ParseException {
         final Matcher matcher = AddressBookParser.BASIC_COMMAND_FORMAT.matcher(userInput.trim());
-        final Matcher untrimmedMatcher = AddressBookParser.BASIC_COMMAND_FORMAT.matcher(userInput);
+        final Matcher untrimmedMatcher = AddressBookParser.BASIC_COMMAND_FORMAT.matcher(userInput.stripLeading());
         if (!matcher.matches()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }

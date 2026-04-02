@@ -21,7 +21,7 @@ public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand
      *
      * Supports finding by name (ass/ASSIGNMENT_NAME_SUBSTRING) or deadline
      * (d/DEADLINE)
-     * Examples: findass CS2103 project
+     * Examples: findass ass/CS2103 project
      * findass d/31-12-2024
      *
      * @throws ParseException if the user input does not conform the expected format

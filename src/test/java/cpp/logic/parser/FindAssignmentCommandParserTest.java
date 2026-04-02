@@ -18,7 +18,7 @@ public class FindAssignmentCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsFindCommand() {
-        // no leading and trailing whitespaces
+        // no trailing whitespaces
         FindAssignmentCommand expectedFindCommand = new FindAssignmentCommand(
                 new AssignmentNameContainsKeywordsPredicate("CS2103"));
         CommandParserTestUtil.assertParseSuccess(this.parser, " ass/CS2103", expectedFindCommand);
