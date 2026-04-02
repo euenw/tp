@@ -379,7 +379,7 @@ Allocates a class to specific contacts.
 
 * Reallocating a class to a contact that already belongs to that class will not cause any changes to the contact's class memberships. However, if no successful allocations are performed at the end of the command, the command will fail and the user will see an error message specifying the issue.
 
-* Allocating a class to a contact does not automatically allocate any assignments that are allocated to that class to the contact. You will need to additionally use the `allocass` command to allocate specific assignments to the contact if needed.
+* Allocating a class does not automatically include its assignments, as these are tracked individually by contact. The “allocate by class” feature is designed as a time-saver to help you update several contacts simultaneously. You will need to additionally use the `allocass` command to allocate specific assignments to the contact if needed.
 
 </box>
 
@@ -415,7 +415,7 @@ Unallocates a class from specific contacts.
 
 * Unallocating a class from a contact that does not belong to that class will not cause any changes to the contact's class memberships. However, if no successful unallocations are performed at the end of the command, the command will fail and the user will see an error message specifying the issue.
 
-* Unallocating a class from a contact does not automatically unallocate any assignments that are allocated to that class from the contact. You will need to additionally use the `unallocass` command to unallocate specific assignments from the contact if needed.
+* Unallocating a class from a contact does not automatically include unallocating its assignments, as these are tracked individually by contact. The “unallocate by class” feature is designed as a time-saver to help you update several contacts simultaneously. You will need to additionally use the `unallocass` command to unallocate specific assignments from the contact if needed.
 
 </box>
 
