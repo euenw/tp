@@ -3,6 +3,7 @@ package cpp.ui;
 import cpp.model.classgroup.ClassGroup;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
@@ -21,6 +22,8 @@ public class ClassGroupCard extends UiPart<Region> {
     private Label name;
     @FXML
     private Label id;
+    @FXML
+    private Tooltip nameTooltip;
 
     /**
      * Creates a {@code ClassGroupCard} with the given {@code ClassGroup} and index
@@ -31,5 +34,6 @@ public class ClassGroupCard extends UiPart<Region> {
         this.classGroup = classGroup;
         this.id.setText(displayedIndex + ". ");
         this.name.setText(classGroup.getName().fullName);
+        this.nameTooltip.setText(classGroup.getName().fullName);
     }
 }
