@@ -18,11 +18,14 @@ import cpp.logic.commands.DeleteContactCommand;
 import cpp.logic.commands.EditContactCommand;
 import cpp.logic.commands.EditContactCommand.EditContactDescriptor;
 import cpp.logic.commands.ExitCommand;
+import cpp.logic.commands.FindClassCommand;
 import cpp.logic.commands.FindContactCommand;
 import cpp.logic.commands.HelpCommand;
 import cpp.logic.commands.ListCommand;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.commands.assignment.AllocateAssignmentCommand;
+import cpp.logic.commands.assignment.EditAssignmentCommand;
+import cpp.logic.commands.assignment.EditAssignmentCommand.EditAssignmentDescriptor;
 import cpp.logic.commands.assignment.GradeAssignmentCommand;
 import cpp.logic.commands.assignment.SubmitAssignmentCommand;
 import cpp.logic.commands.assignment.UnallocateAssignmentCommand;
@@ -34,6 +37,7 @@ import cpp.logic.commands.classgroup.EditClassGroupCommand;
 import cpp.logic.commands.classgroup.UnallocateClassGroupCommand;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.AssignmentName;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Contact;
@@ -59,6 +63,14 @@ public class AddressBookParserTest {
         Contact contact = new ContactBuilder().build();
         AddContactCommand command = (AddContactCommand) this.parser
                 .parseCommand(ContactUtil.getAddContactCommand(contact));
+        Assertions.assertEquals(new AddContactCommand(contact), command);
+    }
+
+    @Test
+    public void parseCommand_addAlias() throws Exception {
+        Contact contact = new ContactBuilder().build();
+        AddContactCommand command = (AddContactCommand) this.parser
+                .parseCommand(ContactUtil.getAddContactAliasCommand(contact));
         Assertions.assertEquals(new AddContactCommand(contact), command);
     }
 
@@ -95,8 +107,25 @@ public class AddressBookParserTest {
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindContactCommand command = (FindContactCommand) this.parser.parseCommand(
-                FindContactCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+                FindContactCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_NAME
+                        + keywords.stream().collect(Collectors.joining(" ")));
         Assertions.assertEquals(new FindContactCommand(new ContactNameContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
+    public void parseCommand_findAbbreviation() throws Exception {
+        // Test FindContactCommand abbreviation
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        FindContactCommand command = (FindContactCommand) this.parser.parseCommand(
+                FindContactCommand.COMMAND_WORD_ALIAS + " " + CliSyntax.PREFIX_NAME
+                        + keywords.stream().collect(Collectors.joining(" ")));
+        Assertions.assertEquals(new FindContactCommand(new ContactNameContainsKeywordsPredicate(keywords)), command);
+
+        // Test FindClassCommand abbreviation
+        FindClassCommand classCommand = (FindClassCommand) this.parser.parseCommand(
+                FindClassCommand.COMMAND_WORD_ALIAS + " " + CliSyntax.PREFIX_CLASS
+                        + "CS2103T");
+        Assertions.assertTrue(classCommand instanceof FindClassCommand);
     }
 
     @Test
@@ -258,6 +287,19 @@ public class AddressBookParserTest {
                                 new ArrayList<>(Arrays.asList(TypicalIndexes.INDEX_FIRST_CONTACT))));
         Assertions.assertEquals(new UnallocateClassGroupCommand(classGroup.getName(),
                 List.of(TypicalIndexes.INDEX_FIRST_CONTACT)), command);
+    }
+
+    @Test
+    public void parseCommand_editAssignment() throws Exception {
+        String newName = "New Assignment";
+        EditAssignmentDescriptor descriptor = new EditAssignmentDescriptor();
+        descriptor.setName(new AssignmentName(newName));
+        EditAssignmentCommand command = (EditAssignmentCommand) this.parser.parseCommand(
+                EditAssignmentCommand.COMMAND_WORD + " "
+                        + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased() + " "
+                        + CliSyntax.PREFIX_ASSIGNMENT + newName);
+        Assertions.assertEquals(
+                new EditAssignmentCommand(TypicalIndexes.INDEX_FIRST_CONTACT, descriptor), command);
     }
 
     @Test
