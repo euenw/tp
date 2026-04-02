@@ -904,19 +904,15 @@ Shows a list of all assignments in the address book.
 
 ### Finding contacts : `findcontact`
 
-Finds and displays contacts based on the specified criteria. You can search by contact name, or by phone number/email (exact match). Matching is case-insensitive.
+Finds and displays contacts based on the specified criteria. You can search by contact name (keyword match), or by phone number/email (exact match). Matching is case-insensitive.
 
 **Format:**
 
-* `findcontact KEYWORD [MORE_KEYWORDS]...` — search by name using keywords (default)
-* `findcontact p/PHONE` — search by phone number (exact match)
-* `findcontact e/EMAIL` — search by email address (exact match)
+1. `findcontact KEYWORDS...` — search by name using keywords (default)
+1. `findcontact p/PHONE_NUMBER` — search by phone number (exact match)
+1. `findcontact e/EMAIL` — search by email address (exact match)
 
-**Command word shortcuts:**
-
-* `findcontact` can be shortened to `findct`
-
-**Key points:**
+<br>
 
 * **Name search (default):** The command will find contacts whose names contain ANY of the specified keywords (case-insensitive). Keywords are separated by spaces. For example, `findcontact alice bob` will return all contacts whose name contains "alice" OR "bob".
 
@@ -924,11 +920,11 @@ Finds and displays contacts based on the specified criteria. You can search by c
 
 * **Email search (e/):** Searches for contacts by exact email address match (case-insensitive). The entire email must match exactly. Example: `findcontact e/alice@gmail.com` will find the contact with that exact email.
 
-* **Conflicting prefixes:** You cannot use multiple search types in one command. For example, `findcontact p/91234567 e/alice@gmail.com` is invalid. Choose one search method per command.
+* You cannot use multiple search types in one command. For example, `findcontact p/91234567 e/alice@gmail.com` is invalid. Choose one search method per command.
 
-* **Tab switching:** The tab will automatically switch to the `Contacts` tab upon successful execution.
+* The tab will automatically switch to the `Contacts` tab upon successful execution.
 
-* **Filter persistence:** The search results will remain filtered until you run another command that filters the list (e.g., another `findcontact` command) or use `list contacts` to show all contacts again.
+* The search results will remain filtered until you run another command that filters the list (e.g., another `findcontact` command) or use `list contacts` to show all contacts again.
 
 <box type="warning" seamless>
 
@@ -941,6 +937,16 @@ Finds and displays contacts based on the specified criteria. You can search by c
 * For phone and email searches, the entire value must match exactly. Partial matches will not return results.
 
 * You cannot use unrecognized prefixes like `c/`, `ass/`, or `n/`. The system will reject commands with invalid prefixes.
+
+</box>
+
+<box type="tip" seamless>
+
+**Tips:**
+
+* If you would like to preserve the current filter but switch to a different tab, you may manually click on the "Classes" or "Assignments" tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered contacts when you switch back to the "Contacts" tab.
+
+* You may shorten `findcontact` to `findct` for quicker access. The same rules and formats apply.
 
 </box>
 
@@ -957,35 +963,27 @@ Finds and displays contacts based on the specified criteria. You can search by c
 
 * `findcontact e/alice@gmail.com`
   Finds the contact with email <alice@gmail.com>.
-<box type="tip" seamless>
-
-**Tip:** After searching, you can use `list contacts` to clear the filter and see all contacts again. You can also click on the "Contacts" tab to achieve the same result, but note that tab-clicking won't clear existing filters.
-
-</box>
 
 ### Finding assignments : `findass`
 
-Finds and displays assignments based on the specified criteria. You can search by assignment name or by assignment deadline (exact match). Matching is case-insensitive.
+Finds and displays assignments based on the specified criteria. You can search by assignment name (substring match) or by assignment deadline (exact match). Matching is case-insensitive.
 
 **Format:**
 
-* `findass SEARCH_STRING` — search by assignment name
-* `findass d/DEADLINE` — search by assignment deadline (exact match)
+1. `findass SEARCH_STRING` — search by assignment name
+1. `findass d/DEADLINE` — search by assignment deadline
 
-**Supported deadline formats:**
+<br>
 
-* `dd-MM-yyyy` — date only (e.g., `31-12-2024`)
-* `dd-MM-yyyy HH:mm` — date with time (e.g., `31-12-2024 23:59`)
-
-**Key points:**
-
-* **Name search (default):** The command will find assignments whose names contain the specified text. For example, `findass CS2103` will find all assignments whose name contains "CS2103".
+* **Name search (default):** The command will find assignments whose names contain the specified text. For example, `findass CS2103` will find all assignments whose name contains "CS2103". All consecutive spaces will be replaced by a single space. For example, `findass   Assignment <5 SPACES> 1` will find all assignments whose name contains "Assignment 1".
 
 * **Deadline search (d/):** Searches for assignments by exact deadline match. The deadline value must match exactly in one of the supported formats. Example: `findass d/31-12-2024` will only find assignments with a deadline on 31st December 2024 (date-only format).
 
-* **Tab switching:** The tab will automatically switch to the `Assignments` tab upon successful execution.
+* `DEADLINE` provided can be of the format `dd-MM-yyyy` — date only (e.g., `31-12-2024`) or `dd-MM-yyyy HH:mm` — date with time (e.g., `31-12-2024 23:59`)
 
-* **Filter persistence:** The search results will remain filtered until you run another command that filters the list (e.g., another `findass` command) or use `list assignments` to show all assignments again.
+* The tab will automatically switch to the `Assignments` tab upon successful execution.
+
+* The search results will remain filtered until you run another command that filters the list (e.g., another `findass` command) or use `list assignments` to show all assignments again.
 
 <box type="warning" seamless>
 
@@ -995,7 +993,7 @@ Finds and displays assignments based on the specified criteria. You can search b
 
 * The deadline prefix (d/) must have a valid date value in the correct format. Using a prefix with no date (e.g., `findass d/`) will result in an error. Invalid date formats will also be rejected.
 
-* For deadline searches, the HH may be omitted. For example, if an assignment has a deadline of `31-12-2024 23:59`, searching with `findass d/31-12-2024` will also match it.
+* For deadline searches, the time may be omitted. For example, if an assignment has a deadline of `31-12-2024 23:59`, searching with `findass d/31-12-2024` will also match it.
 
 * You cannot use unrecognized prefixes like `p/`, `e/`, `c/`, or `n/`. The system will reject commands with invalid prefixes.
 
@@ -1003,25 +1001,22 @@ Finds and displays assignments based on the specified criteria. You can search b
 
 </box>
 
+<box type="tip" seamless>
+
+**Tip:** If you would like to preserve the current filter but switch to a different tab, you may manually click on the "Contacts" or "Classes" tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered assignments when you switch back to the "Assignments" tab.
+
+</box>
+
 **Examples:**
 
 * `findass Assignment`
-  Finds all assignments whose name contains "Assignment" (case-insensitive).
-
-* `findass CS2103`
-  Finds all assignments whose name contains "CS2103".
+  Finds all assignments whose name contains "assignment" (case-insensitive).
 
 * `findass d/31-12-2024`
   Finds all assignments with a deadline of 31st December 2024 (exact match).
 
 * `findass d/15-01-2024 23:59`
   Finds all assignments with a deadline of 15th January 2024 at 23:59 (exact match).
-
-<box type="tip" seamless>
-
-**Tip:** After searching, you can use `list assignments` to clear the filter and see all assignments again. You can also click on the "Assignments" tab to achieve the same result, but note that tab-clicking won't clear existing filters.
-
-</box>
 
 ### [TO BE UPDATED] Editing a contact : `edit`
 
@@ -1260,7 +1255,7 @@ If you encounter other issues, please open a GitHub Issue in the [project reposi
 | **List Contacts**         | `list contacts`                                                                                                                                                                                                                                                    |
 | **List Classes**          | `list classes`                                                                                                                                                                                                                                                     |
 | **List Assignments**      | `list assignments`                                                                                                                                                                                                                                                 |
-| **Find Contact**          | `findcontact (findct) KEYWORD [MORE_KEYWORDS]...` or `findcontact p/PHONE` or `findcontact e/EMAIL`<br> e.g., `findcontact alice` or `findct p/91234567` or `findcontact e/alice@gmail.com`                                                                        |
+| **Find Contact**          | `findcontact (findct) KEYWORD [MORE_KEYWORDS]...` or `findcontact p/PHONE_NUMBER` or `findcontact e/EMAIL`<br> e.g., `findcontact alice` or `findct p/91234567` or `findcontact e/alice@gmail.com`                                                                 |
 | **Find Assignment**       | `findass SEARCH_STRING` or `findass d/DEADLINE`<br> e.g., `findass CS2103` or `findass d/31-12-2024`                                                                                                                                                               |
 | **Edit**                  | `edit INDEX [n/CONTACT_NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                                                                                                               |
 | **Delete**                | `delete ct/CONTACT_INDICES...` e.g., `delete ct/3`<br>`delete ass/ASSIGNMENT_NAME` e.g., `delete ass/Assignment 1`<br>`delete c/CLASS_NAME` e.g., `delete c/CS2103T T14`                                                                                           |

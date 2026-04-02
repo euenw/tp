@@ -116,12 +116,12 @@ public class AddressBookParserTest {
         // Test FindContactCommand abbreviation
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindContactCommand command = (FindContactCommand) this.parser.parseCommand(
-                FindContactCommand.COMMAND_WORD_ABBREV + " " + keywords.stream().collect(Collectors.joining(" ")));
+                FindContactCommand.COMMAND_WORD_ALIAS + " " + keywords.stream().collect(Collectors.joining(" ")));
         Assertions.assertEquals(new FindContactCommand(new ContactNameContainsKeywordsPredicate(keywords)), command);
 
         // Test FindClassCommand abbreviation
         FindClassCommand classCommand = (FindClassCommand) this.parser.parseCommand(
-                FindClassCommand.COMMAND_WORD_ABBREV + " CS2103T");
+                FindClassCommand.COMMAND_WORD_ALIAS + " CS2103T");
         Assertions.assertTrue(classCommand instanceof FindClassCommand);
     }
 

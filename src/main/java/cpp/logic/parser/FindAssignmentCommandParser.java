@@ -1,7 +1,6 @@
 package cpp.logic.parser;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import cpp.logic.Messages;
@@ -15,13 +14,11 @@ import cpp.model.assignment.AssignmentSearchPredicate;
  * Parses input arguments and creates a new FindAssignmentCommand object
  */
 public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand> {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     /**
      * Parses the given {@code String} of arguments in the context of the
-     * FindAssignmentCommand
-     * and returns a FindAssignmentCommand object for execution.
+     * FindAssignmentCommand and returns a FindAssignmentCommand object for
+     * execution.
      *
      * Supports finding by name (default) or deadline (d/DEADLINE)
      * Examples: findass CS2103 project
@@ -36,7 +33,7 @@ public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_DATETIME);
 
         AssignmentSearchPredicate predicate;
-        String preamble = argMultimap.getPreamble().trim();
+        String preamble = argMultimap.getPreamble().replaceAll("\\s+", " ");
 
         if (argMultimap.getValue(CliSyntax.PREFIX_DATETIME).isPresent()) {
             // If using d/ prefix, no other text should be present
@@ -44,7 +41,8 @@ public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand
                 throw new ParseException(
                         String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, FindAssignmentCommand.MESSAGE_USAGE));
             }
-            String deadlineValue = argMultimap.getValue(CliSyntax.PREFIX_DATETIME).get().trim();
+            String deadlineValue = argMultimap.getValue(CliSyntax.PREFIX_DATETIME).get().trim()
+                    .replaceAll("\\s+", " ");
             if (deadlineValue.isEmpty()) {
                 throw new ParseException(
                         String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, FindAssignmentCommand.MESSAGE_USAGE));
@@ -54,7 +52,7 @@ public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand
             predicate = new AssignmentDeadlineContainsKeywordPredicate(deadlineValue);
         } else {
             // Default to name search using preamble
-            if (preamble.isEmpty()) {
+            if (preamble.trim().isEmpty()) {
                 throw new ParseException(
                         String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, FindAssignmentCommand.MESSAGE_USAGE));
             }
@@ -79,11 +77,11 @@ public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand
     private void validateDeadlineFormat(String deadlineValue) throws ParseException {
         try {
             // Try parsing as full datetime format first (dd-MM-yyyy HH:mm)
-            LocalDateTime.parse(deadlineValue, FindAssignmentCommandParser.DATETIME_FORMATTER);
+            LocalDateTime.parse(deadlineValue, ParserUtil.DATETIME_FORMATTER);
         } catch (DateTimeParseException e1) {
             try {
                 // Try parsing as date-only format (dd-MM-yyyy)
-                LocalDateTime.parse(deadlineValue + " 00:00", FindAssignmentCommandParser.DATETIME_FORMATTER);
+                LocalDateTime.parse(deadlineValue + " 00:00", ParserUtil.DATETIME_FORMATTER);
             } catch (DateTimeParseException e2) {
                 throw new ParseException(
                         "Invalid deadline format. Please use dd-MM-yyyy or dd-MM-yyyy HH:mm");

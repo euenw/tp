@@ -6,10 +6,10 @@ import java.util.List;
  * Tests that a {@code Contact}'s {@code Phone} matches exactly with the given
  * keyword (case-insensitive).
  */
-public class ContactPhoneContainsKeywordsPredicate implements ContactSearchPredicate {
+public class ContactPhoneMatchesKeywordsPredicate implements ContactSearchPredicate {
     private final List<String> keywords;
 
-    public ContactPhoneContainsKeywordsPredicate(List<String> keywords) {
+    public ContactPhoneMatchesKeywordsPredicate(List<String> keywords) {
         this.keywords = keywords;
     }
 
@@ -25,11 +25,11 @@ public class ContactPhoneContainsKeywordsPredicate implements ContactSearchPredi
             return true;
         }
 
-        if (!(other instanceof ContactPhoneContainsKeywordsPredicate)) {
+        if (!(other instanceof ContactPhoneMatchesKeywordsPredicate)) {
             return false;
         }
 
-        ContactPhoneContainsKeywordsPredicate otherPredicate = (ContactPhoneContainsKeywordsPredicate) other;
+        ContactPhoneMatchesKeywordsPredicate otherPredicate = (ContactPhoneMatchesKeywordsPredicate) other;
         return this.keywords.equals(otherPredicate.keywords);
     }
 

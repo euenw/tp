@@ -14,23 +14,20 @@ import cpp.model.assignment.AssignmentSearchPredicate;
  * Supports two search modes:
  * <br>
  * - Name search: finds assignments whose names contain the specified search
- * string
- * (case-insensitive, substring match).<br>
+ * string (case-insensitive, substring match).<br>
  * - Deadline search: finds assignments whose deadline matches the specified
- * value
- * exactly (case-insensitive, supports dd-MM-yyyy and dd-MM-yyyy HH:mm formats).
+ * value exactly (supports dd-MM-yyyy and dd-MM-yyyy HH:mm
+ * formats).
  */
 public class FindAssignmentCommand extends Command {
 
     public static final String COMMAND_WORD = "findass";
 
     public static final String MESSAGE_USAGE = FindAssignmentCommand.COMMAND_WORD
-            + ": Finds all assignments whose names match the specified text or whose deadlines match exactly "
-            + "(case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: SEARCH_STRING | d/DEADLINE\n"
-            + "Default search: name (substring match)\n"
-            + "Deadline search: exact match\n"
-            + "Deadline formats: dd-MM-yyyy or dd-MM-yyyy HH:mm\n"
+            + ": Finds all assignments whose names contain the specified search string (case-insensitive) or "
+            + "whose deadlines match exactly and displays them as a list with index numbers.\n"
+            + "Parameters: [SEARCH_STRING]  [d/DEADLINE]\n"
+            + "Exactly one of [SEARCH_STRING] or [d/DEADLINE] must be provided.\n"
             + "Example: " + FindAssignmentCommand.COMMAND_WORD + " Assignment 1\n"
             + "Example: " + FindAssignmentCommand.COMMAND_WORD + " d/31-12-2024";
 

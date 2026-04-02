@@ -36,7 +36,11 @@ public class ParserUtil {
     public static final String MESSAGE_INVALID_DATETIME = """
             Invalid date and time format. Please use the format: dd-MM-yyyy HH:mm""";
     public static final String MESSAGE_INVALID_FUTURE_DATETIME = "Date and time cannot be in the future.";
-    public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    public static final String DATETIME_FORMAT_STRING = "dd-MM-yyyy HH:mm";
+    public static final String DATE_FORMAT_STRING = "dd-MM-yyyy";
+    public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter
+            .ofPattern(ParserUtil.DATETIME_FORMAT_STRING);
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(ParserUtil.DATE_FORMAT_STRING);
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading

@@ -15,13 +15,13 @@ import cpp.model.classgroup.ClassNameContainsKeywordsPredicate;
 public class FindClassCommand extends Command {
 
     public static final String COMMAND_WORD = "findclass";
-    public static final String COMMAND_WORD_ABBREV = "findc";
+    public static final String COMMAND_WORD_ALIAS = "findc";
 
-    public static final String MESSAGE_USAGE = FindClassCommand.COMMAND_WORD + " ("
-            + FindClassCommand.COMMAND_WORD_ABBREV + ")"
+    public static final String MESSAGE_USAGE = FindClassCommand.COMMAND_WORD
             + ": Finds all class groups whose names contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
+            + "Alias: " + FindClassCommand.COMMAND_WORD_ALIAS + "\n"
+            + "Parameters: KEYWORDS...\n"
             + "Example: " + FindClassCommand.COMMAND_WORD + " cs2103 cs2102";
 
     private final ClassNameContainsKeywordsPredicate predicate;

@@ -1,7 +1,8 @@
 package cpp.model.assignment;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import cpp.logic.parser.ParserUtil;
 
 /**
  * Tests that an {@code Assignment}'s {@code Deadline} matches the given
@@ -9,8 +10,6 @@ import java.time.format.DateTimeFormatter;
  * Supports matching by date formats: dd-MM-yyyy or dd-MM-yyyy HH:mm
  */
 public class AssignmentDeadlineContainsKeywordPredicate implements AssignmentSearchPredicate {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     private final String keyword;
 
@@ -22,12 +21,12 @@ public class AssignmentDeadlineContainsKeywordPredicate implements AssignmentSea
     public boolean test(Assignment assignment) {
         LocalDateTime deadline = assignment.getDeadline();
 
-        String fullDateTimeStr = deadline.format(AssignmentDeadlineContainsKeywordPredicate.DATETIME_FORMATTER);
+        String fullDateTimeStr = deadline.format(ParserUtil.DATETIME_FORMATTER);
         if (fullDateTimeStr.equalsIgnoreCase(this.keyword)) {
             return true;
         }
 
-        String dateOnlyStr = deadline.format(AssignmentDeadlineContainsKeywordPredicate.DATE_FORMATTER);
+        String dateOnlyStr = deadline.format(ParserUtil.DATE_FORMATTER);
         if (dateOnlyStr.equalsIgnoreCase(this.keyword)) {
             return true;
         }

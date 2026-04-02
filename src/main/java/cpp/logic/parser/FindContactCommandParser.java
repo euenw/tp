@@ -5,9 +5,9 @@ import java.util.Arrays;
 import cpp.logic.Messages;
 import cpp.logic.commands.FindContactCommand;
 import cpp.logic.parser.exceptions.ParseException;
-import cpp.model.contact.ContactEmailContainsKeywordsPredicate;
+import cpp.model.contact.ContactEmailMatchesKeywordsPredicate;
 import cpp.model.contact.ContactNameContainsKeywordsPredicate;
-import cpp.model.contact.ContactPhoneContainsKeywordsPredicate;
+import cpp.model.contact.ContactPhoneMatchesKeywordsPredicate;
 import cpp.model.contact.ContactSearchPredicate;
 
 /**
@@ -59,7 +59,7 @@ public class FindContactCommandParser implements Parser<FindContactCommand> {
             }
             // Validate phone format using existing parser utility
             ParserUtil.parsePhone(phoneValue);
-            predicate = new ContactPhoneContainsKeywordsPredicate(Arrays.asList(phoneValue));
+            predicate = new ContactPhoneMatchesKeywordsPredicate(Arrays.asList(phoneValue));
         } else if (hasEmailPrefix) {
             if (!preamble.isEmpty()) {
                 throw new ParseException(
@@ -72,7 +72,7 @@ public class FindContactCommandParser implements Parser<FindContactCommand> {
             }
             // Validate email format using existing parser utility
             ParserUtil.parseEmail(emailValue);
-            predicate = new ContactEmailContainsKeywordsPredicate(Arrays.asList(emailValue));
+            predicate = new ContactEmailMatchesKeywordsPredicate(Arrays.asList(emailValue));
         } else {
             // Default to name search using preamble
             if (preamble.isEmpty()) {
