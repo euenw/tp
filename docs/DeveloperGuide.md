@@ -202,6 +202,10 @@ A separate `UniqueContactAssignmentList` is used to manage the list of `ContactA
 
 <puml src="diagrams/AssignmentsCombinedDiagram.puml" width="600" />
 
+As you might already have noticed, `ContactAssignment` objects do not store any information about classes. We chose this design to allow users to have greater control over the contacts who are allocated assignments. For example, a user can choose to assign an assignment to the entire class initially and choose to unallocate it from certain contacts later on, without having to worry about the class information being stored in the `ContactAssignment` objects.
+
+As a result of this design, any class group operations will not affect the `ContactAssignment` entities. Hence, users will have to manually allocate or unallocate assignments to contacts when they allocate or unallocate contacts from class groups. We believe this is a reasonable trade-off to give users more control over the assignment allocation.
+
 ### Delete enhancements
 
 The `delete` command now supports deleting contacts, assignments, and class groups through a single command word. `DeleteCommandParser` acts as a dispatcher: it inspects which prefix is present in the user input (`ct/` for contacts, `ass/` for assignments, `c/` for class groups) and constructs the corresponding subcommand (`DeleteContactCommand`, `DeleteAssignmentCommand`, or `DeleteClassGroupCommand`).
