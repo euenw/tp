@@ -898,6 +898,68 @@ Shows a list of all assignments in the address book.
 
 </box>
 
+### Viewing full details of a contact/class/assignment: `view`
+
+Shows the full details of a contact, class, or assignment.
+
+#### View contact details
+
+**Format:** `view ct/CONTACT_INDEX`
+
+* Shows the full details of the contact at the specified `CONTACT_INDEX`.
+
+* The index refers to the index number shown in the displayed contact list.
+
+* The index **must be a positive integer** 1, 2, 3, …​
+
+* If the specified index does not exist in the displayed contact list, the command will fail and display an error message.
+
+<box type="warning" seamless>
+
+**Warnings:**
+
+* Unlike previous listed commands, this `ct/` prefix requires exactly one contact index to be provided. If you provide more than one index (e.g., `view ct/1 2`), the command will fail and no detailed view of the contact will be displayed.
+
+</box>
+
+<box type="tip" seamless>
+
+**Tip:** In the detailed view, you can see the contact's name, phone number, email, classes they belong to, assignments allocated to them, and the submission and grading status for each allocated assignment. Any changes made to the contact's details, class memberships, or assignment allocations will be reflected in real-time in the detailed view as well.
+
+</box>
+
+#### View class details
+
+**Format:** `view c/CLASS_NAME`
+
+* Shows the full details of the class with the specified `CLASS_NAME`.
+
+* `CLASS_NAME` must match the name of an existing class (case-insensitive).
+
+* If the specified class does not exist, the command will fail and display an error message.
+
+<box type="tip" seamless>
+
+**Tip:** In the detailed view, you can see the class name, and the list of contacts allocated to it. Any changes made to the class details or contact memberships will be reflected in real-time in the detailed view as well.
+
+</box>
+
+#### View assignment details
+
+**Format:** `view ass/ASSIGNMENT_NAME`
+
+* Shows the full details of the assignment with the specified `ASSIGNMENT_NAME`.
+
+* `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
+
+* If the specified assignment does not exist, the command will fail and display an error message.
+
+<box type="tip" seamless>
+
+**Tip:** In the detailed view, you can see the assignment's name, deadline, and the list of contacts allocated to it together with their submission and grading status. Any changes made to the assignment details, submission or grading status, and contact allocations will be reflected in real-time in the detailed view as well.
+
+</box>
+
 ### [TO BE UPDATED] Locating contacts by name: `find`
 
 TO BE UPDATED.
@@ -1139,6 +1201,7 @@ If you encounter other issues, please open a GitHub Issue in the [project reposi
 | **List Contacts**         | `list contacts`                                                                                                                                                                                                                                                    |
 | **List Classes**          | `list classes`                                                                                                                                                                                                                                                     |
 | **List Assignments**      | `list assignments`                                                                                                                                                                                                                                                 |
+| **View Details**           | `view ct/CONTACT_INDEX` e.g., `view ct/2`<br>`view c/CLASS_NAME` e.g., `view c/CS2103T T10 1`<br>`view ass/ASSIGNMENT_NAME` e.g., `view ass/Assignment 1` |
 | **Find**                  | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                                                         |
 | **Edit**                  | `edit INDEX [n/CONTACT_NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                                                                                                               |
 | **Delete**                | `delete ct/CONTACT_INDICES...` e.g., `delete ct/3`<br>`delete ass/ASSIGNMENT_NAME` e.g., `delete ass/Assignment 1`<br>`delete c/CLASS_NAME` e.g., `delete c/CS2103T T14`                                                                                           |
