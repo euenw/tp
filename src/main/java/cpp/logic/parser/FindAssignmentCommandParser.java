@@ -59,6 +59,9 @@ public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand
                     .replaceAll("\\s+", " ");
             LocalDateTime deadlineStart = this.parseDeadlineDateTime(deadlineStartValue, true);
             LocalDateTime deadlineEnd = this.parseDeadlineDateTime(deadlineEndValue, false);
+            if (deadlineStart.isAfter(deadlineEnd)) {
+                throw new ParseException(Messages.MESSAGE_DEADLINE_START_AFTER_END);
+            }
             predicate = new AssignmentDeadlineContainsKeywordPredicate(deadlineStart, deadlineEnd);
 
         } else if (hasDatetimeStartPrefix) {
