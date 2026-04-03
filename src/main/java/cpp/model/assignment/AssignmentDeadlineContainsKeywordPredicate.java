@@ -8,33 +8,27 @@ import java.time.LocalDateTime;
  */
 public class AssignmentDeadlineContainsKeywordPredicate implements AssignmentSearchPredicate {
 
-    private final LocalDateTime datetime;
-    private final boolean isDateOnly;
+    private final LocalDateTime datetimeStart;
+    private final LocalDateTime datetimeEnd;
 
     /**
      * Creates an AssignmentDeadlineContainsKeywordPredicate with the given
-     * datetime. The datetime will be treated as date-only if {@code isDateOnly} is
-     * true, meaning that it will match any assignment whose deadline falls on the
-     * same date, regardless of the time.
+     * datetime range. The predicate tests if an assignment's deadline falls within
+     * the specified range, inclusive of the start and end datetimes.
      *
-     * @param datetime   the datetime to match against
-     * @param isDateOnly whether the provided datetime should be treated as
-     *                   date-only
+     * @param datetimeStart the start datetime for the range
+     * @param datetimeEnd   the end datetime for the range
      */
-    public AssignmentDeadlineContainsKeywordPredicate(LocalDateTime datetime, boolean isDateOnly) {
-        this.datetime = datetime;
-        this.isDateOnly = isDateOnly;
+    public AssignmentDeadlineContainsKeywordPredicate(LocalDateTime datetimeStart, LocalDateTime datetimeEnd) {
+        this.datetimeStart = datetimeStart;
+        this.datetimeEnd = datetimeEnd;
     }
 
     @Override
     public boolean test(Assignment assignment) {
         LocalDateTime deadline = assignment.getDeadline();
 
-        if (this.isDateOnly) {
-            return deadline.toLocalDate().equals(this.datetime.toLocalDate());
-        }
-
-        return deadline.equals(this.datetime);
+        return !deadline.isBefore(this.datetimeStart) && !deadline.isAfter(this.datetimeEnd);
     }
 
     @Override
@@ -48,15 +42,15 @@ public class AssignmentDeadlineContainsKeywordPredicate implements AssignmentSea
         }
 
         AssignmentDeadlineContainsKeywordPredicate otherPredicate = (AssignmentDeadlineContainsKeywordPredicate) other;
-        return this.isDateOnly == otherPredicate.isDateOnly
-                && this.datetime.equals(otherPredicate.datetime);
+        return this.datetimeStart.equals(otherPredicate.datetimeStart)
+                && this.datetimeEnd.equals(otherPredicate.datetimeEnd);
     }
 
     @Override
     public String toString() {
         return new cpp.commons.util.ToStringBuilder(this)
-                .add("datetime", this.datetime)
-                .add("dateOnly", this.isDateOnly)
+                .add("datetimeStart", this.datetimeStart)
+                .add("datetimeEnd", this.datetimeEnd)
                 .toString();
     }
 }
