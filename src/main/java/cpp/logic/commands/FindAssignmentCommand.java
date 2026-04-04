@@ -25,12 +25,13 @@ public class FindAssignmentCommand extends Command {
 
     public static final String MESSAGE_USAGE = FindAssignmentCommand.COMMAND_WORD
             + ": Finds all assignments whose names contain the specified search string (case-insensitive) or "
-            + "deadlines fall within the specified range (inclusive) and displays them as a list with index numbers.\n"
+            + "whose deadlines fall within the specified range (inclusive) "
+            + "and displays them as a list with index numbers.\n"
             + "Deadline can be of the format dd-MM-yyyy or dd-MM-yyyy HH:mm.\n"
             + "Parameters (Option 1): " + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT_NAME_SEARCH_STRING\n"
             + "Parameters (Option 2): [" + CliSyntax.PREFIX_DATETIME_START + "DEADLINE_START] ["
             + CliSyntax.PREFIX_DATETIME_END + "DEADLINE_END]\n"
-            + "Only one option can be used at a time. At least one of ["
+            + "Only one option can be used at a time. For Option 2, at least one of ["
             + CliSyntax.PREFIX_DATETIME_START + "DEADLINE_START] or ["
             + CliSyntax.PREFIX_DATETIME_END + "DEADLINE_END] must be provided.\n"
             + "Example: " + FindAssignmentCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1\n"

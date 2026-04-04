@@ -476,16 +476,16 @@ Adds an assignment to the address book.
 **Examples:**
 
 * `addass ass/Assignment 1 d/01-12-2023 23:59`<br>
-  Creates an assignment with the name "Assignment 1" and deadline "1 Dec 2023 23:59".
+  Creates an assignment with the name "Assignment 1" and deadline "1 Dec 2023 11.59pm".
 
 * `addass ass/Assignment 2 d/15-12-2023 23:59 c/CS2103T T10 1`<br>
-  Creates an assignment with the name "Assignment 2" and deadline "15 Dec 2023 23:59", allocated to all contacts belonging to class "CS2103T T10 1".
+  Creates an assignment with the name "Assignment 2" and deadline "15 Dec 2023 11.59pm", allocated to all contacts belonging to class "CS2103T T10 1".
 
 * `list contacts` followed by `addass ass/Assignment 3 d/30-12-2023 23:59 ct/1 2 3`<br>
-  Creates an assignment with the name "Assignment 3" and deadline "30 Dec 2023 23:59", allocated to the 1st, 2nd, and 3rd contacts in the list.
+  Creates an assignment with the name "Assignment 3" and deadline "30 Dec 2023 11.59pm", allocated to the 1st, 2nd, and 3rd contacts in the list.
 
 * `list contacts` followed by `addass ass/Assignment 4 d/15-01-2024 23:59 c/CS2103T T10 1 ct/4 5`<br>
-  Creates an assignment with the name "Assignment 4" and deadline "15 Jan 2024 23:59", allocated to the 4th and 5th contacts in the list, as well as all contacts belonging to class "CS2103T T10 1".
+  Creates an assignment with the name "Assignment 4" and deadline "15 Jan 2024 11.59pm", allocated to the 4th and 5th contacts in the list, as well as all contacts belonging to class "CS2103T T10 1".
 
   The screenshot below illustrates the last example, where the class "CS2103T T10 1" consists of contacts 2-5.\
   ![Creating and allocating Assignment 4](images/addass-result.png)
@@ -860,7 +860,7 @@ Shows a list of all contacts in the address book.
 
 <box type="tip" seamless>
 
-**Tip:** You may also click on the tabs to switch between Contacts, Classes, and Assignments. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
+**Tip:** You may also click on the tabs to switch between `Contacts`, `Classes`, and `Assignments`. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
 
 </box>
 
@@ -880,7 +880,7 @@ Shows a list of all classes in the address book.
 
 <box type="tip" seamless>
 
-**Tip:** You may also click on the tabs to switch between Contacts, Classes, and Assignments. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
+**Tip:** You may also click on the tabs to switch between `Contacts`, `Classes`, and `Assignments`. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
 
 </box>
 
@@ -900,7 +900,7 @@ Shows a list of all assignments in the address book.
 
 <box type="tip" seamless>
 
-**Tip:** You may also click on the tabs to switch between Contacts, Classes, and Assignments. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
+**Tip:** You may also click on the tabs to switch between `Contacts`, `Classes`, and `Assignments`. Note that this will not affect any existing filters on the displayed lists, unlike the `list <TAB>` command which will clear all filters and show all items in that category.
 
 </box>
 
@@ -914,13 +914,11 @@ Finds and displays contacts based on the specified criteria. You can search by c
 1. `findcontact p/PHONE_NUMBER` — search by phone number (exact match)
 1. `findcontact e/EMAIL` — search by email address (exact match)
 
-<br>
+* **Name search `n/`:** The command will find contacts whose names contain **any** of the specified keywords (case-insensitive). Keywords are separated by spaces. For example, `findcontact n/alice bob` will return all contacts whose name contains "alice" OR "bob".
 
-* **Name search (n/):** The command will find contacts whose names contain ANY of the specified keywords (case-insensitive). Keywords are separated by spaces. For example, `findcontact n/alice bob` will return all contacts whose name contains "alice" OR "bob".
+* **Phone search `p/`:** Searches for contacts by exact phone number match. The entire phone number must match exactly.
 
-* **Phone search (p/):** Searches for contacts by exact phone number match. The entire phone number must match exactly. Example: `findcontact p/91234567` will find the contact with phone number 91234567.
-
-* **Email search (e/):** Searches for contacts by exact email address match (case-insensitive). The entire email must match exactly. Example: `findcontact e/alice@gmail.com` will find the contact with that exact email.
+* **Email search `e/`:** Searches for contacts by exact email address match (case-insensitive). The entire email must match exactly.
 
 * You cannot use multiple search types in one command. For example, `findcontact p/91234567 e/alice@gmail.com` is invalid. Choose one search method per command.
 
@@ -932,7 +930,7 @@ Finds and displays contacts based on the specified criteria. You can search by c
 
 **Warnings:**
 
-* Each prefix (n/, p/, e/) must have a value. Using a prefix with no value (e.g., `findcontact p/`) will result in an error.
+* Each prefix (`n/`,`p/`,`e/`) must have a value. Using a prefix with no value (e.g.,`findcontact p/`) will result in an error.
 
 * Invalid contact names will not be allowed. For a detailed list of criteria for valid contact names, please refer to the feature documentation on [**Adding a contact: addcontact**](#adding-a-contact-addcontact).
 
@@ -946,7 +944,7 @@ Finds and displays contacts based on the specified criteria. You can search by c
 
 **Tips:**
 
-* If you would like to preserve the current filter but switch to a different tab, you may manually click on the "Classes" or "Assignments" tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered contacts when you switch back to the "Contacts" tab.
+* If you would like to preserve the current filter but switch to a different tab, you may manually click on the `Classes` or `Assignments` tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered contacts when you switch back to the `Contacts` tab.
 
 * You may shorten `findcontact` to `findct` for quicker access. The same rules and formats apply.
 
@@ -954,16 +952,16 @@ Finds and displays contacts based on the specified criteria. You can search by c
 
 **Examples:**
 
-* `findcontact n/alice`
+* `findcontact n/alice`<br>
   Finds all contacts whose name contains "alice" (case-insensitive).
 
-* `findct n/john doe`
+* `findct n/john doe`<br>
   Using the abbreviated command, finds all contacts whose name contains "john" or "doe".
 
-* `findcontact p/91234567`
+* `findcontact p/91234567`<br>
   Finds the contact with phone number 91234567.
 
-* `findcontact e/alice@gmail.com`
+* `findcontact e/alice@gmail.com`<br>
   Finds the contact with email <alice@gmail.com>.
 
 ### Finding classes : `findclass`
@@ -972,9 +970,7 @@ Finds and displays classes based on the specified criteria. You can search by cl
 
 **Format:** `findclass c/CLASS_NAME_KEYWORDS...`
 
-<br>
-
-* **Name search (c/):** The command will find classes whose names contain ANY of the specified keywords (case-insensitive). Keywords are separated by spaces. For example, `findclass c/CS2103 Class` will return all classes whose name contains "CS2103" OR "Class".
+* **Name search `c/`:** The command will find classes whose names contain **any** of the specified keywords (case-insensitive). Keywords are separated by spaces. For example, `findclass c/CS2103 Class` will return all classes whose name contains "CS2103" OR "Class".
 
 * The tab will automatically switch to the `Classes` tab upon successful execution.
 
@@ -986,7 +982,7 @@ Finds and displays classes based on the specified criteria. You can search by cl
 
 * Invalid class names will not be allowed. For a detailed list of criteria for valid class names, please refer to the feature documentation on [**Adding classes: addclass**](#adding-classes-addclass).
 
-* CLASS_NAME_KEYWORDS must not be empty. Using the `c/` prefix with no value (e.g., `findclass c/`) will result in an error, and no filter is applied.
+* `CLASS_NAME_KEYWORDS` must not be empty. Using the `c/` prefix with no value (e.g., `findclass c/`) will result in an error, and no filter is applied.
 
 * You cannot use unrecognized prefixes like `n/`, `p/`, `e/`, `d/`, or `ass/`. The system will reject commands with invalid prefixes.
 
@@ -994,34 +990,34 @@ Finds and displays classes based on the specified criteria. You can search by cl
 
 <box type="tip" seamless>
 
-**Tip:** If you would like to preserve the current filter but switch to a different tab, you may manually click on the "Contacts" or "Assignments" tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered classes when you switch back to the "Classes" tab.
+**Tip:** If you would like to preserve the current filter but switch to a different tab, you may manually click on the `Contacts` or `Assignments` tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered classes when you switch back to the `Classes` tab.
 
 </box>
 
 **Examples:**
 
-* `findclass c/CS2103`
+* `findclass c/CS2103`<br>
   Finds all classes whose name contains "CS2103" (case-insensitive).
 
-* `findclass c/Tutorial Class`
+* `findclass c/Tutorial Class`<br>
   Finds all classes whose name contains "Tutorial" OR "Class" (case-insensitive).
 
 ### Finding assignments : `findass`
 
-Finds and displays assignments based on the specified criteria. You can search by assignment name (substring match) or by assignment deadline (exact match). Matching is case-insensitive.
+Finds and displays assignments based on the specified criteria. You can search by assignment name (substring match) or by assignment deadline (range match). Matching is case-insensitive.
 
 **Format:**
 
 1. `findass ass/ASSIGNMENT_NAME_SEARCH_STRING` — search by assignment name
 1. `findass [ds/DEADLINE_START] [de/DEADLINE_END]` — search by assignment deadline
 
-<br>
+* **Name search `ass/`:** The command will find assignments whose names contain the specified text. For example, `findass ass/CS2103` will find all assignments whose name contains "CS2103".
 
-* **Name search (ass/):** The command will find assignments whose names contain the specified text. For example, `findass ass/CS2103` will find all assignments whose name contains "CS2103". All consecutive spaces will be replaced by a single space. For example, `findass ass/Assignment <5 SPACES> 1` will find all assignments whose name contains "Assignment 1".
+* All consecutive spaces will be replaced by a single space, and any leading or trailing spaces will be retained. For example, `findass ass/<4 SPACES> Assignment <5 SPACES> 1 <3 SPACES>` will find all assignments whose name contains " Assignment 1 ". With this search string, "Assignment 1" will not be displayed, but "sample assignment 1 worksheet" will be displayed.
 
-* **Deadline search (ds/ and de/):** Searches for assignments by deadline range (inclusive of start and end points). The deadline values must match exactly one of the supported formats below. At least one of `[ds/DEADLINE_START]` or `[de/DEADLINE_END]` must be provided. Omission of the start or end deadline indicates no lower or upper bound for the search, respectively.
+* **Deadline search `ds/` and `de/`:** Searches for assignments by deadline range (inclusive of start and end points). The deadline values must match exactly one of the supported formats below. At least one of `[ds/DEADLINE_START]` or `[de/DEADLINE_END]` must be provided. Omission of the `[ds/DEADLINE_START]` or `[de/DEADLINE_END]` indicates no lower or upper bound for the search, respectively.
 
-* `DEADLINE` provided can be of the format `dd-MM-yyyy` — date only (e.g., `31-12-2024`) or `dd-MM-yyyy HH:mm` — date with time (e.g., `31-12-2024 23:59`). When `dd-MM-yyyy` is provided for the start deadline, it is treated as the beginning of the day (00:00). However, it will be treated as the end of the day (23:59) for end deadline.
+* `DEADLINE` provided can be of the format `dd-MM-yyyy` — date only (e.g., `31-12-2024`) or `dd-MM-yyyy HH:mm` — date with time (e.g., `31-12-2024 23:59`). When `dd-MM-yyyy` is provided for the start deadline, it is treated as the beginning of the day (12am). However, it will be treated as the end of the day (11.59pm) for end deadline.
 
 * You cannot use multiple search types in one command. For example, `findass ass/Assignment 1 ds/31-12-2024` is invalid. Choose one search method per command.
 
@@ -1045,20 +1041,27 @@ Finds and displays assignments based on the specified criteria. You can search b
 
 <box type="tip" seamless>
 
-**Tip:** If you would like to preserve the current filter but switch to a different tab, you may manually click on the "Contacts" or "Classes" tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered assignments when you switch back to the "Assignments" tab.
+**Tips:**
+
+* You can use spaces in your search string for more specific results. While `findass ass/Assignment` returns any assignment containing "Assignment", adding a space (e.g., `findass ass/Assignment <1 SPACE>`) allows you to target multi-word titles like "Assignment XYZ."
+
+* If you would like to preserve the current filter but switch to a different tab, you may manually click on the `Contacts` or `Classes` tab. Note that clicking on the tabs will not clear existing filters, so you can still see the filtered assignments when you switch back to the `Assignments` tab.
 
 </box>
 
 **Examples:**
 
-* `findass ass/Assignment`
+* `findass ass/Assignment`<br>
   Finds all assignments whose name contains "assignment" (case-insensitive).
 
-* `findass d/31-12-2024`
-  Finds all assignments with a deadline of 31st December 2024 (exact match).
+* `findass ds/31-12-2024`<br>
+  Finds all assignments with a deadline of 31 December 2024 12am or later.
 
-* `findass d/15-01-2024 23:59`
-  Finds all assignments with a deadline of 15th January 2024 at 23:59 (exact match).
+* `findass de/15-01-2024`<br>
+  Finds all assignments with a deadline of 15 January 2024 at 11.59pm or earlier.
+
+* `findass ds/31-12-2024 15:00 de/15-01-2024 20:00`<br>
+  Finds all assignments with a deadline between 31 December 2024 3pm and 15 January 2024 8pm.
 
 ### [TO BE UPDATED] Editing a contact : `edit`
 

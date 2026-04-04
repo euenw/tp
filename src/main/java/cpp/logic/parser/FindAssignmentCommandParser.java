@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import cpp.logic.Messages;
 import cpp.logic.commands.FindAssignmentCommand;
 import cpp.logic.parser.exceptions.ParseException;
-import cpp.model.assignment.AssignmentDeadlineContainsKeywordPredicate;
+import cpp.model.assignment.AssignmentDeadlineInRangePredicate;
 import cpp.model.assignment.AssignmentNameContainsKeywordsPredicate;
 import cpp.model.assignment.AssignmentSearchPredicate;
 
@@ -62,19 +62,19 @@ public class FindAssignmentCommandParser implements Parser<FindAssignmentCommand
             if (deadlineStart.isAfter(deadlineEnd)) {
                 throw new ParseException(Messages.MESSAGE_DEADLINE_START_AFTER_END);
             }
-            predicate = new AssignmentDeadlineContainsKeywordPredicate(deadlineStart, deadlineEnd);
+            predicate = new AssignmentDeadlineInRangePredicate(deadlineStart, deadlineEnd);
 
         } else if (hasDatetimeStartPrefix) {
             String deadlineValue = argMultimap.getValue(CliSyntax.PREFIX_DATETIME_START).get().trim()
                     .replaceAll("\\s+", " ");
             LocalDateTime deadline = this.parseDeadlineDateTime(deadlineValue, true);
-            predicate = new AssignmentDeadlineContainsKeywordPredicate(deadline, LocalDateTime.MAX);
+            predicate = new AssignmentDeadlineInRangePredicate(deadline, LocalDateTime.MAX);
 
         } else if (hasDatetimeEndPrefix) {
             String deadlineValue = argMultimap.getValue(CliSyntax.PREFIX_DATETIME_END).get().trim()
                     .replaceAll("\\s+", " ");
             LocalDateTime deadline = this.parseDeadlineDateTime(deadlineValue, false);
-            predicate = new AssignmentDeadlineContainsKeywordPredicate(LocalDateTime.MIN, deadline);
+            predicate = new AssignmentDeadlineInRangePredicate(LocalDateTime.MIN, deadline);
 
         } else if (hasAssignmentPrefix) {
             String assignmentSubstring = argMultimap.getValue(CliSyntax.PREFIX_ASSIGNMENT).get().replaceAll("\\s+",
