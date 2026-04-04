@@ -67,7 +67,7 @@ public class AddressBookParser {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
 
-        final String commandWord = matcher.group("commandWord");
+        final String commandWord = matcher.group("commandWord").toLowerCase();
         final String arguments = matcher.group("arguments");
 
         // Note to developers: Change the log level in config.json to enable lower level
@@ -137,12 +137,15 @@ public class AddressBookParser {
             return new UngradeAssignmentCommandParser().parse(arguments);
 
         case AddClassGroupCommand.COMMAND_WORD:
+        case AddClassGroupCommand.COMMAND_WORD_ALIAS:
             return new AddClassGroupCommandParser().parse(arguments);
 
         case AllocateClassGroupCommand.COMMAND_WORD:
+        case AllocateClassGroupCommand.COMMAND_WORD_ALIAS:
             return new AllocateClassGroupCommandParser().parse(arguments);
 
         case UnallocateClassGroupCommand.COMMAND_WORD:
+        case UnallocateClassGroupCommand.COMMAND_WORD_ALIAS:
             return new UnallocateClassGroupCommandParser().parse(arguments);
 
         default:
