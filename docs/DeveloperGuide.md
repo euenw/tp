@@ -202,6 +202,10 @@ A separate `UniqueContactAssignmentList` is used to manage the list of `ContactA
 
 <puml src="diagrams/AssignmentsCombinedDiagram.puml" width="600" />
 
+As you might already have noticed, `ContactAssignment` objects do not store any information about classes. We chose this design to allow users to have greater control over the contacts who are allocated assignments. For example, a user can choose to assign an assignment to the entire class initially and choose to unallocate it from certain contacts later on, without having to worry about the class information being stored in the `ContactAssignment` objects.
+
+As a result of this design, any class group operations will not affect the `ContactAssignment` entities. Hence, users will have to manually allocate or unallocate assignments to contacts when they allocate or unallocate contacts from class groups. We believe this is a reasonable trade-off to give users more control over the assignment allocation.
+
 ### Delete enhancements
 
 The `delete` command now supports deleting contacts, assignments, and class groups through a single command word. `DeleteCommandParser` acts as a dispatcher: it inspects which prefix is present in the user input (`ct/` for contacts, `ass/` for assignments, `c/` for class groups) and constructs the corresponding subcommand (`DeleteContactCommand`, `DeleteAssignmentCommand`, or `DeleteClassGroupCommand`).
@@ -601,6 +605,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * 1b1. System repeats Steps 2 and 3 for all assignments.
 
 <!-- Start of non MVP feature use cases -->
+
 **The use cases below are for features that are not part of the MVP, but are proposed to be implemented if time permits.**
 
 #### Use Case 14: Find a Contact
@@ -752,12 +757,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Non-Functional Requirements
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-1. Should be able to hold up to 1000 contacts without a noticeable sluggishness in performance for typical usage.
+1. Should be able to hold up to 1000 contacts, 500 classes, and 500 assignments without a noticeable performance degradation or sluggishness during in performance for typical usage.
 1. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 1. Should respond to user commands within 2 seconds to ensure a smooth user experience.
-1. Should be capable of handling up to 50 classes and 500 assignments without noticeable reduction in performance for typical usage.
 1. Should launch and load existing data within 5 seconds.
-1. Should gracefully handle invalid inputs by providing clear, red-colored error messages instructing the user on the correct format.
+1. Should handle invalid inputs by highlighting the command input in red with an error message describing the issue and, where applicable, the correct format or usage.
 1. Should work well for standard screen resolutions of 1920x1080 and higher (at 100% and 125% screen scales), and must remain fully usable for resolutions of 1280x720 and higher (at 150% screen scale).
 1. Data should be stored locally in a human-editable text file (JSON) without the use of any Database Management System.
 1. Should automatically save data to the hard disk after any command that modifies the state to prevent data loss.
