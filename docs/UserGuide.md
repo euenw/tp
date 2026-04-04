@@ -1035,6 +1035,8 @@ Finds and displays assignments based on the specified criteria. You can search b
 
 * For deadline searches, the time may be omitted. For example, if an assignment has a deadline of `31-12-2024 23:59`, searching with `findass ds/31-12-2024` will also match it.
 
+* Any time values provided will be treated as the time in the timezone set in `preferences.json`. By default, this is set to GMT +8, but you can change it to your local timezone if needed. Acceptable values range from -18 to 18, and any invalid or missing timezone values will default to GMT +8.
+
 * You cannot use unrecognized prefixes like `p/`, `e/`, `c/`, or `n/`. The system will reject commands with invalid prefixes.
 
 </box>
@@ -1081,9 +1083,7 @@ Shows the full details of a contact, class, or assignment.
 
 <box type="warning" seamless>
 
-**Warnings:**
-
-* Unlike previous listed commands, this `ct/` prefix requires exactly one contact index to be provided. If you provide more than one index (e.g., `view ct/1 2`), the command will fail and no detailed view of the contact will be displayed.
+**Warning:** Unlike previous listed commands, this `ct/` prefix requires exactly one contact index to be provided. If you provide more than one index (e.g., `view ct/1 2`), the command will fail and no detailed view of the contact will be displayed.
 
 </box>
 
