@@ -89,9 +89,11 @@ public class AddressBookParser {
             return new AddContactCommandParser().parse(arguments);
 
         case EditContactCommand.COMMAND_WORD:
+        case EditContactCommand.COMMAND_WORD_ALIAS:
             return new EditContactCommandParser().parse(arguments);
 
         case EditClassGroupCommand.COMMAND_WORD:
+        case EditClassGroupCommand.COMMAND_WORD_ALIAS:
             return new EditClassGroupCommandParser().parse(arguments);
 
         case EditAssignmentCommand.COMMAND_WORD:

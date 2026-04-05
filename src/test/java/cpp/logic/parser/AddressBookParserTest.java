@@ -75,6 +75,27 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_editContactAlias() throws Exception {
+        Contact contact = new ContactBuilder().build();
+        EditContactDescriptor descriptor = new EditContactDescriptorBuilder(contact).build();
+        EditContactCommand command = (EditContactCommand) this.parser.parseCommand(EditContactCommand.COMMAND_WORD_ALIAS
+                + " " + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased() + " "
+                + ContactUtil.getEditContactDescriptorDetails(descriptor));
+        Assertions.assertEquals(new EditContactCommand(TypicalIndexes.INDEX_FIRST_CONTACT, descriptor), command);
+    }
+
+    @Test
+    public void parseCommand_editClassAlias() throws Exception {
+        ClassGroup classGroup = new ClassGroupBuilder().build();
+        EditClassGroupCommand command = (EditClassGroupCommand) this.parser.parseCommand(
+                EditClassGroupCommand.COMMAND_WORD_ALIAS + " "
+                + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased() + " "
+                + CliSyntax.PREFIX_CLASS + classGroup.getName().fullName);
+        Assertions.assertEquals(
+                new EditClassGroupCommand(TypicalIndexes.INDEX_FIRST_CONTACT, classGroup.getName()), command);
+    }
+
+    @Test
     public void parseCommand_clear() throws Exception {
         Assertions.assertTrue(this.parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
         Assertions.assertTrue(this.parser.parseCommand(ClearCommand.COMMAND_WORD + " 3") instanceof ClearCommand);
