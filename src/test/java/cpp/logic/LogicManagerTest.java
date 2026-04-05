@@ -56,7 +56,9 @@ public class LogicManagerTest {
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "delete ct/9";
-        this.assertCommandException(deleteCommand, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + Messages.EMPTY_CONTACT_LIST;
+        this.assertCommandException(deleteCommand, expectedMessage);
     }
 
     @Test

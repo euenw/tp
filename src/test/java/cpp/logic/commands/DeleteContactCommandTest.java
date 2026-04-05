@@ -42,9 +42,10 @@ public class DeleteContactCommandTest {
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(this.model.getFilteredContactList().size() + 1);
         DeleteContactCommand deleteCommand = new DeleteContactCommand(List.of(outOfBoundIndex));
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, this.model.getFilteredContactList().size());
 
-        CommandTestUtil.assertCommandFailure(deleteCommand, this.model,
-                Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+        CommandTestUtil.assertCommandFailure(deleteCommand, this.model, expectedMessage);
     }
 
     @Test
@@ -76,8 +77,10 @@ public class DeleteContactCommandTest {
 
         DeleteContactCommand deleteCommand = new DeleteContactCommand(List.of(outOfBoundIndex));
 
-        CommandTestUtil.assertCommandFailure(deleteCommand, this.model,
-                Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, this.model.getFilteredContactList().size());
+
+        CommandTestUtil.assertCommandFailure(deleteCommand, this.model, expectedMessage);
     }
 
     @Test

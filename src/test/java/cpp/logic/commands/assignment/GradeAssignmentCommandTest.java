@@ -83,7 +83,9 @@ public class GradeAssignmentCommandTest {
                 ParserUtil.parseContactIndices("100"), 50f, LocalDateTime.now());
 
         ModelStubAcceptingGrade modelStub = new ModelStubAcceptingGrade();
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX,
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, modelStub.getFilteredContactList().size());
+        Assert.assertThrows(CommandException.class, expectedMessage,
                 () -> cmd.execute(modelStub));
     }
 

@@ -102,7 +102,9 @@ public class SubmitAssignmentCommandTest {
                 LocalDateTime.parse("21-02-2026 23:50", ParserUtil.DATETIME_FORMATTER));
 
         ModelStubAcceptingMarkSubmitted modelStub = new ModelStubAcceptingMarkSubmitted();
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX,
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, modelStub.getFilteredContactList().size());
+        Assert.assertThrows(CommandException.class, expectedMessage,
                 () -> cmd.execute(modelStub));
     }
 

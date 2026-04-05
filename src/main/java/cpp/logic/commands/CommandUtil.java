@@ -19,6 +19,12 @@ public class CommandUtil {
     public static void checkContactIndices(List<Contact> lastShownContactList, List<Index> contactIndices)
             throws CommandException {
 
+        // If no contact indices are provided, we consider it as valid (e.g. for
+        // commands that allow optional contact indices).
+        if (contactIndices.isEmpty()) {
+            return;
+        }
+
         if (lastShownContactList.isEmpty()) {
             throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX
                     + '\n'

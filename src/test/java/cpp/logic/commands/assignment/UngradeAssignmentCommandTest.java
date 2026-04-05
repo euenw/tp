@@ -75,7 +75,9 @@ public class UngradeAssignmentCommandTest {
                 ParserUtil.parseContactIndices("100"));
 
         ModelStubAcceptingUngrade modelStub = new ModelStubAcceptingUngrade();
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX,
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, modelStub.getFilteredContactList().size());
+        Assert.assertThrows(CommandException.class, expectedMessage,
                 () -> cmd.execute(modelStub));
     }
 
