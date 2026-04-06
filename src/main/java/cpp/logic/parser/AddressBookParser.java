@@ -163,8 +163,85 @@ public class AddressBookParser {
 
         default:
             AddressBookParser.logger.finer("This user input caused a ParseException: " + userInput);
-            throw new ParseException(Messages.MESSAGE_UNKNOWN_COMMAND);
+            String commandSuggestion = AddressBookParser.getCommandSuggestion(commandWord);
+            if (commandSuggestion != null) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNKNOWN_COMMAND,
+                        String.format(Messages.MESSAGE_COMMAND_SUGGESTION, commandSuggestion)));
+            } else {
+                throw new ParseException(String.format(Messages.MESSAGE_UNKNOWN_COMMAND,
+                        Messages.MESSAGE_COMMAND_SUGGESTION_NO_SIMILARITY));
+            }
         }
     }
 
+    private static String getCommandSuggestion(String userInput) {
+        // Note to developers:
+        // Currently, this function only considers non-alias command words for
+        // suggestions to avoid confusion. If alias suggestions are desired, they can be
+        // added here.
+        String[] validCommands = {
+            AddContactCommand.COMMAND_WORD,
+            EditContactCommand.COMMAND_WORD,
+            EditClassGroupCommand.COMMAND_WORD,
+            EditAssignmentCommand.COMMAND_WORD,
+            DeleteCommand.COMMAND_WORD,
+            ClearCommand.COMMAND_WORD,
+            FindContactCommand.COMMAND_WORD,
+            FindClassCommand.COMMAND_WORD,
+            FindAssignmentCommand.COMMAND_WORD,
+            ListCommand.COMMAND_WORD,
+            ExitCommand.COMMAND_WORD,
+            HelpCommand.COMMAND_WORD,
+            AddAssignmentCommand.COMMAND_WORD,
+            AllocateAssignmentCommand.COMMAND_WORD,
+            UnallocateAssignmentCommand.COMMAND_WORD,
+            SubmitAssignmentCommand.COMMAND_WORD,
+            UnsubmitAssignmentCommand.COMMAND_WORD,
+            GradeAssignmentCommand.COMMAND_WORD,
+            UngradeAssignmentCommand.COMMAND_WORD,
+            AddClassGroupCommand.COMMAND_WORD,
+            AllocateClassGroupCommand.COMMAND_WORD,
+            UnallocateClassGroupCommand.COMMAND_WORD,
+            ViewCommand.COMMAND_WORD
+        };
+        String closestMatch = null;
+        int minDistance = Integer.MAX_VALUE;
+        for (String command : validCommands) {
+            int distance = AddressBookParser.levenshteinDistance(userInput.toLowerCase(), command);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestMatch = command;
+            }
+        }
+        // Note to developers: Arbitrary threshold of 3 chosen. Can be tuned based on
+        // user testing.
+        return (minDistance <= 3) ? closestMatch : null;
+    }
+
+    /**
+     * Computes the Levenshtein distance between two strings.
+     *
+     * Code reuse declaration:
+     * This implementation is reused from user {@code tohyzhong} (who is part of the
+     * developer team) on GitHub:
+     * https://github.com/tohyzhong/ip/blob/master/src/main/java/patrick/task/TaskList.java
+     */
+    private static int levenshteinDistance(String s1, String s2) {
+        int len1 = s1.length();
+        int len2 = s2.length();
+        int[][] dp = new int[len1 + 1][len2 + 1];
+        for (int i = 0; i <= len1; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= len2; j++) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                int cost = (s1.charAt(i - 1) == s2.charAt(j - 1)) ? 0 : 1;
+                dp[i][j] = Math.min(Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1), dp[i - 1][j - 1] + cost);
+            }
+        }
+        return dp[len1][len2];
+    }
 }

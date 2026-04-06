@@ -89,8 +89,8 @@ public class AddressBookParserTest {
         ClassGroup classGroup = new ClassGroupBuilder().build();
         EditClassGroupCommand command = (EditClassGroupCommand) this.parser.parseCommand(
                 EditClassGroupCommand.COMMAND_WORD_ALIAS + " "
-                + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased() + " "
-                + CliSyntax.PREFIX_CLASS + classGroup.getName().fullName);
+                        + TypicalIndexes.INDEX_FIRST_CONTACT.getOneBased() + " "
+                        + CliSyntax.PREFIX_CLASS + classGroup.getName().fullName);
         Assertions.assertEquals(
                 new EditClassGroupCommand(TypicalIndexes.INDEX_FIRST_CONTACT, classGroup.getName()), command);
     }
@@ -342,8 +342,27 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_unknownCommand_throwsParseException() {
-        Assert.assertThrows(ParseException.class, Messages.MESSAGE_UNKNOWN_COMMAND,
+    public void parseCommand_unknownCommandNoSimilarity_throwsParseException() {
+        Assert.assertThrows(ParseException.class,
+                String.format(Messages.MESSAGE_UNKNOWN_COMMAND, Messages.MESSAGE_COMMAND_SUGGESTION_NO_SIMILARITY),
                 () -> this.parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_unknownCommandWithSimilarity_throwsParseException() {
+        Assert.assertThrows(ParseException.class,
+                String.format(Messages.MESSAGE_UNKNOWN_COMMAND,
+                        String.format(Messages.MESSAGE_COMMAND_SUGGESTION, AddContactCommand.COMMAND_WORD)),
+                () -> this.parser.parseCommand("addcontac"));
+
+        Assert.assertThrows(ParseException.class,
+                String.format(Messages.MESSAGE_UNKNOWN_COMMAND,
+                        String.format(Messages.MESSAGE_COMMAND_SUGGESTION, ListCommand.COMMAND_WORD)),
+                () -> this.parser.parseCommand("lis"));
+
+        Assert.assertThrows(ParseException.class,
+                String.format(Messages.MESSAGE_UNKNOWN_COMMAND,
+                        String.format(Messages.MESSAGE_COMMAND_SUGGESTION, EditAssignmentCommand.COMMAND_WORD)),
+                () -> this.parser.parseCommand("editassg"));
     }
 }

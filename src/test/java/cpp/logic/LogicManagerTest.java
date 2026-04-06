@@ -50,7 +50,8 @@ public class LogicManagerTest {
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
         String invalidCommand = "uicfhmowqewca";
-        this.assertParseException(invalidCommand, Messages.MESSAGE_UNKNOWN_COMMAND);
+        this.assertParseException(invalidCommand,
+                String.format(Messages.MESSAGE_UNKNOWN_COMMAND, Messages.MESSAGE_COMMAND_SUGGESTION_NO_SIMILARITY));
     }
 
     @Test

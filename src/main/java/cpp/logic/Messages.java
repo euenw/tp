@@ -16,7 +16,10 @@ import cpp.model.tag.Tag;
  */
 public class Messages {
 
-    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
+    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command! %1$s";
+    public static final String MESSAGE_COMMAND_SUGGESTION = "Did you mean: %1$s?";
+    public static final String MESSAGE_COMMAND_SUGGESTION_NO_SIMILARITY = """
+            Please refer to the user guide for the list of available commands.""";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX = "The contact index provided is invalid!";
     public static final String MESSAGE_INVALID_ASSIGNMENT_DISPLAYED_INDEX = "The assignment index provided is invalid!";
