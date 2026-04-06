@@ -11,6 +11,7 @@ import cpp.commons.util.ToStringBuilder;
 import cpp.logic.Messages;
 import cpp.logic.commands.Command;
 import cpp.logic.commands.CommandResult;
+import cpp.logic.commands.CommandUtil;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.logic.parser.CliSyntax;
 import cpp.model.Model;
@@ -60,9 +61,7 @@ public class EditAssignmentCommand extends Command {
         Objects.requireNonNull(model);
         List<Assignment> lastShownList = model.getFilteredAssignmentList();
 
-        if (this.index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_DISPLAYED_INDEX);
-        }
+        CommandUtil.checkAssignmentIndex(lastShownList, this.index);
 
         Assignment assignmentToEdit = lastShownList.get(this.index.getZeroBased());
 

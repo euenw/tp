@@ -51,9 +51,10 @@ public class EditClassGroupCommandTest {
     public void execute_invalidIndex_commandFailure() {
         Index outOfBoundIndex = Index.fromOneBased(this.model.getFilteredClassGroupList().size() + 1);
         EditClassGroupCommand editCommand = new EditClassGroupCommand(outOfBoundIndex, new ClassGroupName("AnyName"));
+        String expectedMessage = Messages.MESSAGE_INVALID_CLASS_GROUP_DISPLAYED_INDEX + '\n'
+                + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, this.model.getFilteredClassGroupList().size());
 
-        CommandTestUtil.assertCommandFailure(editCommand, this.model,
-                Messages.MESSAGE_INVALID_CLASS_GROUP_DISPLAYED_INDEX);
+        CommandTestUtil.assertCommandFailure(editCommand, this.model, expectedMessage);
     }
 
     @Test
@@ -68,7 +69,8 @@ public class EditClassGroupCommandTest {
 
     @Test
     public void execute_sameNameSameGroup_success() {
-        // Renaming to the same name should succeed (not a duplicate conflict with itself)
+        // Renaming to the same name should succeed (not a duplicate conflict with
+        // itself)
         ClassGroup classGroupToEdit = TypicalClassGroups.CLASS_GROUP_ONE;
         ClassGroupName sameName = classGroupToEdit.getName();
         EditClassGroupCommand editCommand = new EditClassGroupCommand(Index.fromOneBased(1), sameName);

@@ -55,9 +55,10 @@ public class EditAssignmentCommandTest {
         EditAssignmentDescriptor descriptor = new EditAssignmentDescriptor();
         descriptor.setName(new AssignmentName("Some Name"));
         EditAssignmentCommand editCommand = new EditAssignmentCommand(outOfBoundIndex, descriptor);
+        String expectedMessage = Messages.MESSAGE_INVALID_ASSIGNMENT_DISPLAYED_INDEX + '\n'
+                + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, this.model.getFilteredAssignmentList().size());
 
-        CommandTestUtil.assertCommandFailure(editCommand, this.model,
-                Messages.MESSAGE_INVALID_ASSIGNMENT_DISPLAYED_INDEX);
+        CommandTestUtil.assertCommandFailure(editCommand, this.model, expectedMessage);
     }
 
     @Test
