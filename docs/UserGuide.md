@@ -1141,7 +1141,7 @@ Edits the details of an existing contact in the address book.
 
 * When editing tags, all existing tags are removed and replaced with the new tags provided. To remove all tags, provide `t/` with no value.
 
-* The `CONTACT_NAME` provided must only contain alphanumeric characters and spaces. It cannot be blank.
+* The `CONTACT_NAME` provided must only contain alphanumeric characters and spaces. It cannot be blank, and must also not match the name of any other existing contact (case-insensitive).
 
 * The `PHONE_NUMBER` provided must only contain numeric digits (0-9) and be a minimum of 3 digits long.
 
@@ -1151,21 +1151,25 @@ Edits the details of an existing contact in the address book.
 
 <box type="warning" seamless>
 
-**Warning:** Editing a contact's name or phone number may result in a duplicate contact if the new combination already exists in the address book. The command will fail if a duplicate is detected.
+**Warnings:**
+
+* Editing a contact's name to match another existing contact's name (case-insensitive) is disallowed, and the command will fail if you attempt to do so. For example, if there is already a contact named "Alice Tan", you cannot edit another contact's name to "alice tan" or "ALICE TAN".
+
+* Editing a contact's details while you are in a filtered list view (e.g. after using `findcontact`) may cause confusion as the list may change to match the predicates of the filtered view. It is recommended to use `list contacts`, or `findcontact` with a predicate that is not among the fields you wish to edit, if you wish to see the results of your edit command in the full contact list.
 
 </box>
 
 <box type="tip" seamless>
 
-**Tip:** Use `list contacts` before editing to confirm the correct index. You can also use `findcontact` to narrow the list first.
+**Tip:** Ensure that you are in the correct tab view by using `list contacts` before editing to confirm the correct index. You can also use `findcontact` to narrow the list first.
 
 </box>
 
 **Examples:**
 
-* `editcontact 1 p/91234567 e/johndoe@example.com` edits the phone number and email of the 1st contact in the displayed list.
+* `list contacts` followed by `editcontact 1 p/91234567 e/johndoe@example.com` edits the phone number and email of the 1st contact in the displayed list to "91234567" and "<johndoe@example.com>" respectively.
 
-* `editcontact 2 n/Betsy Crower t/` edits the name of the 2nd contact and clears all existing tags.
+* `findcontact n/Bets` followed by `editcontact 1 n/Betsy Crower t/` edits the name of the 1st contact in the filtered list to "Betsy Crower" and clears all existing tags.
 
 ### Editing a class : `editclass`
 
