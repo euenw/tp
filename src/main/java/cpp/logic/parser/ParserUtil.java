@@ -139,12 +139,13 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code String tags} into a {@code Set<Tag>} and checks that the set is not empty.
+     * Parses {@code String tags} into a {@code Set<Tag>} and checks that the set is
+     * not empty.
      */
     public static Set<Tag> parseNonEmptyTags(String tags) throws ParseException {
         Set<Tag> tagSet = ParserUtil.parseTags(tags);
         if (tagSet.isEmpty()) {
-            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+            throw new ParseException(ParserUtil.MESSAGE_EMPTY_TAGS);
         }
         return tagSet;
     }
