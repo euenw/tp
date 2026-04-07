@@ -39,7 +39,7 @@ public class EditContactCommand extends Command {
             + "[" + CliSyntax.PREFIX_PHONE + "PHONE_NUMBER] "
             + "[" + CliSyntax.PREFIX_EMAIL + "EMAIL] "
             + "[" + CliSyntax.PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + CliSyntax.PREFIX_TAG + "TAG]...\n"
+            + "[" + CliSyntax.PREFIX_TAG + "TAGS...]\n"
             + "Example: " + EditContactCommand.COMMAND_WORD + " 1 "
             + CliSyntax.PREFIX_PHONE + "91234567 "
             + CliSyntax.PREFIX_EMAIL + "johndoe@example.com";

@@ -3,7 +3,6 @@ package cpp.logic.parser;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -183,20 +182,20 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseTags_collectionWithInvalidTags_throwsParseException() {
+    public void parseTags_stringWithInvalidTags_throwsParseException() {
         Assert.assertThrows(ParseException.class,
-                () -> ParserUtil.parseTags(Arrays.asList(ParserUtilTest.VALID_TAG_1, ParserUtilTest.INVALID_TAG)));
+                () -> ParserUtil.parseTags(ParserUtilTest.VALID_TAG_1 + " " + ParserUtilTest.INVALID_TAG));
     }
 
     @Test
-    public void parseTags_emptyCollection_returnsEmptySet() throws Exception {
-        Assertions.assertTrue(ParserUtil.parseTags(Collections.emptyList()).isEmpty());
+    public void parseTags_emptyString_returnsEmptySet() throws Exception {
+        Assertions.assertTrue(ParserUtil.parseTags("   ").isEmpty());
     }
 
     @Test
-    public void parseTags_collectionWithValidTags_returnsTagSet() throws Exception {
+    public void parseTags_stringWithValidTags_returnsTagSet() throws Exception {
         Set<Tag> actualTagSet = ParserUtil
-                .parseTags(Arrays.asList(ParserUtilTest.VALID_TAG_1, ParserUtilTest.VALID_TAG_2));
+                .parseTags(ParserUtilTest.VALID_TAG_1 + " " + ParserUtilTest.VALID_TAG_2);
         Set<Tag> expectedTagSet = new HashSet<Tag>(
                 Arrays.asList(new Tag(ParserUtilTest.VALID_TAG_1), new Tag(ParserUtilTest.VALID_TAG_2)));
 

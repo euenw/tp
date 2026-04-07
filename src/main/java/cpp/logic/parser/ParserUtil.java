@@ -6,8 +6,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +31,7 @@ import cpp.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_EMPTY_TAGS = "Tags should not be blank.";
     public static final String MESSAGE_EMPTY_INDICES = "Contact indices should not be blank.";
     public static final String MESSAGE_INVALID_DATE_OR_DATETIME = """
             Invalid date or date and time format.\
@@ -140,13 +139,29 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
+     * Parses {@code String tags} into a {@code Set<Tag>} and checks that the set is
+     * not empty.
      */
-    public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
+    public static Set<Tag> parseNonEmptyTags(String tags) throws ParseException {
+        Set<Tag> tagSet = ParserUtil.parseTags(tags);
+        if (tagSet.isEmpty()) {
+            throw new ParseException(ParserUtil.MESSAGE_EMPTY_TAGS);
+        }
+        return tagSet;
+    }
+
+    /**
+     * Parses {@code String tags} into a {@code Set<Tag>}.
+     */
+    public static Set<Tag> parseTags(String tags) throws ParseException {
         Objects.requireNonNull(tags);
-        final Set<Tag> tagSet = new HashSet<>();
-        for (String tagName : tags) {
-            tagSet.add(ParserUtil.parseTag(tagName));
+        String[] parts = tags.trim().split("\\s+");
+        Set<Tag> tagSet = new LinkedHashSet<>();
+        for (String part : parts) {
+            if (part.isBlank()) {
+                continue;
+            }
+            tagSet.add(ParserUtil.parseTag(part));
         }
         return tagSet;
     }

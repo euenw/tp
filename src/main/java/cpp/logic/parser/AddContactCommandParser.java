@@ -40,7 +40,8 @@ public class AddContactCommandParser implements Parser<AddContactCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_EMAIL,
-                CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_ASSIGNMENT);
+                CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_ASSIGNMENT,
+                CliSyntax.PREFIX_TAG);
         ContactName name = ParserUtil.parseName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(CliSyntax.PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(CliSyntax.PREFIX_EMAIL).get());
@@ -56,7 +57,9 @@ public class AddContactCommandParser implements Parser<AddContactCommand> {
                 ? ParserUtil.parseAssignmentName(assignmentNameValue)
                 : null;
 
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(CliSyntax.PREFIX_TAG));
+        Set<Tag> tagList = argMultimap.getValue(CliSyntax.PREFIX_TAG).isPresent()
+                ? ParserUtil.parseNonEmptyTags(argMultimap.getValue(CliSyntax.PREFIX_TAG).get())
+                : Set.of();
 
         Contact contact = new Contact(name, phone, email, address, tagList);
 

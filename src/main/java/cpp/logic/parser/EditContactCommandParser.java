@@ -1,17 +1,12 @@
 package cpp.logic.parser;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 import cpp.commons.core.index.Index;
 import cpp.logic.Messages;
 import cpp.logic.commands.EditContactCommand;
 import cpp.logic.commands.EditContactCommand.EditContactDescriptor;
 import cpp.logic.parser.exceptions.ParseException;
-import cpp.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new EditContactCommand object
@@ -33,7 +28,7 @@ public class EditContactCommandParser implements Parser<EditContactCommand> {
                 CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_TAG);
 
         argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_EMAIL,
-                CliSyntax.PREFIX_ADDRESS);
+                CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_TAG);
 
         if (argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
@@ -55,7 +50,10 @@ public class EditContactCommandParser implements Parser<EditContactCommand> {
             editContactDescriptor
                     .setAddress(ParserUtil.parseAddress(argMultimap.getValue(CliSyntax.PREFIX_ADDRESS).get()));
         }
-        this.parseTagsForEdit(argMultimap.getAllValues(CliSyntax.PREFIX_TAG)).ifPresent(editContactDescriptor::setTags);
+        if (argMultimap.getValue(CliSyntax.PREFIX_TAG).isPresent()) {
+            String tagsValue = argMultimap.getValue(CliSyntax.PREFIX_TAG).orElse("");
+            editContactDescriptor.setTags(ParserUtil.parseTags(tagsValue));
+        }
 
         if (!editContactDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditContactCommand.MESSAGE_NOT_EDITED);
@@ -65,22 +63,4 @@ public class EditContactCommandParser implements Parser<EditContactCommand> {
 
         return new EditContactCommand(index, editContactDescriptor);
     }
-
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if
-     * {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be
-     * parsed into a
-     * {@code Set<Tag>} containing zero tags.
-     */
-    private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
-
-        if (tags.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
-    }
-
 }

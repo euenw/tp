@@ -46,12 +46,12 @@ public class Tag {
         }
 
         Tag otherTag = (Tag) other;
-        return this.tagName.equals(otherTag.tagName);
+        return this.tagName.toLowerCase().equals(otherTag.tagName.toLowerCase());
     }
 
     @Override
     public int hashCode() {
-        return this.tagName.hashCode();
+        return this.tagName.toLowerCase().hashCode();
     }
 
     /**
