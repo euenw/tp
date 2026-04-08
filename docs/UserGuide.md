@@ -334,7 +334,7 @@ Adds a contact to the address book.
   Creates a contact using the alias command `addct`, with tags "monitoring" and "remedial".
 
   The screenshot below illustrates the expected display result of the last example. <br>
-  ![Add Contact Example](../images/command-results/addct-result.png)
+  ![Add Contact Example](images/command-results/addct-result.png)
 
 ### Adding classes: `addclass`
 
@@ -377,7 +377,7 @@ Adds a class to the address book.
   Creates a class with the name "CS2103T T10 1" allocated to the 1st, 2nd, and 3rd contacts.
 
   The screenshot below illustrates the expected display result of the last example. <br>
-  ![Add Class Example](../images/command-results/addc-result.png)
+  ![Add Class Example](images/command-results/addc-result.png)
 
 ### Allocating classes to contacts: `allocclass`
 
@@ -422,7 +422,7 @@ Allocates a class to specific contacts.
   Allocates the class "CS2103T T10 1" to the 1st, 2nd, and 3rd contacts in the list.
 
   The screenshot below illustrates the expected display result of the last example. <br>
-  ![Allocate Class Example](../images/command-results/allocc-result.png)
+  ![Allocate Class Example](images/command-results/allocc-result.png)
 
 ### Unallocating classes from contacts: `unallocclass`
 
@@ -467,7 +467,7 @@ Unallocates a class from specific contacts.
   Unallocates the class "CS2103T T10 1" from the 1st, 2nd, and 3rd contacts in the list.
   
   The screenshot below illustrates the expected display result of the last example. <br>
-  ![Unallocate Class Example](../images/command-results/unallocc-result.png)
+  ![Unallocate Class Example](images/command-results/unallocc-result.png)
 
 ### Adding assignments: `addass`
 
