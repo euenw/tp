@@ -129,9 +129,10 @@ public class EditContactCommandTest {
                 .withName(CommandTestUtil.VALID_NAME_BOB)
                 .build();
         EditContactCommand editCommand = new EditContactCommand(outOfBoundIndex, descriptor);
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX
+                + '\n' + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, this.model.getFilteredContactList().size());
 
-        CommandTestUtil.assertCommandFailure(editCommand, this.model,
-                Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+        CommandTestUtil.assertCommandFailure(editCommand, this.model, expectedMessage);
     }
 
     /**
@@ -149,8 +150,10 @@ public class EditContactCommandTest {
         EditContactCommand editCommand = new EditContactCommand(outOfBoundIndex,
                 new EditContactDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build());
 
-        CommandTestUtil.assertCommandFailure(editCommand, this.model,
-                Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX
+                + '\n' + String.format(Messages.MESSAGE_VALID_INDEX_BOUNDS, this.model.getFilteredContactList().size());
+
+        CommandTestUtil.assertCommandFailure(editCommand, this.model, expectedMessage);
     }
 
     @Test

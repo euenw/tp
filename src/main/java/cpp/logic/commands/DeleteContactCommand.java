@@ -30,11 +30,7 @@ public class DeleteContactCommand extends DeleteCommand {
         Objects.requireNonNull(model);
         List<Contact> lastShownList = model.getFilteredContactList();
 
-        for (Index index : this.targetIndices) {
-            if (index.getZeroBased() >= lastShownList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
-            }
-        }
+        CommandUtil.checkContactIndices(lastShownList, this.targetIndices);
 
         List<Contact> contactsToDelete = new ArrayList<>();
         for (Index index : this.targetIndices) {

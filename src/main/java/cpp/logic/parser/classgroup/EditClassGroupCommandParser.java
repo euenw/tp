@@ -38,9 +38,7 @@ public class EditClassGroupCommandParser implements Parser<EditClassGroupCommand
         }
 
         if (!ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_CLASS)) {
-            throw new ParseException(
-                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                            EditClassGroupCommand.MESSAGE_USAGE));
+            throw new ParseException(EditClassGroupCommand.MESSAGE_NOT_EDITED);
         }
 
         ClassGroupName newName = ParserUtil.parseClassGroupName(

@@ -8,6 +8,7 @@ import cpp.commons.util.ToStringBuilder;
 import cpp.logic.Messages;
 import cpp.logic.commands.Command;
 import cpp.logic.commands.CommandResult;
+import cpp.logic.commands.CommandUtil;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.logic.parser.CliSyntax;
 import cpp.model.Model;
@@ -30,9 +31,11 @@ public class EditClassGroupCommand extends Command {
             + "Parameters: INDEX (must be a positive integer) "
             + CliSyntax.PREFIX_CLASS + "CLASS_NAME\n"
             + "Example: " + EditClassGroupCommand.COMMAND_WORD + " 1 "
-            + CliSyntax.PREFIX_CLASS + "CS2103T11";
+            + CliSyntax.PREFIX_CLASS + "CS2103T10";
 
     public static final String MESSAGE_EDIT_CLASS_GROUP_SUCCESS = "Edited Class Group: %1$s";
+    public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
+            + EditClassGroupCommand.MESSAGE_USAGE;
     public static final String MESSAGE_DUPLICATE_CLASS_GROUP = "This class group already exists in the address book.";
 
     private final Index index;
@@ -54,9 +57,7 @@ public class EditClassGroupCommand extends Command {
         Objects.requireNonNull(model);
         List<ClassGroup> lastShownList = model.getFilteredClassGroupList();
 
-        if (this.index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_CLASS_GROUP_DISPLAYED_INDEX);
-        }
+        CommandUtil.checkClassGroupIndex(lastShownList, this.index);
 
         ClassGroup classGroupToEdit = lastShownList.get(this.index.getZeroBased());
 

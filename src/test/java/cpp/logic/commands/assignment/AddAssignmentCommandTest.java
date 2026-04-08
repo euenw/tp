@@ -158,7 +158,9 @@ public class AddAssignmentCommandTest {
                 List.of(Index.fromOneBased(100)));
 
         ModelStubAcceptingAssignmentAdded modelStub = new ModelStubAcceptingAssignmentAdded();
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX,
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + Messages.EMPTY_CONTACT_LIST; // since the model stub has no contacts
+        Assert.assertThrows(CommandException.class, expectedMessage,
                 () -> addAssignmentCommand.execute(modelStub));
     }
 

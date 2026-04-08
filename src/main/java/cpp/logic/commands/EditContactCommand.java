@@ -70,9 +70,7 @@ public class EditContactCommand extends Command {
         Objects.requireNonNull(model);
         List<Contact> lastShownList = model.getFilteredContactList();
 
-        if (this.index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
-        }
+        CommandUtil.checkContactIndices(lastShownList, List.of(this.index));
 
         Contact contactToEdit = lastShownList.get(this.index.getZeroBased());
         Contact editedContact = EditContactCommand.createEditedContact(contactToEdit, this.editContactDescriptor);

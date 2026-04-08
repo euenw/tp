@@ -50,13 +50,16 @@ public class LogicManagerTest {
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
         String invalidCommand = "uicfhmowqewca";
-        this.assertParseException(invalidCommand, Messages.MESSAGE_UNKNOWN_COMMAND);
+        this.assertParseException(invalidCommand,
+                String.format(Messages.MESSAGE_UNKNOWN_COMMAND, Messages.MESSAGE_COMMAND_SUGGESTION_NO_SIMILARITY));
     }
 
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "delete ct/9";
-        this.assertCommandException(deleteCommand, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+        String expectedMessage = Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX + '\n'
+                + Messages.EMPTY_CONTACT_LIST;
+        this.assertCommandException(deleteCommand, expectedMessage);
     }
 
     @Test

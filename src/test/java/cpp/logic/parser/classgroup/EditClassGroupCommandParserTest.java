@@ -36,8 +36,7 @@ public class EditClassGroupCommandParserTest {
 
     @Test
     public void parse_missingClassPrefix_failure() {
-        String expectedMessage = String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                EditClassGroupCommand.MESSAGE_USAGE);
+        String expectedMessage = EditClassGroupCommand.MESSAGE_NOT_EDITED;
 
         // index present but no c/ prefix
         CommandParserTestUtil.assertParseFailure(this.parser, "1 CS2103T", expectedMessage);
